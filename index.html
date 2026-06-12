@@ -2,20 +2,40 @@
         <html>
         <head>
             <title>TGGM SOVEREIGN ARCHITECT</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
             
     <style>
         :root { --neon: #00f3ff; --pink: #ff0055; --gold: #ffd700; --dark: #050508; --panel: rgba(5, 5, 10, 0.65); --text: #e0e0e0; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background: #000; color: var(--text); font-family: 'Consolas', monospace; overflow: hidden; margin: 0; }
         
-        /* UI OVERLAY */
-        .ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; padding: 20px; display: grid; grid-template-columns: 350px 1fr 350px; gap: 20px; z-index: 2; }
+        /* UI OVERLAY - MOBILE RESPONSIVE GRID */
+        .ui-layer { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; padding: 20px; 
+            display: grid; 
+            grid-template-columns: 350px 1fr 350px; /* Desktop */
+            gap: 20px; 
+            z-index: 2; 
+        }
         
+        /* MOBILE OVERRIDES */
+        @media (max-width: 900px) {
+            .ui-layer {
+                grid-template-columns: 1fr; /* Stack vertically */
+                grid-template-rows: auto 1fr auto;
+                padding: 10px;
+                gap: 10px;
+            }
+            .panel { display: none !important; } /* Hide heavy text panels on mobile to clear view */
+            .mobile-only { display: block !important; }
+            .header h1 { font-size: 1.0em; }
+        }
+
         /* CANVAS IS BACKGROUND */
         #hologram-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%); }
         
         /* PANELS */
-        .panel { pointer-events: auto; background: var(--panel); border: 1px solid rgba(0, 243, 255, 0.1); padding: 20px; border-radius: 4px; backdrop-filter: blur(5px); overflow-y: auto; height: 90vh; margin-top: 20px; transition: 0.3s; }
+        .panel { pointer-events: auto; background: var(--panel); border: 1px solid rgba(0, 243, 255, 0.1); padding: 20px; border-radius: 4px; backdrop-filter: blur(5px); overflow-y: auto; height: 80vh; margin-top: 20px; transition: 0.3s; }
         .panel:hover { border-color: rgba(0, 243, 255, 0.5); box-shadow: 0 0 20px rgba(0, 243, 255, 0.1); }
         .panel h2 { color: var(--neon); font-size: 0.9em; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 15px; }
 
@@ -28,7 +48,12 @@
 
         /* HUD ELEMENTS */
         .header { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; pointer-events: auto; z-index: 10; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .controls-hint { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); color: #666; font-size: 0.8em; text-align: center; pointer-events: none; z-index: 10; }
+        
+        .controls-hint { 
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); 
+            color: var(--neon); font-size: 0.8em; text-align: center; pointer-events: none; z-index: 10; 
+            text-shadow: 0 0 5px black; background: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 20px;
+        }
         
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-thumb { background: #333; }
@@ -42,12 +67,8 @@
             <div class="ui-layer">
                 <div class="header">
                     <div>
-                        <h1 style="font-weight:normal; letter-spacing:4px; margin:0; font-size:1.5em; text-shadow: 0 0 10px #00f3ff;">TGGM <span style="color:var(--neon)">// ARCHITECT</span></h1>
+                        <h1 style="font-weight:normal; letter-spacing:4px; margin:0; text-shadow: 0 0 10px #00f3ff;">TGGM <span style="color:var(--neon)">// ARCHITECT</span></h1>
                         <div style="font-size:0.7em; color:#666; margin-top:5px;">VISUAL: FRACTAL TORUS + LOTUS CORE</div>
-                    </div>
-                    <div style="text-align:right;">
-                        <div style="font-size:0.8em; color:var(--pink);">SYSTEM: ONLINE</div>
-                        <div style="font-size:0.7em; color:#888;">VISION MINER: ACTIVE</div>
                     </div>
                 </div>
 
@@ -66,18 +87,18 @@
             </div>
             
             <div class="controls-hint">
-                SCROLL MOUSE WHEEL TO FLY INSIDE THE STRUCTURE
+                DESKTOP: SCROLL TO FLY • MOBILE: 2-FINGER DRAG
             </div>
 
             
-    <!-- NATIVE THREE.JS (SAFE MODE - NO BLACK SCREEN) -->
+    <!-- NATIVE THREE.JS (MOBILE READY) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     
     <script>
-    // --- 1. THE "UNREAL" SETUP ---
+    // --- 1. THE SETUP ---
     const container = document.getElementById('hologram-container');
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x000000, 0.0015); // The Void
+    scene.fog = new THREE.FogExp2(0x000000, 0.0015);
 
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
     camera.position.z = 40; // Start OUTSIDE
@@ -88,7 +109,6 @@
     container.appendChild(renderer.domElement);
 
     // --- 2. TEXTURE GENERATION (Native Glow) ---
-    // Creates a "Lens Flare" particle texture purely with code to avoid CORS blocks
     const getGlowTexture = () => {
         const c = document.createElement('canvas');
         c.width = 64; c.height = 64;
@@ -104,12 +124,12 @@
     };
     const glowTex = getGlowTexture();
 
-    // --- 3. IMPLEMENTING: "THE TOROIDAL DATA HUB" ---
+    // --- 3. THE TOROIDAL DATA HUB ---
     const hubGroup = new THREE.Group();
     scene.add(hubGroup);
 
-    // A. The Main Neural Web (Wireframe)
-    const torGeo = new THREE.TorusKnotGeometry(12, 3.5, 150, 24);
+    // Wireframe Web
+    const torGeo = new THREE.TorusKnotGeometry(12, 3.5, 100, 16); // Lower poly for mobile FPS
     const torMat = new THREE.MeshBasicMaterial({ 
         color: 0x0033aa, 
         wireframe: true, 
@@ -120,13 +140,12 @@
     const mainWeb = new THREE.Mesh(torGeo, torMat);
     hubGroup.add(mainWeb);
 
-    // B. The Neural Nodes (Fractal Particles)
+    // Particles
     const pGeo = new THREE.BufferGeometry();
-    const pCount = 3000;
+    const pCount = 1500; // Optimized count for mobile
     const pPos = new Float32Array(pCount * 3);
     
     for(let i=0; i<pCount*3; i+=3) {
-        // Toroidal Math to place particles INSIDE the tube
         const u = Math.random() * Math.PI * 2;
         const v = Math.random() * Math.PI * 2;
         const tubeR = 3.5 + (Math.random() - 0.5) * 2; 
@@ -139,8 +158,8 @@
     pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
     const pMat = new THREE.PointsMaterial({
         color: 0x00f3ff,
-        size: 0.3,
-        map: glowTex, // The Glow Trick
+        size: 0.4,
+        map: glowTex,
         transparent: true,
         opacity: 0.8,
         blending: THREE.AdditiveBlending,
@@ -149,46 +168,71 @@
     const neuralCloud = new THREE.Points(pGeo, pMat);
     hubGroup.add(neuralCloud);
 
-    // --- 4. IMPLEMENTING: "THE LOTUS OF LIFE" (Core) ---
-    // Replaces simple sphere with Sacred Geometry (Icosahedron + Dodecahedron)
+    // --- 4. THE LOTUS CORE ---
     const lotusGroup = new THREE.Group();
     scene.add(lotusGroup);
 
-    // Layer 1: The Seed
     const seedGeo = new THREE.IcosahedronGeometry(1.5, 1);
     const seedMat = new THREE.MeshBasicMaterial({ color: 0xff0055, wireframe: true, transparent:true, opacity:0.8 });
     const seed = new THREE.Mesh(seedGeo, seedMat);
     lotusGroup.add(seed);
 
-    // Layer 2: The Petals
     const petalGeo = new THREE.DodecahedronGeometry(2.5, 0);
     const petalMat = new THREE.MeshBasicMaterial({ color: 0xff00aa, wireframe: true, transparent:true, opacity:0.3 });
     const petals = new THREE.Mesh(petalGeo, petalMat);
     lotusGroup.add(petals);
 
-    // Layer 3: The Aura
-    const auraGeo = new THREE.SphereGeometry(3.5, 32, 32);
-    const auraMat = new THREE.MeshBasicMaterial({ color: 0xffd700, wireframe: true, transparent:true, opacity:0.05 });
-    const aura = new THREE.Mesh(auraGeo, auraMat);
-    lotusGroup.add(aura);
 
-
-    // --- 5. IMPLEMENTING: "INSIDE THE STRUCTURE" (Fly-Through) ---
+    // --- 5. INTERACTION ENGINE (DESKTOP + MOBILE) ---
     let mouseX = 0;
     let mouseY = 0;
     let targetZ = 40; 
+    let touchStartY = 0;
 
+    // A. DESKTOP MOUSE
     document.addEventListener('mousemove', (e) => {
         mouseX = (e.clientX - window.innerWidth / 2) * 0.0005;
         mouseY = (e.clientY - window.innerHeight / 2) * 0.0005;
     });
 
     document.addEventListener('wheel', (e) => {
-        // Scroll Up = Zoom IN (Decrease Z)
-        targetZ += e.deltaY * 0.02;
-        if(targetZ < 5) targetZ = 5; // Don't crash into core
-        if(targetZ > 100) targetZ = 100;
+        targetZ += e.deltaY * 0.05;
+        clampZ();
     });
+
+    // B. MOBILE TOUCH
+    document.addEventListener('touchstart', (e) => {
+        touchStartY = e.touches[0].clientY;
+    }, {passive: false});
+
+    document.addEventListener('touchmove', (e) => {
+        // Prevent default scrolling of the page so we can fly
+        // Only prevent if we are interacting with the background (not if user touches text)
+        if(e.target.id === 'hologram-container' || e.touches.length > 1) {
+             e.preventDefault();
+        }
+
+        // 2 FINGERS = FLY (ZOOM)
+        if (e.touches.length === 2) {
+            const currentY = e.touches[0].clientY;
+            const delta = currentY - touchStartY;
+            targetZ -= delta * 0.2; // Fly Speed
+            touchStartY = currentY;
+        }
+        // 1 FINGER = LOOK AROUND
+        else if (e.touches.length === 1) {
+            const touchX = e.touches[0].clientX;
+            const touchY = e.touches[0].clientY;
+            mouseX = (touchX - window.innerWidth / 2) * 0.001;
+            mouseY = (touchY - window.innerHeight / 2) * 0.001;
+        }
+        clampZ();
+    }, {passive: false});
+
+    function clampZ() {
+        if(targetZ < 5) targetZ = 5;
+        if(targetZ > 100) targetZ = 100;
+    }
 
     // --- 6. ANIMATION LOOP ---
     const clock = new THREE.Clock();
@@ -201,21 +245,17 @@
         hubGroup.rotation.y += 0.002;
         hubGroup.rotation.x = Math.sin(t * 0.2) * 0.1; 
 
-        // Animate Lotus (Counter-Rotation = Living)
+        // Animate Lotus
         seed.rotation.y -= 0.01;
         seed.rotation.z += 0.01;
         petals.rotation.y += 0.005;
-        petals.rotation.x += 0.005;
-        aura.rotation.z -= 0.002;
 
-        // Pulse (Heartbeat)
+        // Pulse
         const pulse = 1 + Math.sin(t * 2) * 0.05;
         lotusGroup.scale.set(pulse, pulse, pulse);
 
-        // Fly-Through Camera Logic
-        camera.position.z += (targetZ - camera.position.z) * 0.05;
-        
-        // Mouse Parallax
+        // Camera Logic
+        camera.position.z += (targetZ - camera.position.z) * 0.05; // Smooth Fly
         camera.position.x += (mouseX * 10 - camera.position.x) * 0.05;
         camera.position.y += (-mouseY * 10 - camera.position.y) * 0.05;
         camera.lookAt(scene.position);
