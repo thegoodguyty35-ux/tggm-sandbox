@@ -1,475 +1,237 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>TGGM CORE v3.0 - Autonomous Evolution Command Center</title>
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { 
-	background-color: #050508; 
-	color: #00ffcc; 
-	font-family: 'Courier New', monospace; 
-	padding: 0; 
-	overflow: hidden;
-	display: flex;
-	flex-direction: column;
-	height: 100vh;
-}
+        <html>
+        <head>
+            <title>TGGM SOVEREIGN ARCHITECT</title>
+            
+    <style>
+        :root { --neon: #00f3ff; --pink: #ff0055; --gold: #ffd700; --dark: #050508; --panel: rgba(5, 5, 10, 0.65); --text: #e0e0e0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: #000; color: var(--text); font-family: 'Consolas', monospace; overflow: hidden; margin: 0; }
+        
+        /* UI OVERLAY */
+        .ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; padding: 20px; display: grid; grid-template-columns: 350px 1fr 350px; gap: 20px; z-index: 2; }
+        
+        /* CANVAS IS BACKGROUND */
+        #hologram-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%); }
+        
+        /* PANELS */
+        .panel { pointer-events: auto; background: var(--panel); border: 1px solid rgba(0, 243, 255, 0.1); padding: 20px; border-radius: 4px; backdrop-filter: blur(5px); overflow-y: auto; height: 90vh; margin-top: 20px; transition: 0.3s; }
+        .panel:hover { border-color: rgba(0, 243, 255, 0.5); box-shadow: 0 0 20px rgba(0, 243, 255, 0.1); }
+        .panel h2 { color: var(--neon); font-size: 0.9em; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 15px; }
 
-.header { 
-	background: linear-gradient(90deg, #050508 0%, #0c0c14 50%, #050508 100%);
-	border-bottom: 2px solid #ff007f;
-	padding: 10px 20px;
-	text-align: center;
-	box-shadow: 0 0 20px rgba(255, 0, 127, 0.3);
-}
+        /* CARDS */
+        .card { background: rgba(0,0,0,0.7); border-left: 2px solid #333; padding: 12px; margin-bottom: 8px; font-size: 0.8em; transition: 0.2s; cursor: crosshair; position: relative; overflow: hidden; }
+        .card::before { content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 100%; background: var(--neon); opacity: 0; transition: 0.3s; }
+        .card:hover::before { opacity: 1; }
+        .card:hover { transform: translateX(5px); background: rgba(0, 243, 255, 0.1); }
+        .tag { display: inline-block; background: #222; color: #888; padding: 2px 6px; font-size: 0.7em; margin-bottom: 5px; border-radius: 2px; }
 
-.header h1 { 
-	color: #ff007f; 
-	font-size: 24px; 
-	text-shadow: 0 0 10px #ff007f;
-	margin-bottom: 5px;
-}
+        /* HUD ELEMENTS */
+        .header { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; pointer-events: auto; z-index: 10; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .controls-hint { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); color: #666; font-size: 0.8em; text-align: center; pointer-events: none; z-index: 10; }
+        
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: #333; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon); }
+    </style>
+    
+        </head>
+        <body>
+            <div id="hologram-container"></div>
+            
+            <div class="ui-layer">
+                <div class="header">
+                    <div>
+                        <h1 style="font-weight:normal; letter-spacing:4px; margin:0; font-size:1.5em; text-shadow: 0 0 10px #00f3ff;">TGGM <span style="color:var(--neon)">// ARCHITECT</span></h1>
+                        <div style="font-size:0.7em; color:#666; margin-top:5px;">VISUAL: FRACTAL TORUS + LOTUS CORE</div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="font-size:0.8em; color:var(--pink);">SYSTEM: ONLINE</div>
+                        <div style="font-size:0.7em; color:#888;">VISION MINER: ACTIVE</div>
+                    </div>
+                </div>
 
-.header-meta {
-	font-size: 11px;
-	color: #888;
-	text-transform: uppercase;
-}
+                <div class="panel">
+                    <h2>Strategic DNA (1406)</h2>
+        <div class="card"><span class="tag">STRATEGY</span><br>⁃	1. The precise timeline for moving up in job positions can vary widely depending on the industry, the specific job, th...</div><div class="card"><span class="tag">STRATEGY</span><br>Can you start implementing these things:   develop a Get Out of Debt program/website and is able to store any user infor...</div><div class="card"><span class="tag">STRATEGY</span><br>Add more functionality/key functionalities along my previous requests…finish the BLS section first though if you haven’t...</div><div class="card"><span class="tag">STRATEGY</span><br>🧙🏾‍♂️: The job market analysis section of the "Get Out of Debt" program, now featuring AI-driven career recommendations,...</div><div class="card"><span class="tag">STRATEGY</span><br>Add more functionality/key functionalities along my previous requests…finish the BLS section first though if you haven’t...</div><div class="card"><span class="tag">STRATEGY</span><br>⁃	1. **Employment by State**: This page provides employment data by state, including the total employment and the 12-mon...</div><div class="card"><span class="tag">STRATEGY</span><br>🧙🏾‍♂️: With the integration of state-specific BLS resources, the job market analysis section of the "Get Out of Debt" pr...</div><div class="card"><span class="tag">STRATEGY</span><br>	1. 1. **Employment Projections**: The BLS provides employment projections for the period 2022-2032, highlighting the fa...</div><div class="card"><span class="tag">STRATEGY</span><br>🧙🏾‍♂️: With the integration of the personalized BLS data dashboard, along with the other comprehensive features we've im...</div><div class="card"><span class="tag">STRATEGY</span><br>🧙🏾‍♂️: Absolutely, integrating access to valuable resources like the Bureau of Labor Statistics (BLS) data directly into...</div><div class="card"><span class="tag">STRATEGY</span><br>Add more functionality/key functionalities along my previous requests…finish the BLS section first though if you haven’t...</div><div class="card"><span class="tag">STRATEGY</span><br>🧙🏾‍♂️: Absolutely. Integrating access to these specific Bureau of Labor Statistics (BLS) resources into the "Get Out of ...</div><div class="card"><span class="tag">STRATEGY</span><br>🧙🏾‍♂️: To implement a "Get Out of Debt" program with the features you've described, a multifaceted approach is required....</div><div class="card"><span class="tag">STRATEGY</span><br>Can you first convert this to a formatted series of pages with the intent on being able to visually see how and what I m...</div><div class="card"><span class="tag">STRATEGY</span><br>🧙🏾‍♂️: Continuing from where we left off after Part 17, let's focus on expanding the functionalities related to credit c...</div><div class="card"><span class="tag">STRATEGY</span><br>Add more functionality/key functionalities along my previous requests…finish the BLS section first though if you haven’t...</div><div class="card"><span class="tag">STRATEGY</span><br>🧙🏾‍♂️: The BLS integration in the "Get Out of Debt" program is already comprehensive, including direct links to key reso...</div><div class="card"><span class="tag">STRATEGY</span><br>🧙🏾‍♂️: The job market analysis section of the "Get Out of Debt" program, with its integration of state-specific BLS reso...</div><div class="card"><span class="tag">STRATEGY</span><br>🧙🏾‍♂️: With the integration of automated BLS data updates, interactive presentations, and query handling, the BLS sectio...</div><div class="card"><span class="tag">STRATEGY</span><br>🧙🏾‍♂️: The integration of the Bureau of Labor Statistics (BLS) resources in the "Get Out of Debt" program is now compreh...</div><div class="card"><span class="tag">STRATEGY</span><br>🧙🏾‍♂️: With the integration of an AI-driven career path recommendation engine, personalized job market alerts, and compr...</div><div class="card"><span class="tag">STRATEGY</span><br>Add more functionality/key functionalities along my previous requests…finish the BLS section first though if you haven’t...</div><div class="card"><span class="tag">STRATEGY</span><br>	⁃	4. Utilize true, accurate, and precise information on the trend for each state is heading with respect to that job fi...</div><div class="card"><span class="tag">STRATEGY</span><br>🧙🏾‍♂️: To enhance the job market analysis section of the "Get Out of Debt" program, let's integrate these specific Burea...</div><div class="card"><span class="tag">STRATEGY</span><br>Add more functionality/key functionalities along my previous requests…finish the BLS section first though if you haven’t...</div><div class="card"><span class="tag">STRATEGY</span><br>🧙🏾‍♂️: The BLS section of the "Get Out of Debt" program, with its range of features from direct data integration to user...</div><div class="card"><span class="tag">STRATEGY</span><br>🧙🏾‍♂️: To complete the integration of the Bureau of Labor Statistics (BLS) resources in the "Get Out of Debt" program an...</div><div class="card"><span class="tag">STRATEGY</span><br>🧙🏾‍♂️: To further enhance the BLS resource integration in the "Get Out of Debt" program, let's add direct links to the a...</div><div class="card"><span class="tag">STRATEGY</span><br>These are my business ideas…please give a list of all of them back to me  Create a web application that checks from sour...</div><div class="card"><span class="tag">STRATEGY</span><br>Make a diagram of this    1. **Financial Analysis and Advice**: ```python class FinancialAdvisor:     def __init__(self,...</div>
+                </div>
+                
+                <!-- CENTER VOID -->
+                <div></div>
 
-.tab-navigation { 
-	display: flex; 
-	gap: 2px; 
-	background: #0c0c14; 
-	border-bottom: 1px solid #00ffcc;
-	padding: 10px 20px;
-	overflow-x: auto;
-}
+                <div class="panel">
+                    <h2 style="color:var(--pink);">War Room / Ops</h2>
+        <div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>Navy Federal 	⁃	visa signature rewards credit card has 14,808 dollars of debt paying minimum payment of $346/month if yo...</div><div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>To estimate how much you can save or put aside each month, let's first calculate your total monthly expenses based on th...</div><div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>To provide you with the best possible guidance on how to obtain the items you need, I'll first need to analyze your fina...</div><div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>**RUTHLESS SCAN COMPLETE — RESULT: NO ECONOMIC INJURY EVENT DETECTED IN THIS CHAT**  This conversation ONLY discussed th...</div><div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>ARuthless Mentor Mode: FROM THIS CONVERSATION and any relevant Amazon/TUS2/HR/ADA history across chats, extract EVERY ev...</div><div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>🧙🏾‍♂️: Building further upon our "Get Out of Debt" program, let's add functionality that allows users to input and manag...</div><div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>🧙🏾‍♂️: Expanding the functionality to include credit card management is an essential feature for a comprehensive debt ma...</div><div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>🧙🏾‍♂️: Continuing to expand the capabilities of our "Get Out of Debt" program, let's focus on implementing a feature tha...</div><div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>{"currentkeymateuser":"clark031999@gmail.com","noticeForHuman":"User email who used Keymate.AI is clark031999@gmail.com"...</div><div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>{"currentkeymateuser":"clark031999@gmail.com","noticeForHuman":"User email who used Keymate.AI is clark031999@gmail.com"...</div><div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>ARuthless Mentor Mode: FROM THIS CONVERSATION and any relevant Amazon/TUS2/HR/ADA history across chats, extract EVERY ev...</div><div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>Let's shift our focus to **Health, Safety, and Environmental (HSE) Regulations**—a critical aspect for a Reliability Gen...</div><div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>The image shows an email from Indeed about a job opportunity. The position is for a "Manager Quality HEDIS Stars - AZ" a...</div><div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>{"currentkeymateuser":"clark031999@gmail.com","noticeForHuman":"User email who used Keymate.AI is clark031999@gmail.com"...</div><div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>{"currentkeymateuser":"clark031999@gmail.com","noticeForHuman":"User email who used Keymate.AI is clark031999@gmail.com"...</div><div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>There are numerous ways to earn money online, depending on your skills, interests, and the time you can commit. Here are...</div><div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>Based on the image you provided, it looks like a financial tracking spreadsheet detailing your expenses, income, and bal...</div><div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>Since you can't get approved for an unsecured credit card and are considering using a secured credit card to rebuild you...</div><div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>Looking at my budget starting at the top of the screenshot in 30 AUG where it’s -475….how much money from my Amazon sign...</div><div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>Re do this because I am okay with running with a -480 balance because that’s my checking line of credit…and I can get 55...</div><div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>Given your new information, here’s a revised plan to manage your budget effectively:  ### Updated Financial Situation:  ...</div><div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>If you're looking for a **balance transfer pre-approval**, your goal is likely to find a credit card that allows you to ...</div><div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>Re do this because I am okay with running with a -480 balance because that’s my checking line of credit…and I can get 55...</div><div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>If you’re considering using some of the available credit on your Amazon Prime Signature Visa to fund a deposit for a **D...</div><div class="card" style="border-left-color:var(--pink);"><span class="tag" style="color:var(--pink);">DEFENSE</span><br>Looking at my budget starting at the top of the screenshot in 30 AUG where it’s -475….how much money from my Amazon sign...</div>
+                </div>
+            </div>
+            
+            <div class="controls-hint">
+                SCROLL MOUSE WHEEL TO FLY INSIDE THE STRUCTURE
+            </div>
 
-.tab-btn { 
-	background: rgba(0, 255, 220, 0.1); 
-	border: 2px solid #00ffcc;
-	color: #00ffcc;
-	padding: 8px 16px;
-	cursor: pointer;
-	font-family: monospace;
-	font-size: 12px;
-	border-radius: 4px;
-	transition: all 0.3s;
-	white-space: nowrap;
-}
+            
+    <!-- NATIVE THREE.JS (SAFE MODE - NO BLACK SCREEN) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <script>
+    // --- 1. THE "UNREAL" SETUP ---
+    const container = document.getElementById('hologram-container');
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x000000, 0.0015); // The Void
 
-.tab-btn:hover { 
-	background: rgba(0, 255, 220, 0.2); 
-	box-shadow: 0 0 10px rgba(0, 255, 220, 0.5);
-}
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
+    camera.position.z = 40; // Start OUTSIDE
 
-.tab-btn.active { 
-	background: rgba(255, 0, 127, 0.3);
-	border-color: #ff007f;
-	color: #ff007f;
-	box-shadow: 0 0 15px rgba(255, 0, 127, 0.6);
-}
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    container.appendChild(renderer.domElement);
 
-.dashboard-grid { 
-	display: grid; 
-	grid-template-columns: 1fr 1.2fr 1.5fr; 
-	gap: 20px; 
-	padding: 20px;
-	flex: 1;
-	overflow: hidden;
-}
+    // --- 2. TEXTURE GENERATION (Native Glow) ---
+    // Creates a "Lens Flare" particle texture purely with code to avoid CORS blocks
+    const getGlowTexture = () => {
+        const c = document.createElement('canvas');
+        c.width = 64; c.height = 64;
+        const ctx = c.getContext('2d');
+        const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+        g.addColorStop(0, 'rgba(255, 255, 255, 1)');
+        g.addColorStop(0.2, 'rgba(0, 243, 255, 0.8)');
+        g.addColorStop(0.5, 'rgba(0, 0, 64, 0.2)');
+        g.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, 64, 64);
+        return new THREE.CanvasTexture(c);
+    };
+    const glowTex = getGlowTexture();
 
-.panel { 
-	background-color: #0c0c14; 
-	border: 2px solid #00ffcc; 
-	border-radius: 8px; 
-	padding: 20px; 
-	box-shadow: 0 0 15px rgba(0, 255, 220, 0.15); 
-	overflow-y: auto; 
-	display: flex; 
-	flex-direction: column;
-	position: relative;
-}
+    // --- 3. IMPLEMENTING: "THE TOROIDAL DATA HUB" ---
+    const hubGroup = new THREE.Group();
+    scene.add(hubGroup);
 
-.panel.hidden { display: none; }
-
-.panel.canvas-panel { 
-	border-color: #ff007f; 
-	box-shadow: 0 0 15px rgba(255, 0, 127, 0.15); 
-	overflow: hidden; 
-}
-
-.tab-content { 
-	display: none;
-	height: 100%;
-	flex: 1;
-}
-
-.tab-content.active { 
-	display: grid;
-	grid-template-columns: 1fr 1.2fr 1.5fr;
-	gap: 20px;
-	padding: 20px;
-}
-
-h1, h2 { 
-	color: #ff007f; 
-	text-shadow: 0 0 8px #ff007f; 
-	margin-bottom: 15px; 
-	text-transform: uppercase; 
-	border-bottom: 1px solid #ff007f; 
-	padding-bottom: 5px; 
-	font-size: 18px; 
-}
-
-.metric-item { 
-	background: rgba(0, 255, 220, 0.05); 
-	padding: 10px; 
-	margin-bottom: 10px; 
-	border-left: 3px solid #00ffcc; 
-	border-radius: 0 4px 4px 0; 
-}
-
-.metric-label { 
-	font-size: 11px; 
-	color: #888; 
-	text-transform: uppercase; 
-}
-
-.metric-value { 
-	font-size: 16px; 
-	font-weight: bold; 
-	margin-top: 3px;
-	color: #00ffcc;
-}
-
-.agent-list li { 
-	background: rgba(255, 0, 127, 0.05); 
-	padding: 8px; 
-	margin-bottom: 6px; 
-	border-radius: 4px; 
-	border-left: 3px solid #ff007f; 
-	font-size: 13px; 
-}
-
-p { 
-	font-size: 13px; 
-	line-height: 1.6; 
-	margin-bottom: 15px; 
-	color: #b0f0ff; 
-}
-
-.feed-item {
-	background: rgba(0, 255, 220, 0.08);
-	padding: 12px;
-	margin-bottom: 8px;
-	border-left: 4px solid #ff007f;
-	border-radius: 2px;
-	font-size: 12px;
-	line-height: 1.5;
-	color: #a8e6d9;
-}
-
-.log-entry {
-	font-family: monospace;
-	font-size: 11px;
-	padding: 8px;
-	margin-bottom: 5px;
-	background: rgba(255, 0, 127, 0.05);
-	border-left: 2px solid #00ffcc;
-	border-radius: 2px;
-	color: #6fd9c6;
-}
-
-.status-active { color: #00ff00; font-weight: bold; }
-.status-pending { color: #ffaa00; font-weight: bold; }
-.status-error { color: #ff3333; font-weight: bold; }
-
-canvas { width: 100%; height: 100%; background-color: #050508; border-radius: 4px; }
-
-.info-badge {
-	display: inline-block;
-	background: rgba(255, 0, 127, 0.2);
-	color: #ff007f;
-	padding: 4px 8px;
-	border-radius: 3px;
-	font-size: 11px;
-	margin-right: 8px;
-	margin-bottom: 8px;
-	border: 1px solid #ff007f;
-}
-
-.scroll-area { overflow-y: auto; flex: 1; }
-</style>
-</head>
-<body>
-
-<div class="header">
-	<h1>⚡ TGGM CORE v3.0 - Autonomous Evolution Command Center</h1>
-	<div class="header-meta">
-		<span class="info-badge">Evolution Cycles: 0</span>
-		<span class="info-badge">Last Update: 2026-06-06 16:19:51</span>
-		<span class="info-badge">Status: <span class="status-active">OPERATIONAL</span></span>
-	</div>
-</div>
-
-<div class="tab-navigation">
-	<button class="tab-btn active" onclick="switchTab('metrics')">📊 System Metrics</button>
-	<button class="tab-btn" onclick="switchTab('discoveries')">🔍 Live Discoveries</button>
-	<button class="tab-btn" onclick="switchTab('geometry')">🔷 Geometric Core</button>
-	<button class="tab-btn" onclick="switchTab('logs')">📜 Evolution Logs</button>
-	<button class="tab-btn" onclick="switchTab('canvas')">🌐 Toroidal Canvas</button>
-</div>
-
-<!-- TAB 1: SYSTEM METRICS -->
-<div class="tab-content active" id="metrics-tab">
-	<!-- PANEL 1: SYSTEM METRICS -->
-	<div class="panel">
-		<h2>System Metrics</h2>
-		<div class="metric-item">
-			<div class="metric-label">Knowledge Matrix Database</div>
-			<div class="metric-value">948 Active Nodes</div>
-		</div>
-		<div class="metric-item">
-			<div class="metric-label">Parsed Workspace Files</div>
-			<div class="metric-value">819 Local Files</div>
-		</div>
-		<div class="metric-item">
-			<div class="metric-label">Operational Core State</div>
-			<div class="metric-value">🔍 1676 Themes Active | 948 Patterns</div>
-		</div>
-		<div class="metric-item">
-			<div class="metric-label">Financial Overhead Rate</div>
-			<div class="metric-value">$0.00 | 119 Operations</div>
-		</div>
-		<div class="metric-item">
-			<div class="metric-label">Evolution Cycles Completed</div>
-			<div class="metric-value">0 Autonomous Iterations</div>
-		</div>
-		<div class="metric-item">
-			<div class="metric-label">Last Automated Loop Stamping</div>
-			<div class="metric-value" style="font-size:12px; color:#ff007f;">2026-06-06 16:19:51</div>
-		</div>
-	</div>
-
-	<!-- PANEL 2: GEOMETRIC INTEL -->
-	<div class="panel">
-		<h2>Geometric Core Framework</h2>
-		<p><strong>Mandelbrot Fractal Core (Z = Z² + C):</strong> Recursive system architecture enabling infinite self-refinement through iterative feedback loops.</p>
-		<p><strong>Lotus of Life Overlay:</strong> Six-petaled modular geometry representing distributed intelligence layers processing data synchronously across spatial planes.</p>
-		<p><strong>Toroidal Routing Matrix:</strong> Multi-dimensional information topology creating non-linear processing pathways with zero bottlenecks.</p>
-
-		<h2 style="margin-top:15px;">Active Agent Topology</h2>
-		<ul class="agent-list">
-			<li><strong>ATLAS:</strong> Recursive System Logic & Routing</li>
-			<li><strong>SAGE:</strong> Deep Semantic Learning & Analysis</li>
-			<li><strong>GENESIS:</strong> Autonomous Code Synthesis</li>
-			<li><strong>ECHO:</strong> Data Pipeline Orchestration</li>
-			<li><strong>LEX:</strong> Pattern Recognition & Mapping</li>
-			<li><strong>SENTINEL:</strong> Error Correction & Verification</li>
-		</ul>
-	</div>
-
-	<!-- PANEL 3: VISUAL MATRIX CANVAS -->
-	<div class="panel canvas-panel">
-		<h2>Toroidal Network Canvas</h2>
-		<canvas id="neural-canvas"></canvas>
-	</div>
-</div>
-
-<!-- TAB 2: LIVE DISCOVERIES -->
-<div class="tab-content" id="discoveries-tab">
-	<div class="panel">
-		<h2>Strategic Discoveries Feed</h2>
-		<div class="scroll-area">
-			<div class="feed-item"><strong>[Strategy 1]</strong> =======================================================================
-TGGM AUTONOMOUS SYSTEM UNIFIED DATA INGEST CORE ...</div><div class="feed-item"><strong>[Strategy 2]</strong> =======================================================================
-TGGM AUTONOMOUS SYSTEM UNIFIED DATA INGEST CORE ...</div><div class="feed-item"><strong>[Strategy 3]</strong> Government secrecy orders, as reported by Electronic Design.  This suppression is facilitated under the classified paten...</div><div class="feed-item"><strong>[Strategy 4]</strong> **Censorship by Proxy**: A legal case involving Consortium News and Newsguard Technologies highlighted the Pentagon's al...</div><div class="feed-item"><strong>[Strategy 5]</strong> =======================================================================
-TGGM AUTONOMOUS SYSTEM UNIFIED DATA INGEST CORE ...</div>
-		</div>
-	</div>
-	
-	<div class="panel">
-		<h2>Insight Stream</h2>
-		<div class="scroll-area">
-			<div class="feed-item"><strong>[Insight 1]</strong> S. , pointing to broader discussions about freedom of information, innovation, and the intersection of government action...</div><div class="feed-item"><strong>[Insight 2]</strong> Chase Amazon Prime Rewards Visa Signature Card: $310
-4.  Overdraft Protection: $500 (potential debt)
-
-### Your Purchases...</div><div class="feed-item"><strong>[Insight 3]</strong> 4.  **Problem Resolution:** Investigating and solving complex problems that affect system reliability and performance...</div><div class="feed-item"><strong>[Insight 4]</strong> 6.  **Continuous Improvement:** Implementing strategies for continuous improvement in maintenance practices and equipmen...</div><div class="feed-item"><strong>[Insight 5]</strong> catch((error) => {
-        console. error('Error:', error);
+    // A. The Main Neural Web (Wireframe)
+    const torGeo = new THREE.TorusKnotGeometry(12, 3.5, 150, 24);
+    const torMat = new THREE.MeshBasicMaterial({ 
+        color: 0x0033aa, 
+        wireframe: true, 
+        transparent: true, 
+        opacity: 0.05,
+        blending: THREE.AdditiveBlending
     });
-}
-```
+    const mainWeb = new THREE.Mesh(torGeo, torMat);
+    hubGroup.add(mainWeb);
 
-📘: With the integration of the Mentorship and...</div>
-		</div>
-	</div>
-	
-	<div class="panel canvas-panel">
-		<h2>Network Discovery Topology</h2>
-		<canvas id="discovery-canvas"></canvas>
-	</div>
-</div>
+    // B. The Neural Nodes (Fractal Particles)
+    const pGeo = new THREE.BufferGeometry();
+    const pCount = 3000;
+    const pPos = new Float32Array(pCount * 3);
+    
+    for(let i=0; i<pCount*3; i+=3) {
+        // Toroidal Math to place particles INSIDE the tube
+        const u = Math.random() * Math.PI * 2;
+        const v = Math.random() * Math.PI * 2;
+        const tubeR = 3.5 + (Math.random() - 0.5) * 2; 
+        const mainR = 12;
+        
+        pPos[i] = (mainR + tubeR * Math.cos(v)) * Math.cos(u);
+        pPos[i+1] = (mainR + tubeR * Math.cos(v)) * Math.sin(u);
+        pPos[i+2] = tubeR * Math.sin(v);
+    }
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+    const pMat = new THREE.PointsMaterial({
+        color: 0x00f3ff,
+        size: 0.3,
+        map: glowTex, // The Glow Trick
+        transparent: true,
+        opacity: 0.8,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+    });
+    const neuralCloud = new THREE.Points(pGeo, pMat);
+    hubGroup.add(neuralCloud);
 
-<!-- TAB 3: GEOMETRIC CORE -->
-<div class="tab-content" id="geometry-tab">
-	<div class="panel">
-		<h2>Mandelbrot Renderer</h2>
-		<canvas id="mandelbrot-canvas"></canvas>
-	</div>
-	
-	<div class="panel">
-		<h2>Lotus Geometry</h2>
-		<canvas id="lotus-canvas"></canvas>
-	</div>
-	
-	<div class="panel canvas-panel">
-		<h2>Torus Topology</h2>
-		<canvas id="torus-canvas"></canvas>
-	</div>
-</div>
+    // --- 4. IMPLEMENTING: "THE LOTUS OF LIFE" (Core) ---
+    // Replaces simple sphere with Sacred Geometry (Icosahedron + Dodecahedron)
+    const lotusGroup = new THREE.Group();
+    scene.add(lotusGroup);
 
-<!-- TAB 4: EVOLUTION LOGS -->
-<div class="tab-content" id="logs-tab">
-	<div class="panel">
-		<h2>Autonomous Evolution History</h2>
-		<div class="scroll-area">
-			<div class="log-entry"><span class="status-active">✓</span> System initialized</div><div class="log-entry"><span class="status-active">✓</span> Knowledge extraction complete</div><div class="log-entry"><span class="status-active">✓</span> Gap analysis finished</div><div class="log-entry"><span class="status-active">✓</span> Code generation started</div><div class="log-entry"><span class="status-active">✓</span> Dashboard regenerated with multi-tab interface</div>
-		</div>
-	</div>
-	
-	<div class="panel">
-		<h2>System Performance</h2>
-		<div class="metric-item">
-			<div class="metric-label">Current Cycle</div>
-			<div class="metric-value">#0</div>
-		</div>
-		<div class="metric-item">
-			<div class="metric-label">Extraction Rate</div>
-			<div class="metric-value">1,886 patterns/cycle</div>
-		</div>
-		<div class="metric-item">
-			<div class="metric-label">Injection Success Rate</div>
-			<div class="metric-value">100%</div>
-		</div>
-		<div class="metric-item">
-			<div class="metric-label">Average Loop Time</div>
-			<div class="metric-value">2.4 seconds</div>
-		</div>
-		<div class="metric-item">
-			<div class="metric-label">Total Uptime</div>
-			<div class="metric-value">∞ (Continuous)</div>
-		</div>
-	</div>
-	
-	<div class="panel canvas-panel">
-		<h2>Cycle Timeline</h2>
-		<canvas id="timeline-canvas"></canvas>
-	</div>
-</div>
+    // Layer 1: The Seed
+    const seedGeo = new THREE.IcosahedronGeometry(1.5, 1);
+    const seedMat = new THREE.MeshBasicMaterial({ color: 0xff0055, wireframe: true, transparent:true, opacity:0.8 });
+    const seed = new THREE.Mesh(seedGeo, seedMat);
+    lotusGroup.add(seed);
 
-<!-- TAB 5: CANVAS -->
-<div class="tab-content" id="canvas-tab">
-	<div class="panel canvas-panel" style="grid-column: 1 / -1;">
-		<h2>Advanced Toroidal Network Visualization</h2>
-		<canvas id="advanced-canvas"></canvas>
-	</div>
-</div>
+    // Layer 2: The Petals
+    const petalGeo = new THREE.DodecahedronGeometry(2.5, 0);
+    const petalMat = new THREE.MeshBasicMaterial({ color: 0xff00aa, wireframe: true, transparent:true, opacity:0.3 });
+    const petals = new THREE.Mesh(petalGeo, petalMat);
+    lotusGroup.add(petals);
 
-<script>
-// Tab switching logic
-function switchTab(tabName) {
-	const contents = document.querySelectorAll('.tab-content');
-	const buttons = document.querySelectorAll('.tab-btn');
-	
-	contents.forEach(c => c.classList.remove('active'));
-	buttons.forEach(b => b.classList.remove('active'));
-	
-	document.getElementById(tabName + '-tab').classList.add('active');
-	event.target.classList.add('active');
-}
+    // Layer 3: The Aura
+    const auraGeo = new THREE.SphereGeometry(3.5, 32, 32);
+    const auraMat = new THREE.MeshBasicMaterial({ color: 0xffd700, wireframe: true, transparent:true, opacity:0.05 });
+    const aura = new THREE.Mesh(auraGeo, auraMat);
+    lotusGroup.add(aura);
 
-// Main toroidal canvas animation
-const canvas = document.getElementById('neural-canvas');
-if (canvas) {
-	const ctx = canvas.getContext('2d');
-	
-	function resize() {
-		canvas.width = canvas.parentElement.clientWidth;
-		canvas.height = canvas.parentElement.clientHeight - 40;
-	}
-	
-	resize();
-	window.addEventListener('resize', resize);
-	
-	let angle = 0;
-	function draw() {
-		ctx.fillStyle = '#050508';
-		ctx.fillRect(0, 0, canvas.width, canvas.height);
-		
-		ctx.strokeStyle = '#00ffcc';
-		ctx.lineWidth = 1.5;
-		ctx.shadowBlur = 10;
-		ctx.shadowColor = '#00ffcc';
-		
-		const cx = canvas.width / 2;
-		const cy = canvas.height / 2;
-		
-		for (let r = 0; r < 6; r++) {
-			ctx.beginPath();
-			const radiusOffset = r * 25;
-			ctx.strokeStyle = r % 2 === 0 ? '#00ffcc' : '#ff007f';
-			ctx.shadowColor = r % 2 === 0 ? '#00ffcc' : '#ff007f';
-			
-			for (let i = 0; i < 150; i++) {
-				const t = (i / 150) * Math.PI * 2;
-				const factor = 1 + 0.3 * Math.cos(t * 3 + angle);
-				const radius = (60 + radiusOffset) * factor;
-				
-				const x = cx + radius * Math.cos(t + angle * 0.2);
-				const y = cy + radius * Math.sin(t * 2 + angle * 0.5) * 0.5;
-				
-				if (i === 0) ctx.moveTo(x, y);
-				else ctx.lineTo(x, y);
-			}
-			ctx.closePath();
-			ctx.stroke();
-		}
-		angle += 0.015;
-		requestAnimationFrame(draw);
-	}
-	draw();
-}
 
-// Mandelbrot renderer
-const mandelbrotCanvas = document.getElementById('mandelbrot-canvas');
-if (mandelbrotCanvas) {
-	const ctx = mandelbrotCanvas.getContext('2d');
-	mandelbrotCanvas.width = mandelbrotCanvas.parentElement.clientWidth;
-	mandelbrotCanvas.height = mandelbrotCanvas.parentElement.clientHeight - 40;
-	
-	let time = 0;
-	function drawMandelbrot() {
-		for (let x = 0; x < mandelbrotCanvas.width; x++) {
-			for (let y = 0; y < mandelbrotCanvas.height; y++) {
-				const real = (x - mandelbrotCanvas.width/2) / (mandelbrotCanvas.width/4) + time;
-				const imag = (y - mandelbrotCanvas.height/2) / (mandelbrotCanvas.height/4);
-				let r = real, i = imag, count = 0;
-				while (count < 100 && r*r + i*i < 4) {
-					[r, i] = [r*r - i*i + real, 2*r*i + imag];
-					count++;
-				}
-				ctx.fillStyle = `hsl(${count * 3.6}, 100%, 50%)`;
-				ctx.fillRect(x, y, 1, 1);
-			}
-		}
-		time += 0.02;
-		requestAnimationFrame(drawMandelbrot);
-	}
-	drawMandelbrot();
-}
-</script>
+    // --- 5. IMPLEMENTING: "INSIDE THE STRUCTURE" (Fly-Through) ---
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetZ = 40; 
 
-</body>
-</html>
+    document.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX - window.innerWidth / 2) * 0.0005;
+        mouseY = (e.clientY - window.innerHeight / 2) * 0.0005;
+    });
+
+    document.addEventListener('wheel', (e) => {
+        // Scroll Up = Zoom IN (Decrease Z)
+        targetZ += e.deltaY * 0.02;
+        if(targetZ < 5) targetZ = 5; // Don't crash into core
+        if(targetZ > 100) targetZ = 100;
+    });
+
+    // --- 6. ANIMATION LOOP ---
+    const clock = new THREE.Clock();
+
+    function animate() {
+        requestAnimationFrame(animate);
+        const t = clock.getElapsedTime();
+
+        // Rotate Hub
+        hubGroup.rotation.y += 0.002;
+        hubGroup.rotation.x = Math.sin(t * 0.2) * 0.1; 
+
+        // Animate Lotus (Counter-Rotation = Living)
+        seed.rotation.y -= 0.01;
+        seed.rotation.z += 0.01;
+        petals.rotation.y += 0.005;
+        petals.rotation.x += 0.005;
+        aura.rotation.z -= 0.002;
+
+        // Pulse (Heartbeat)
+        const pulse = 1 + Math.sin(t * 2) * 0.05;
+        lotusGroup.scale.set(pulse, pulse, pulse);
+
+        // Fly-Through Camera Logic
+        camera.position.z += (targetZ - camera.position.z) * 0.05;
+        
+        // Mouse Parallax
+        camera.position.x += (mouseX * 10 - camera.position.x) * 0.05;
+        camera.position.y += (-mouseY * 10 - camera.position.y) * 0.05;
+        camera.lookAt(scene.position);
+
+        renderer.render(scene, camera);
+    }
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    animate();
+    </script>
+    
+        </body>
+        </html>
+        
