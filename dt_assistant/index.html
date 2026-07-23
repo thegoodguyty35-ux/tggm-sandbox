@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dollar Tree ASM Assistant</title>
-    <!-- Explicit, solid PyScript production distribution hooks -->
+    <!-- Robust production distributions -->
     <link rel="stylesheet" href="https://pyscript.net" />
     <script type="module" src="https://pyscript.net"></script>
-    <!-- Relative folder path notation to force asset fetching -->
     <py-config>
-        files = ["./parser_bridge.py", "./calculations.py", "./auditor.py", "./map.json"]
+        files = ["./engine.py"]
     </py-config>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 15px; display: flex; justify-content: center; }
@@ -36,38 +35,21 @@
         <button onclick="runModule('5', '📈 [DAILY REVENUE TARGET]\nEnter tonight\'s total net terminal report sales amount ($):')">5. Check Daily Sales Pace ($3M Goal)</button>
         <button onclick="runModule('7', 'Console buffer cleared. Ready for next operational command directive.')">6. Clear Console Screen</button>
     </div>
-    <div class="console-box" id="terminal">System booting... PyScript linked components initializing. Select an option above.</div>
+    <div class="console-box" id="terminal">System booting... PyScript runtime establishing link layout files. Please wait.</div>
     <div class="input-area">
         <input type="text" id="user-input" placeholder="Type parameters here..." onkeypress="handleKey(event)">
         <button class="send-btn" onclick="sendInput()">Submit</button>
     </div>
 </div>
 
-<script type="py">
-import js
-import parser_bridge
-
-current_mode = "MENU"
-
-def ui_handle_input(user_entry):
-    global current_mode
-    if current_mode == "MENU":
-        js.document.getElementById("terminal").innerText = "Please select an operational module button from the upper menu grid panel."
-        return
-    output = parser_bridge.process_runtime_input(current_mode, user_entry)
-    js.document.getElementById("terminal").innerText = str(output)
-    current_mode = "MENU"
-
-js.window.pipeInputToPython = ui_handle_input
-</script>
+<!-- Boot processing logic script -->
+<script type="py" src="./engine.py"></script>
 
 <script>
-    let activeMode = "MENU";
     function runModule(mode, promptText) {
         const term = document.getElementById("terminal");
         const inp = document.getElementById("user-input");
         inp.value = "";
-        activeMode = mode;
         term.innerText = promptText;
         pyscript.interpreter.interface.runPy(`current_mode = "${mode}"`);
         if(mode === '7') pyscript.interpreter.interface.runPy(`current_mode = "MENU"`);
