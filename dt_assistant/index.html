@@ -4,12 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dollar Tree ASM Assistant</title>
-    <!-- RESTORED: Explicit production release links to initialize PyScript -->
+    <!-- Explicit, locked release links to force the framework engine to initialize cleanly -->
     <link rel="stylesheet" href="https://pyscript.net" />
-    <script type="module" src="https://pyscript.net"></script>
-    <py-config>
-        files = ["./engine.py"]
-    </py-config>
+    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 15px; display: flex; justify-content: center; }
         .app-container { width: 100%; max-width: 480px; background: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
@@ -35,15 +32,90 @@
         <button onclick="runModule('5', '📈 [DAILY REVENUE TARGET]\nEnter tonight\'s total net terminal report sales amount ($):')">5. Check Daily Sales Pace ($3M Goal)</button>
         <button onclick="runModule('7', 'Console buffer cleared. Ready for next operational command directive.')">6. Clear Console Screen</button>
     </div>
-    <div class="console-box" id="terminal">System booting... PyScript runtime establishing link layout files. Please wait.</div>
+    <div class="console-box" id="terminal">System booting... PyScript core components establishing link profiles. Please wait...</div>
     <div class="input-area">
         <input type="text" id="user-input" placeholder="Type parameters here..." onkeypress="handleKey(event)">
         <button class="send-btn" onclick="sendInput()">Submit</button>
     </div>
 </div>
 
-<!-- Boot processing logic script -->
-<script type="py" src="./engine.py"></script>
+<!-- Embedded Python Computational Logic Core -->
+<script type="py">
+import js
+
+STORE_MAP = {
+    "hbc": ["shampoo", "conditioner", "body wash", "toothpaste", "oral care", "deodorant", "soap", "lotion", "medicine", "eyewear", "makeup", "bandages"],
+    "chemical": ["bleach", "sprays", "dish soap", "sponges", "trash bags", "laundry detergent", "wipes", "brooms", "mops", "foil", "tissues"],
+    "grocery": ["canned goods", "candy", "peg bag chocolate", "snacks", "drinks", "chips", "cookies", "juice", "soda", "bread", "cereal", "condiments"],
+    "party": ["balloons", "gift bags", "plates", "streamers", "cards", "ribbon", "tablecloths", "bows", "catering", "invitations"],
+    "variety": ["kitchenware", "textiles", "home decor", "books", "apparel", "stationery", "craft supplies", "hardware", "tools", "automotive"],
+    "seasonal": ["toys", "lawn and garden", "floral", "electronics", "batteries", "halloween", "christmas", "easter", "summer toys", "back to school"],
+    "pet_supplies": ["dog food", "cat food", "pet treats", "pet toys", "leashes", "bowls"]
+}
+current_mode = "MENU"
+
+def process_logic(mode, entry):
+    clean = entry.strip().lower()
+    if not clean: return "❌ Input cannot be blank."
+    
+    if mode == "1":
+        for sec, items in STORE_MAP.items():
+            if clean in sec or any(item in clean or clean in item for item in items):
+                return f"✅ CATEGORY MATCH:\nSector: {sec.upper()}\nItems: {', '.join(items)}"
+        return f"⚠️ '{entry}' not indexed. Match perimeter panel markings."
+        
+    elif mode == "2":
+        try:
+            parts = [p.strip() for p in clean.split(",") if p.strip()]
+            if len(parts) != 2: raise ValueError
+            return f"🎯 TILL IDENTIFIER MATCH:\nAssign Till ID String: {(int(parts[0]) * 10) + int(parts[1])}\n\nRule: Continuous login flow balance operational state."
+        except:
+            return "❌ Format Error. Use: Proximity,Pattern (Example: 1,3)"
+            
+    elif mode == "3":
+        try:
+            parts = [int(p.strip()) for p in clean.split(",") if p.strip()]
+            if len(parts) != 4: raise ValueError
+            tot = (parts[0]*1) + (parts[1]*5) + (parts[2]*10) + (parts[3]*20)
+            if tot >= 400.00:
+                return f"🚨 DROP ALARM: ${tot:.2f}\nAction: Pull ${tot - 75.00:.2f} right now.\nLeave safe balance of $75.00 in drawer."
+            return f"✅ COMPLIANT: Total ${tot:.2f}.\nDrawer variance holds ${400.00 - tot:.2f} of safety headroom."
+        except:
+            return "❌ Format Error. Use bill sequence: 1s,5s,10s,20s (Example: 20,10,5,8)"
+            
+    elif mode == "4":
+        try:
+            parts = [int(p.strip()) for p in clean.split(",") if p.strip()]
+            if len(parts) != 2: raise ValueError
+            if parts[1] <= 0: return "❌ Safeguard: Transactions must be 1 or higher."
+            rate = (parts[0] / parts[1]) * 100.0
+            status = "🚨 EXCEEDS 3% POLICY!" if rate >= 3.0 else "✅ COMPLIANT TRANSACTION RATIO"
+            return f"📊 VOID METRIC AUDIT:\nRatio: {rate:.2f}%\nStatus: {status}"
+        except:
+            return "❌ Format Error. Enter values: Voids,Transactions (Example: 5,160)"
+            
+    elif mode == "5":
+        try:
+            sales = float(clean)
+            target = 3000000.00 / 365.0
+            diff = sales - target
+            perf = f"🎉 Ahead of baseline target by +${diff:.2f}" if diff >= 0 else f"📉 Lagging baseline target by -${abs(diff):.2f}"
+            return f"📈 REVENUE MATRIX (Store #6228):\nTarget Daily Pace: ${target:.2f}\nActual Revenue: ${sales:.2f}\nPerformance: {perf}"
+        except:
+            return "❌ Format Error. Enter raw numeric sales value (Example: 8450.25)"
+    return "Select a panel button module layout option above."
+
+def gateway(user_entry):
+    global current_mode
+    if current_mode == "MENU":
+        js.document.getElementById("terminal").innerText = "Please select an operational module button from the upper menu grid panel."
+        return
+    out = process_logic(current_mode, user_entry)
+    js.document.getElementById("terminal").innerText = str(out)
+    current_mode = "MENU"
+
+js.window.pipeInputToPython = gateway
+</script>
 
 <script>
     function runModule(mode, promptText) {
