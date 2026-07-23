@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dollar Tree ASM Assistant</title>
-    <!-- Explicit, locked release links to force the framework engine to initialize cleanly -->
     <link rel="stylesheet" href="https://pyscript.net" />
     <script type="module" src="https://pyscript.net"></script>
     <style>
@@ -32,14 +31,13 @@
         <button onclick="runModule('5', '📈 [DAILY REVENUE TARGET]\nEnter tonight\'s total net terminal report sales amount ($):')">5. Check Daily Sales Pace ($3M Goal)</button>
         <button onclick="runModule('7', 'Console buffer cleared. Ready for next operational command directive.')">6. Clear Console Screen</button>
     </div>
-    <div class="console-box" id="terminal">System booting... PyScript core components establishing link profiles. Please wait...</div>
+    <div class="console-box" id="terminal">System online. Select an option above.</div>
     <div class="input-area">
         <input type="text" id="user-input" placeholder="Type parameters here..." onkeypress="handleKey(event)">
         <button class="send-btn" onclick="sendInput()">Submit</button>
     </div>
 </div>
 
-<!-- Embedded Python Computational Logic Core -->
 <script type="py">
 import js
 
@@ -52,7 +50,6 @@ STORE_MAP = {
     "seasonal": ["toys", "lawn and garden", "floral", "electronics", "batteries", "halloween", "christmas", "easter", "summer toys", "back to school"],
     "pet_supplies": ["dog food", "cat food", "pet treats", "pet toys", "leashes", "bowls"]
 }
-current_mode = "MENU"
 
 def process_logic(mode, entry):
     clean = entry.strip().lower()
@@ -87,8 +84,9 @@ def process_logic(mode, entry):
         try:
             parts = [int(p.strip()) for p in clean.split(",") if p.strip()]
             if len(parts) != 2: raise ValueError
-            if parts[1] <= 0: return "❌ Safeguard: Transactions must be 1 or higher."
-            rate = (parts[0] / parts[1]) * 100.0
+            voids, cc = parts[0], parts[1]
+            if cc <= 0: return "❌ Safeguard: Transactions must be 1 or higher."
+            rate = (voids / cc) * 100.0
             status = "🚨 EXCEEDS 3% POLICY!" if rate >= 3.0 else "✅ COMPLIANT TRANSACTION RATIO"
             return f"📊 VOID METRIC AUDIT:\nRatio: {rate:.2f}%\nStatus: {status}"
         except:
@@ -105,32 +103,31 @@ def process_logic(mode, entry):
             return "❌ Format Error. Enter raw numeric sales value (Example: 8450.25)"
     return "Select a panel button module layout option above."
 
-def gateway(user_entry):
-    global current_mode
-    if current_mode == "MENU":
-        js.document.getElementById("terminal").innerText = "Please select an operational module button from the upper menu grid panel."
-        return
-    out = process_logic(current_mode, user_entry)
+def gateway(mode, user_entry):
+    out = process_logic(mode, user_entry)
     js.document.getElementById("terminal").innerText = str(out)
-    current_mode = "MENU"
 
 js.window.pipeInputToPython = gateway
 </script>
 
 <script>
+    let activeMode = "MENU";
     function runModule(mode, promptText) {
         const term = document.getElementById("terminal");
         const inp = document.getElementById("user-input");
         inp.value = "";
+        activeMode = mode;
         term.innerText = promptText;
-        pyscript.interpreter.interface.runPy(`current_mode = "${mode}"`);
-        if(mode === '7') pyscript.interpreter.interface.runPy(`current_mode = "MENU"`);
+        if(mode === '7') {
+            term.innerText = "Console buffer cleared. Ready for next operational command directive.";
+            activeMode = "MENU";
+        }
         inp.focus();
     }
     function sendInput() {
         const inp = document.getElementById("user-input");
         if (!inp.value.trim()) return;
-        window.pipeInputToPython(inp.value);
+        window.pipeInputToPython(activeMode, inp.value);
         inp.value = "";
     }
     function handleKey(e) { if (e.key === 'Enter') sendInput(); }
