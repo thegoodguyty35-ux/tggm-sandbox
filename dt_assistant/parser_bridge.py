@@ -3,7 +3,6 @@ import js
 import calculations
 import auditor
 
-# Load local store map into script memory
 try:
     with open("map.json", "r") as f:
         STORE_MAP = json.load(f)
@@ -11,40 +10,47 @@ except Exception:
     STORE_MAP = {}
 
 def process_runtime_input(mode: str, entry: str) -> str:
-    """Routes active browser terminal selections to specialized logic scripts."""
+    """Routes and thoroughly sanitizes browser input entries against runtime edge cases."""
     clean_entry = entry.strip().lower()
-    
-    if mode == "1":  # Aisle Map / Go-Back Finder
+    if not clean_entry:
+        return "❌ Input cannot be blank. Please enter active operational metrics."
+        
+    if mode == "1":  # Aisle Map / Go-Back Finder (Handles case, plurals, and partial keywords)
         for sector, items in STORE_MAP.items():
-            if clean_entry == sector or any(item in clean_entry for item in items):
+            if clean_entry in sector or any(item in clean_entry or clean_entry in item for item in items):
                 return f"✅ CATEGORY MATCH:\nSector: {sector.upper()}\nItems: {', '.join(items)}"
-        return f"⚠️ '{entry}' not indexed in current store planogram layout mappings."
+        return f"⚠️ '{entry}' not indexed. Match general sector markings on perimeter layout panels."
         
     elif mode == "2":  # Compute Register Till ID
         try:
-            prox, patt = map(int, clean_entry.split(","))
-            return calculations.get_till_id(prox, patt)
+            parts = [p.strip() for p in clean_entry.split(",") if p.strip()]
+            if len(parts) != 2: raise ValueError
+            return calculations.get_till_id(int(parts[0]), int(parts[1]))
         except ValueError:
-            return "❌ Format Error. Enter data as: Proximity,Pattern (Example: 1,3)"
+            return "❌ Format Error.\nEnter parameters exactly as: Proximity,Pattern\nExample: 1,3"
             
-    elif mode == "3":  # Monitor Till Pickups ($400 Cap)
+    elif mode == "3":  # Monitor Till Pickups (Safely unpacks bill array parameters)
         try:
-            vals = list(map(int, clean_entry.split(",")))
-            return auditor.monitor_cash_drop(vals[0], vals[1], vals[2], vals[3])
-        except Exception:
-            return "❌ Format Error. Enter breakdown: 1s,5s,10s,20s (Example: 20,10,5,8)"
+            parts = [p.strip() for p in clean_entry.split(",") if p.strip()]
+            if len(parts) != 4: raise ValueError
+            return auditor.monitor_cash_drop(int(parts[0]), int(parts[1]), int(parts[2]), int(parts[3]))
+        except ValueError:
+            return "❌ Format Error.\nEnter exact bill item breakdowns: 1s,5s,10s,20s\nExample: 20,10,5,8"
             
-    elif mode == "4":  # Audit Line Voids (3% Limit)
+    elif mode == "4":  # Audit Line Voids (Guards against division-by-zero errors)
         try:
-            voids, cc = map(int, clean_entry.split(","))
+            parts = [p.strip() for p in clean_entry.split(",") if p.strip()]
+            if len(parts) != 2: raise ValueError
+            voids, cc = int(parts[0]), int(parts[1])
+            if cc <= 0: return "❌ System Safeguard: Transaction count must be 1 or higher to compute ratio."
             return auditor.audit_line_voids(voids, cc)
         except ValueError:
-            return "❌ Format Error. Enter values: Voids,Transactions (Example: 5,160)"
+            return "❌ Format Error.\nEnter values exactly as: Voids,Transactions\nExample: 5,160"
             
-    elif mode == "5":  # Check Daily Sales Pace ($3M Goal)
+    elif mode == "5":  # Check Daily Sales Pace
         try:
             return calculations.evaluate_sales_pace(float(clean_entry))
         except ValueError:
-            return "❌ Format Error. Enter raw numeric sales value (Example: 8450.25)"
+            return "❌ Format Error. Enter raw numeric sales value without currency tags (Example: 8450.25)"
             
-    return "Please select an operational module button from the upper menu grid panel."
+    return "Operational tracking baseline initialized. Select menu feature matrix button panels."
