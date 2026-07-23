@@ -6,6 +6,10 @@
     <title>Dollar Tree ASM Assistant</title>
     <link rel="stylesheet" href="https://pyscript.net" />
     <script type="module" src="https://pyscript.net"></script>
+    <!-- Moved config inside head to stop it from rendering on screen -->
+    <py-config>
+        files = ["parser_bridge.py", "calculations.py", "auditor.py", "map.json"]
+    </py-config>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 15px; display: flex; justify-content: center; }
         .app-container { width: 100%; max-width: 480px; background: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
@@ -37,11 +41,6 @@
         <button class="send-btn" onclick="sendInput()">Submit</button>
     </div>
 </div>
-
-<!-- Link PyScript configuration to load your module files -->
-<py-config>
-    files = ["parser_bridge.py", "calculations.py", "auditor.py", "map.json"]
-</py-config>
 
 <script type="py">
 import js
