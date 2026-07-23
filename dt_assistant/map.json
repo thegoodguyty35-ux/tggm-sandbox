@@ -1,0 +1,29 @@
+{
+  "hbc": [
+    "shampoo", "conditioner", "body wash", "toothpaste", "oral care", 
+    "deodorant", "soap", "lotion", "medicine", "eyewear", "makeup", "bandages"
+  ],
+  "chemical": [
+    "bleach", "sprays", "dish soap", "sponges", "trash bags", 
+    "laundry detergent", "wipes", "brooms", "mops", "foil", "tissues"
+  ],
+  "grocery": [
+    "canned goods", "candy", "peg bag chocolate", "snacks", "drinks", 
+    "chips", "cookies", "juice", "soda", "bread", "cereal", "condiments"
+  ],
+  "party": [
+    "balloons", "gift bags", "plates", "streamers", "cards", 
+    "ribbon", "tablecloths", "bows", "catering", "balloons", "invitations"
+  ],
+  "variety": [
+    "kitchenware", "textiles", "home decor", "books", "apparel", 
+    "stationery", "craft supplies", "hardware", "tools", "automotive"
+  ],
+  "seasonal": [
+    "toys", "lawn and garden", "floral", "electronics", "batteries", 
+    "halloween", "christmas", "easter", "summer toys", "back to school"
+  ],
+  "pet_supplies": [
+    "dog food", "cat food", "pet treats", "pet toys", "leashes", "bowls"
+  ]
+}
