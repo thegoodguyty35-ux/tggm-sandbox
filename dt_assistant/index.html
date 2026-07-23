@@ -1,138 +1,416 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Dollar Tree ASM Assistant</title>
+
+
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 15px; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 480px; background: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        h1 { color: #007a48; font-size: 20px; text-align: center; margin-top: 0; }
-        .menu-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 20px; }
-        button { background-color: #007a48; color: white; border: none; padding: 12px; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; text-align: left; }
-        button:active { background-color: #005432; }
-        .console-box { background: #1e1e1e; color: #39ff14; font-family: "Courier New", Courier, monospace; padding: 15px; border-radius: 8px; min-height: 200px; white-space: pre-wrap; font-size: 13px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); line-height: 1.4; }
-        .input-area { display: flex; gap: 5px; margin-top: 10px; }
-        input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; background: #fff; color: #000; }
-        .send-btn { background-color: #333; width: auto; padding: 0 15px; text-align: center; }
+
+        /* ===============================
+           GLOBAL APP STYLES
+        =============================== */
+
+        body {
+
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                sans-serif;
+
+            background-color: #f4f7f6;
+
+            color: #333;
+
+            margin: 0;
+
+            padding: 15px;
+
+            display: flex;
+
+            justify-content: center;
+
+        }
+
+
+        /* ===============================
+           MAIN APP CONTAINER
+        =============================== */
+
+        .app-container {
+
+            width: 100%;
+
+            max-width: 480px;
+
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 4px 10px rgba(0,0,0,0.05);
+
+        }
+
+
+        h1 {
+
+            color: #007a48;
+
+            font-size: 20px;
+
+            text-align: center;
+
+            margin-top: 0;
+
+        }
+
+
+
+        /* ===============================
+           NAVIGATION MENU
+        =============================== */
+
+        .menu-grid {
+
+            display: grid;
+
+            grid-template-columns: 1fr;
+
+            gap: 10px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        button {
+
+            background-color: #007a48;
+
+            color: white;
+
+            border: none;
+
+            padding: 12px;
+
+            border-radius: 6px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            text-align: left;
+
+        }
+
+
+        button:active {
+
+            background-color: #005432;
+
+        }
+
+
+
+        /* ===============================
+           ACTIVE SCREEN DISPLAY
+        =============================== */
+
+        .screen-box {
+
+            background:white;
+
+            border:1px solid #ddd;
+
+            border-radius:8px;
+
+            padding:15px;
+
+            margin-bottom:15px;
+
+        }
+
+
+        .dashboard-card {
+
+            background:#f7f7f7;
+
+            padding:12px;
+
+            border-radius:6px;
+
+            margin-top:10px;
+
+        }
+
+
+
+        /* ===============================
+           TOOL CONSOLE
+        =============================== */
+
+        .console-box {
+
+            background:#1e1e1e;
+
+            color:#39ff14;
+
+            font-family:
+                "Courier New",
+                Courier,
+                monospace;
+
+            padding:15px;
+
+            border-radius:8px;
+
+            min-height:200px;
+
+            white-space:pre-wrap;
+
+            font-size:13px;
+
+            box-shadow:
+                inset 0 2px 5px rgba(0,0,0,0.5);
+
+            line-height:1.4;
+
+        }
+
+
+
+        /* ===============================
+           INPUT AREA
+        =============================== */
+
+        .input-area {
+
+            display:flex;
+
+            gap:5px;
+
+            margin-top:10px;
+
+        }
+
+
+        input {
+
+            flex:1;
+
+            padding:10px;
+
+            border:1px solid #ccc;
+
+            border-radius:4px;
+
+            font-size:14px;
+
+            background:#fff;
+
+            color:#000;
+
+        }
+
+
+        .send-btn {
+
+            background-color:#333;
+
+            width:auto;
+
+            padding:0 15px;
+
+            text-align:center;
+
+        }
+
+
     </style>
+
 </head>
+
+
+
 <body>
 
+
 <div class="app-container">
-    <h1>🌳 Dollar Tree ASM Assistant (#6228)</h1>
+
+
+    <!-- ===============================
+         APPLICATION TITLE
+    =============================== -->
+
+
+    <h1>
+        🌳 Dollar Tree ASM Assistant (#6228)
+    </h1>
+
+
+
+
+    <!-- ===============================
+         MAIN NAVIGATION
+    =============================== -->
+
+
     <div class="menu-grid">
-        <button onclick="runModule('1', '🔍 [AISLE FINDER]\nEnter target product keywords (shampoo, bleach, snacks):')">1. Aisle Map / Go-Back Finder</button>
-        <button onclick="runModule('2', '🧮 [TILL CALCULATOR]\nEnter parameters as \'Proximity,ShiftPattern\' (e.g. 1,3):')">2. Compute Register Till ID</button>
-        <button onclick="runModule('3', '💵 [CASH DROP MONITOR]\nEnter counts as \'1s,5s,10s,20s\' (e.g. 30,12,5,15):')">3. Monitor Till Pickups ($400 Cap)</button>
-        <button onclick="runModule('4', '🚨 [VOID AUDITING]\nEnter values as \'LineVoids,CustomerCount\' (e.g. 4,145):')">4. Audit Line Voids (3% Limit)</button>
-        <button onclick="runModule('5', '📈 [DAILY REVENUE TARGET]\nEnter tonight\'s total net terminal report sales amount ($):')">5. Check Daily Sales Pace ($3M Goal)</button>
-        <button onclick="runModule('7', 'Console buffer cleared. Ready for next operational command directive.')">6. Clear Console Screen</button>
+
+
+        <button onclick="showScreen('dashboard')">
+
+            🏠 Dashboard
+
+        </button>
+
+
+
+        <button onclick="showScreen('opening')">
+
+            🌅 Opening Checklist
+
+        </button>
+
+
+
+        <button onclick="showScreen('closing')">
+
+            🌙 Closing Checklist
+
+        </button>
+
+
+
+        <button onclick="showScreen('tasks')">
+
+            ✅ Daily Tasks
+
+        </button>
+
+
+
+        <button onclick="showScreen('notes')">
+
+            📝 Daily Notes
+
+        </button>
+
+
+
+        <button onclick="showScreen('tools')">
+
+            🧰 ASM Tools
+
+        </button>
+
+
     </div>
-    <div class="console-box" id="terminal">System Ready. Select an operational module above.</div>
+
+
+
+
+
+    <!-- ===============================
+         ACTIVE APPLICATION SCREEN
+    =============================== -->
+
+
+    <hr>
+
+
+    <div id="screen" class="screen-box">
+
+
+        <h2>
+            🏠 Dashboard
+        </h2>
+
+
+        <p>
+            Welcome to Dollar Tree ASM OS
+        </p>
+
+
+
+        <div class="dashboard-card">
+
+
+            <strong>
+                Store #6228
+            </strong>
+
+
+            <br>
+
+
+            Status:
+            Ready
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+    <!-- ===============================
+         TOOL TERMINAL
+    =============================== -->
+
+
+    <div class="console-box" id="terminal">
+
+        System Ready. Select an operational module above.
+
+    </div>
+
+
+
+
+
+    <!-- ===============================
+         TOOL INPUT
+    =============================== -->
+
+
     <div class="input-area">
-        <input type="text" id="user-input" placeholder="Type parameters here..." onkeypress="handleKey(event)">
-        <button class="send-btn" onclick="sendInput()">Submit</button>
+
+
+        <input
+            type="text"
+            id="user-input"
+            placeholder="Type parameters here..."
+            onkeypress="handleKey(event)"
+        >
+
+
+
+        <button
+            class="send-btn"
+            onclick="sendInput()"
+        >
+
+            Submit
+
+        </button>
+
+
     </div>
+
+
 </div>
-
-<script>
-    const STORE_MAP = {
-        "hbc": ["shampoo", "conditioner", "body wash", "toothpaste", "oral care", "deodorant", "soap", "lotion", "medicine", "eyewear", "makeup", "bandages"],
-        "chemical": ["bleach", "sprays", "dish soap", "sponges", "trash bags", "laundry detergent", "wipes", "brooms", "mops", "foil", "tissues"],
-        "grocery": ["canned goods", "candy", "peg bag chocolate", "snacks", "drinks", "chips", "cookies", "juice", "soda", "bread", "cereal", "condiments"],
-        "party": ["balloons", "gift bags", "plates", "streamers", "cards", "ribbon", "tablecloths", "bows", "catering", "invitations"],
-        "variety": ["kitchenware", "textiles", "home decor", "books", "apparel", "stationery", "craft supplies", "hardware", "tools", "automotive"],
-        "seasonal": ["toys", "lawn and garden", "floral", "electronics", "batteries", "halloween", "christmas", "easter", "summer toys", "back to school"],
-        "pet_supplies": ["dog food", "cat food", "pet treats", "pet toys", "leashes", "bowls"]
-    };
-
-    let activeMode = "MENU";
-
-    function runModule(mode, promptText) {
-        const term = document.getElementById("terminal");
-        const inp = document.getElementById("user-input");
-        inp.value = "";
-        activeMode = mode;
-        term.innerText = promptText;
-        if (mode === '7') {
-            term.innerText = "Console buffer cleared. Ready for next operational command directive.";
-            activeMode = "MENU";
-        }
-        inp.focus();
-    }
-
-    function processLogic(mode, entry) {
-        let clean = entry.trim().toLowerCase();
-        if (!clean) return "❌ Input cannot be blank.";
-
-        // Module 1: Aisle Finder Map Lookups
-        if (mode === "1") {
-            for (let [sector, items] of Object.entries(STORE_MAP)) {
-                if (clean === sector || items.some(item => item.includes(clean) || clean.includes(item))) {
-                    return `✅ CATEGORY MATCH:\nSector: ${sector.toUpperCase()}\nItems: ${items.join(", ")}`;
-                }
-            }
-            return `⚠️ '${entry}' not indexed. Match perimeter layout zones.`;
-        }
-
-        // Module 2: Compute Till ID Offset Matrix
-        if (mode === "2") {
-            let parts = clean.split(",").map(p => p.trim()).filter(Boolean);
-            if (parts.length !== 2) return "❌ Format Error. Use: Proximity,Pattern (Example: 1,3)";
-            let prox = parseInt(parts[0]), patt = parseInt(parts[1]);
-            if (isNaN(prox) || isNaN(patt)) return "❌ Format Error. Inputs must be numbers.";
-            return `🎯 TILL IDENTIFIER MATCH:\nAssign Till ID String: ${(prox * 10) + patt}\n\nRule: Continuous login balance pattern state.`;
-        }
-
-        // Module 3: Monitor Cash Drops ($400 Drop Alarm)
-        if (mode === "3") {
-            let parts = clean.split(",").map(p => parseInt(p.trim())).filter(p => !isNaN(p));
-            if (parts.length !== 4) return "❌ Format Error. Use bill sequence: 1s,5s,10s,20s (Example: 20,10,5,8)";
-            let tot = (parts[0] * 1) + (parts[1] * 5) + (parts[2] * 10) + (parts[3] * 20);
-            if (tot >= 400.00) {
-                return `🚨 DROP ALARM: $${tot.toFixed(2)}\nAction: Pull $${(tot - 75.00).toFixed(2)} right now.\nLeave safe balance of $75.00 in drawer.`;
-            }
-            return `✅ COMPLIANT: Total $${tot.toFixed(2)}.\nDrawer variance holds $${(400.00 - tot).toFixed(2)} of safety headroom.`;
-        }
-
-        // Module 4: Audit Line Voids (3% Loss Prevention Filter)
-        if (mode === "4") {
-            let parts = clean.split(",").map(p => parseInt(p.trim())).filter(p => !isNaN(p));
-            if (parts.length !== 2) return "❌ Format Error. Enter values: Voids,Transactions (Example: 5,160)";
-            let voids = parts[0], cc = parts[1];
-            if (cc <= 0) return "❌ Safeguard: Transactions must be 1 or higher.";
-            let rate = (voids / cc) * 100.0;
-            let status = rate >= 3.0 ? "🚨 EXCEEDS 3% POLICY!" : "✅ COMPLIANT TRANSACTION RATIO";
-            return `📊 VOID METRIC AUDIT:\nRatio: ${rate.toFixed(2)}%\nStatus: ${status}`;
-        }
-
-        // Module 5: Check Daily Sales Pace Against $3M Target
-        if (mode === "5") {
-            let sales = parseFloat(clean);
-            if (isNaN(sales)) return "❌ Format Error. Enter raw numeric sales value (Example: 8450.25)";
-            let target = 3000000.00 / 365.0;
-            let diff = sales - target;
-            let perf = diff >= 0 ? `🎉 Ahead of baseline target by +$${diff.toFixed(2)}` : `📉 Lagging baseline target by -$${Math.abs(diff).toFixed(2)}`;
-            return `📈 REVENUE MATRIX (Store #6228):\nTarget Daily Pace: $${target.toFixed(2)}\nActual Revenue: $${sales.toFixed(2)}\nPerformance: ${perf}`;
-        }
-
-        return "Select a panel button module layout option above.";
-    }
-
-    function sendInput() {
-        const inp = document.getElementById("user-input");
-        const term = document.getElementById("terminal");
-        if (!inp.value.trim()) return;
-        
-        let output = processLogic(activeMode, inp.value);
-        term.innerText = output;
-        
-        inp.value = "";
-        activeMode = "MENU";
-    }
-
-    function handleKey(e) { if (e.key === 'Enter') sendInput(); }
-</script>
-</body>
-</html>
