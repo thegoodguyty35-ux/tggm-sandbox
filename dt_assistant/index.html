@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dollar Tree ASM Assistant</title>
+    <!-- Load PyScript assets for free browser python execution -->
+    <link rel="stylesheet" href="https://pyscript.net" />
+    <script type="module" src="https://pyscript.net"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 15px; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 480px; background: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        h1 { color: #007a48; font-size: 20px; text-align: center; margin-top: 0; }
+        .menu-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 20px; }
+        button { background-color: #007a48; color: white; border: none; padding: 12px; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; text-align: left; }
+        button:active { background-color: #005432; }
+        .console-box { background: #1e1e1e; color: #39ff14; font-family: "Courier New", Courier, monospace; padding: 15px; border-radius: 8px; min-height: 200px; white-space: pre-wrap; font-size: 13px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); line-height: 1.4; }
+        .input-area { display: flex; gap: 5px; margin-top: 10px; }
+        input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; background: #fff; color: #000; }
+        .send-btn { background-color: #333; width: auto; padding: 0 15px; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <h1>🌳 Dollar Tree ASM Assistant (#6228)</h1>
+    
+    <div class="menu-grid">
+        <button onclick="runPy('1')">1. Aisle Map / Go-Back Finder</button>
+        <button onclick="runPy('2')">2. Compute Register Till ID</button>
+        <button onclick="runPy('3')">3. Monitor Till Pickups ($400 Cap)</button>
+        <button onclick="runPy('4')">4. Audit Line Voids (3% Limit)</button>
+        <button onclick="runPy('5')">5. Check Daily Sales Pace ($3M Goal)</button>
+        <button onclick="runPy('6')">6. Run Closing Verification Wizard</button>
+        <button onclick="runPy('7')" style="background-color: #a30000;">7. Clear Console Screen</button>
+    </div>
+
+    <div class="console-box" id="terminal">System booting... PyScript runtime initializing. Please choose an option above.</div>
+    
+    <div class="input-area">
+        <input type="text" id="user-input" placeholder="Type parameters here..." onkeypress="handleKey(event)">
+        <button class="send-btn" onclick="submitInput()">Submit</button>
+    </div>
+</div>
+
+<!-- Embedded Python Engine Logic -->
+<script type="py">
+import js
+
+STORE_MAP = {
+    "hbc": ["shampoo", "conditioner", "body wash", "toothpaste", "oral care", "deodorant", "soap", "lotion"],
+    "chemical": ["bleach", "sprays", "dish soap", "sponges", "trash bags", "laundry detergent", "wipes"],
+    "grocery": ["canned goods", "candy", "peg bag chocolate", "snacks", "drinks", "chips", "cookies"],
+    "party": ["balloons", "gift bags", "plates", "streamers", "cards", "ribbon"]
+}
+current_mode = "MENU"
+closing_step = 0
+
+def log_to_terminal(text):
+    term = js.document.getElementById("terminal")
+    term.innerText = str(text)
+
+def handle_input(user_entry):
+    global current_mode, closing_step
+    entry = user_entry.strip().lower()
+    
+    if current_mode == "MENU":
+        log_to_terminal("Please select an operational module button from the upper menu grid panel.")
+        return
+
+    if current_mode == "1":
+        found = False
+        for cat, items in STORE_MAP.items():
+            if entry == cat or any(i in entry for i in items):
+                log_to_terminal(f"✅ CATEGORY MATCH:\nSector: {cat.upper()}\nItems: {', '.join(items)}")
+                found = True
+                break
+        if not found: log_to_terminal(f"⚠️ '{entry}' not indexed. Match general sector rack markings.")
+        current_mode = "MENU"
+
+    elif current_mode == "2":
+        try:
+            rank, pattern = map(int, entry.split(","))
+            log_to_terminal(f"🎯 TILL IDENTIFIER MATCH:\nAssign Till ID String: {(rank * 10) + pattern}\n\nRule: Cashier stays logged in until shift expiration to protect POS flow cycles.")
+        except:
+            log_to_terminal("❌ Format Error.\nEnter data as: Proximity,Pattern\nExample: 1,3")
+        current_mode = "MENU"
+
+    elif current_mode == "3":
+        try:
+            # Parses: ones,fives,tens,twenties
+            vals = list(map(int, entry.split(",")))
+            if len(vals) < 4: raise ValueError
+            total = (vals[0]*1) + (vals[1]*5) + (vals[2]*10) + (vals[3]*20)
+            if total >= 400:
+                log_to_terminal(f"🚨 DROP ALARM: ${total:.2f}\nAction: Pull ${total - 75:.2f} right now.\nLeave base balance of exactly $75.00 in drawer.")
+            else:
+                log_to_terminal(f"✅ COMPLIANT: Total ${total:.2f}.\nDrawer variance holds ${400 - total:.2f} safety headroom.")
+        except:
+            log_to_terminal("❌ Format Error.\nEnter breakdown: 1s,5s,10s,20s\nExample: 20,10,5,8")
+        current_mode = "MENU"
+
+    elif current_mode == "4":
+        try:
+            voids, cc = map(int, entry.split(","))
+            rate = (voids / cc) * 100
+            status = "🚨 EXCEEDS 3% CORPORATE LAWS!" if rate >= 3.0 else "✅ COMPLIANT SYSTEM STATE"
+            log_to_terminal(f"📊 VOID METRIC AUDIT:\nRatio: {rate:.2f}%\nStatus: {status}\n\nAction: If excessive, instruct cashier to use a complete manager Post-Void instead.")
+        except:
+            log_to_terminal("❌ Format Error.\nEnter values: Voids,Transactions\nExample: 5,160")
+        current_mode = "MENU"
+
+    elif current_mode == "5":
+        try:
+            sales = float(entry)
+            target = 3000000 / 365
+            diff = sales - target
+            perf = f"🎉 Ahead pace by +${diff:.2f}" if diff >= 0 else f"📉 Lagging pace by -${abs(diff):.2f}"
+            log_to_terminal(f"📈 REVENUE MATRIX (Store #6228):\nTarget Daily Pace: ${target:.2f}\nActual Closed: ${sales:.2f}\nStatus: {perf}")
+        except:
+            log_to_terminal("❌ Format Error. Enter raw numeric sales value (e.g. 8450.25)")
+        current_mode = "MENU"
+
+    elif current_mode == "6":
+        steps = [
+            "1. Verify core vault safe count matches exactly $900.00.",
+            "2. Ensure active floor drawer banks are verified at $75.00 each.",
+            "3. Confirm overall building cash liquidity aggregates to exactly $1200.00.",
+            "4. Match Z-Report print outputs directly to physical return/post-void voucher signatures."
+        ]
+        if entry == "done":
+            closing_step += 1
+            if closing_step < len(steps):
+                log_to_terminal(f"[CLOSING SEQUENCE PHASE {closing_step+1}/4]\n{steps[closing_step]}\n\nType 'done' to advance validation gate.")
+            else:
+                log_to_terminal("🏆 SUCCESS: All asset pipelines balanced out cleanly. Secure safe walls and clear premises.")
+                current_mode = "MENU"
+        else:
+            log_to_terminal(f"Validation checkpoint active. Type 'done' to verify phase status.")
+
+# Expose function to window context layout bindings
+js.window.handleInputFromJS = handle_input
+</script>
+
+<script>
+    function runPy(mode) {
+        const term = document.getElementById("terminal");
+        const inp = document.getElementById("user-input");
+        inp.value = "";
+        
+        if (mode === '7') {
+            term.innerText = "Console buffer cleared. Ready for next operational command directive.";
+            pyscript.interpreter.interface.runPy(`current_mode = "MENU"`);
+            return;
+        }
+        
+        pyscript.interpreter.interface.runPy(`current_mode = "${mode}"; closing_step = 0`);
+        
+        const prompts = {
+            '1': "🔍 [AISLE FINDER]\nEnter target product keywords (e.g., shampoo, bleach, candy):",
+            '2': "🧮 [TILL CALCULATOR]\nEnter terminal parameters as 'Proximity,ShiftPattern' (e.g., 1,3 for Register 1, Last Shift):",
+            '3': "💵 [CASH DROP MONITOR]\nEnter bill counts exactly as '1s,5s,10s,20s' (e.g., 30,12,5,15):",
+            '4': "🚨 [VOID AUDITING]\nEnter values exactly as 'LineVoids,CustomerCount' (e.g., 4,145):",
+            '5': "📈 [DAILY REVENUE TARGET]\nEnter tonight's total net terminal report sales amount ($):",
+            '6': "🏁 [CLOSING STEP 1/4]\nVerify core vault safe count matches exactly $900.00.\n\nType 'done' to confirm execution step:"
+        };
+        term.innerText = prompts[mode];
+        inp.focus();
+    }
+
+    function submitInput() {
+        const inp = document.getElementById("user-input");
+        if (!inp.value.trim()) return;
+        window.handleInputFromJS(inp.value);
+        inp.value = "";
+    }
+
+    function handleKey(e) { if (e.key === 'Enter') submitInput(); }
+</script>
+</body>
+</html>
