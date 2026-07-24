@@ -1770,52 +1770,52 @@ function renderTools(){
 }
 function renderHandoff(){
 
-
     let handoffHTML = "";
-
 
 
     ASM_STATE.handoffs.forEach(item => {
 
-
         handoffHTML += `
 
+            <div class="dashboard-card">
 
-        <div class="dashboard-card">
+                <strong>
+                    ${item.category}
+                </strong>
 
+                <br><br>
 
-            <strong>
+                ${item.message}
 
-                ${item.category}
+                <br><br>
 
-            </strong>
+                <small>
+                    Created:
+                    ${item.created}
+                </small>
 
-
-            <br><br>
-
-
-            ${item.message}
-
-
-
-            <br><br>
-
-
-            <small>
-
-            Created:
-            ${item.created}
-
-            </small>
-
-
-        </div>
-
+            </div>
 
         `;
 
-
     });
+
+
+    return `
+
+        <h2>
+            🗣️ Manager Handoff
+        </h2>
+
+
+        ...
+
+        ${handoffHTML}
+
+    `;
+
+}   // <-- END renderHandoff
+
 
 function renderIncidents(){
 
