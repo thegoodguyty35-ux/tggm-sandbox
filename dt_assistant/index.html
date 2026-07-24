@@ -888,97 +888,108 @@ function createProgressBar(current,total){
 ========================================================== */
 
 
-<div class="dashboard-card">
+function renderDashboard(){
 
 
-    <strong>
-        🌅 Opening Checklist
-    </strong>
+    // Your calculations are above this section
 
 
-
-    ${createProgressBar(
-        openingComplete,
-        openingTotal
-    )}
+    return `
 
 
-
-    <br>
-
-
-    ${openingComplete}
-
-    /
-
-    ${openingTotal}
-
-    Complete
+        <div class="dashboard-card">
 
 
-</div>
-        
-<div class="dashboard-card">
-
-
-    <strong>
-        🌙 Closing Checklist
-    </strong>
+            <strong>
+                🌅 Opening Checklist
+            </strong>
 
 
 
-    ${createProgressBar(
-        closingComplete,
-        closingTotal
-    )}
+            ${createProgressBar(
+                openingComplete,
+                openingTotal
+            )}
 
 
 
-    <br>
+            <br>
 
 
-    ${closingComplete}
+            ${openingComplete}
 
-    /
+            /
 
-    ${closingTotal}
+            ${openingTotal}
 
-    Complete
-
-
-</div>
-        
-<div class="dashboard-card">
+            Complete
 
 
-    <strong>
-        ✅ Daily Tasks
-    </strong>
+        </div>
 
 
 
-    ${createProgressBar(
-        taskComplete,
-        taskTotal
-    )}
+        <div class="dashboard-card">
+
+
+            <strong>
+                🌙 Closing Checklist
+            </strong>
 
 
 
-    <br>
+            ${createProgressBar(
+                closingComplete,
+                closingTotal
+            )}
 
 
-    ${taskComplete}
 
-    /
-
-    ${taskTotal}
-
-    Complete
+            <br>
 
 
-</div>
+            ${closingComplete}
+
+            /
+
+            ${closingTotal}
+
+            Complete
 
 
+        </div>
+
+
+
+        <div class="dashboard-card">
+
+
+            <strong>
+                ✅ Daily Tasks
+            </strong>
+
+
+
+            ${createProgressBar(
+                taskComplete,
+                taskTotal
+            )}
+
+
+
+            <br>
+
+
+            ${taskComplete}
+
+            /
+
+            ${taskTotal}
+
+            Complete
+
+
+        </div>
 
 
 
@@ -994,12 +1005,11 @@ function createProgressBar(current,total){
 
 
             ${notesTotal}
+
             Logged
 
 
         </div>
-
-
 
 
 
