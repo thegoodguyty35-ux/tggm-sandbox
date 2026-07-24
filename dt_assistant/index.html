@@ -380,6 +380,13 @@
 
         </button>
 
+        
+        <button onclick="showScreen('incidents')">
+
+            🚨 Incident Log
+
+        </button>
+
 
     </div>
 
@@ -1810,6 +1817,209 @@ function renderHandoff(){
 
     });
 
+function renderIncidents(){
+
+
+    let incidentHTML = "";
+
+
+
+    ASM_STATE.incidents.forEach(item => {
+
+
+        incidentHTML += `
+
+
+        <div class="dashboard-card">
+
+
+            <strong>
+
+            ${item.category}
+
+            </strong>
+
+
+
+            <br>
+
+
+
+            Severity:
+
+            ${item.severity}
+
+
+
+            <br><br>
+
+
+
+            ${item.description}
+
+
+
+            <br><br>
+
+
+
+            <small>
+
+            Created:
+            ${item.created}
+
+            </small>
+
+
+        </div>
+
+
+        `;
+
+
+    });
+
+
+
+
+    return `
+
+
+        <h2>
+            🚨 Incident Log
+        </h2>
+
+
+
+        <p>
+            Record operational incidents and follow-up actions.
+        </p>
+
+
+
+
+        <form onsubmit="addIncident(event)">
+
+
+
+            <select id="incident-category">
+
+
+                <option>
+                    SAFETY
+                </option>
+
+
+                <option>
+                    CUSTOMER
+                </option>
+
+
+                <option>
+                    STAFFING
+                </option>
+
+
+                <option>
+                    EQUIPMENT
+                </option>
+
+
+                <option>
+                    LOSS PREVENTION
+                </option>
+
+
+            </select>
+
+
+
+            <br><br>
+
+
+
+            <select id="incident-severity">
+
+
+                <option>
+                    LOW
+                </option>
+
+
+                <option>
+                    MEDIUM
+                </option>
+
+
+                <option>
+                    HIGH
+                </option>
+
+
+                <option>
+                    CRITICAL
+                </option>
+
+
+            </select>
+
+
+
+            <br><br>
+
+
+
+            <textarea
+
+                id="incident-description"
+
+                placeholder="Describe incident..."
+
+                style="
+                width:100%;
+                height:80px;
+                "
+
+            ></textarea>
+
+
+
+            <br><br>
+
+
+
+            <button>
+
+                Save Incident
+
+            </button>
+
+
+
+        </form>
+
+
+
+        <hr>
+
+
+
+
+        <h3>
+            Previous Incidents
+        </h3>
+
+
+
+        ${incidentHTML}
+
+
+
+    `;
+
+
+}
+
 
 
 
@@ -1990,11 +2200,20 @@ function showScreen(screen){
                 renderTools();
 
             break;
+
             
         case "handoff":
 
             screenArea.innerHTML =
                 renderHandoff();
+
+            break;
+
+            
+        case "incidents":
+
+            screenArea.innerHTML =
+                renderIncidents();
 
             break;
 
@@ -2012,6 +2231,7 @@ function showScreen(screen){
     }
 
 }
+    
 function addHandoff(event){
 
 
@@ -2204,6 +2424,7 @@ function toggleTask(id){
 
 
 }
+    
     /* ==========================================================
    ADD NEW TASK CONTROLLER
 ========================================================== */
@@ -2346,12 +2567,101 @@ function addNote(event){
 
     ASM_STATE.notes.push(newNote);
 
-
+    saveASMState();
 
     showScreen("notes");
 
 
 }
+
+/* ==========================================================
+   ADD INCIDENT CONTROLLER
+========================================================== */
+
+
+function addIncident(event){
+
+
+    event.preventDefault();
+
+
+
+    const category =
+        document.getElementById(
+            "incident-category"
+        ).value;
+
+
+
+    const severity =
+        document.getElementById(
+            "incident-severity"
+        ).value;
+
+
+
+    const description =
+        document.getElementById(
+            "incident-description"
+        ).value.trim();
+
+
+
+    if(!description){
+
+
+        alert(
+            "Incident description cannot be empty."
+        );
+
+
+        return;
+
+    }
+
+
+
+    const newIncident = {
+
+
+        id:
+        Date.now(),
+
+
+        category:
+        category,
+
+
+        severity:
+        severity,
+
+
+        description:
+        description,
+
+
+        created:
+        new Date().toLocaleString()
+
+
+    };
+
+
+
+    ASM_STATE.incidents.push(newIncident);
+
+
+
+    saveASMState();
+
+
+
+    showScreen("incidents");
+
+
+}
+
+
 
 
 
