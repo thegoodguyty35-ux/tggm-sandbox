@@ -1884,7 +1884,98 @@ function renderIncidents(){
 
         <form onsubmit="addIncident(event)">
 
-            ...
+
+            <select id="incident-category">
+
+
+                <option>
+                    SAFETY
+                </option>
+
+
+                <option>
+                    CUSTOMER
+                </option>
+
+
+                <option>
+                    STAFFING
+                </option>
+
+
+                <option>
+                    EQUIPMENT
+                </option>
+
+
+                <option>
+                    LOSS PREVENTION
+                </option>
+
+
+            </select>
+
+
+
+            <br><br>
+
+
+
+            <select id="incident-severity">
+
+
+                <option>
+                    LOW
+                </option>
+
+
+                <option>
+                    MEDIUM
+                </option>
+
+
+                <option>
+                    HIGH
+                </option>
+
+
+                <option>
+                    CRITICAL
+                </option>
+
+
+            </select>
+
+
+
+            <br><br>
+
+
+
+            <textarea
+
+                id="incident-description"
+
+                placeholder="Describe incident..."
+
+                style="
+                    width:100%;
+                    height:80px;
+                "
+
+            ></textarea>
+
+
+
+            <br><br>
+
+
+
+            <button type="submit">
+
+                Save Incident
+
+            </button>
 
 
         </form>
