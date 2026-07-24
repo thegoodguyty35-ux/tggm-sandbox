@@ -1848,18 +1848,99 @@ function renderHandoff(){
     });
 
 
-    return `
+return `
 
-        <h2>
-            🗣️ Manager Handoff
-        </h2>
+    <h2>
+        🗣️ Manager Handoff
+    </h2>
 
 
-        ...
+    <p>
+        Record information for the next manager.
+    </p>
 
-        ${handoffHTML}
 
-    `;
+
+    <form onsubmit="addHandoff(event)">
+
+
+
+        <textarea
+
+            id="handoff-message"
+
+            placeholder="Enter handoff notes..."
+
+            style="
+                width:100%;
+                height:80px;
+            "
+
+        ></textarea>
+
+
+
+        <br><br>
+
+
+
+        <select id="handoff-category">
+
+
+            <option>
+                OPERATIONS
+            </option>
+
+
+            <option>
+                SAFETY
+            </option>
+
+
+            <option>
+                INVENTORY
+            </option>
+
+
+            <option>
+                STAFFING
+            </option>
+
+
+        </select>
+
+
+
+        <br><br>
+
+
+
+        <button type="submit">
+
+            Save Handoff
+
+        </button>
+
+
+
+    </form>
+
+
+
+    <hr>
+
+
+
+    <h3>
+        Previous Handoffs
+    </h3>
+
+
+
+    ${handoffHTML}
+
+
+`;
 
 }   // <-- END renderHandoff
 
