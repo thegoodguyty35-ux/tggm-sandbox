@@ -549,7 +549,90 @@ const STORE_MAP = {
 let activeMode = "MENU";
 
 let currentScreen = "dashboard";
+    
+/* ==========================================================
+   SCREEN TEMPLATES
+========================================================== */
 
+const SCREENS = {
+
+    dashboard: `
+        <h2>🏠 Dashboard</h2>
+
+        <p>Welcome to Dollar Tree ASM OS</p>
+
+        <div class="dashboard-card">
+
+            <strong>Store #6228</strong><br>
+
+            Status: Ready
+
+        </div>
+    `,
+
+    opening: `
+        <h2>🌅 Opening Checklist</h2>
+
+        <p>
+            Opening Checklist module coming in Part 3.
+        </p>
+    `,
+
+    closing: `
+        <h2>🌙 Closing Checklist</h2>
+
+        <p>
+            Closing Checklist module coming in Part 4.
+        </p>
+    `,
+
+    tasks: `
+        <h2>✅ Daily Tasks</h2>
+
+        <p>
+            Daily Task Manager coming soon.
+        </p>
+    `,
+
+    notes: `
+        <h2>📝 Daily Notes</h2>
+
+        <p>
+            Notes module coming soon.
+        </p>
+    `,
+
+    tools: `
+        <h2>🧰 ASM Tools</h2>
+
+        <p>
+            Existing calculators will appear here next.
+        </p>
+    `
+
+};
+    /* ==========================================================
+   SCREEN NAVIGATION
+========================================================== */
+
+function showScreen(screen) {
+
+    currentScreen = screen;
+
+    const screenArea = document.getElementById("screen");
+
+    if (!screenArea) return;
+
+    screenArea.innerHTML =
+        SCREENS[screen] ??
+        "<h2>Screen Not Found</h2>";
+
+}
+    /* ==========================================================
+   APPLICATION STARTUP
+========================================================== */
+
+showScreen("dashboard");
 </script>
 
 </body>
