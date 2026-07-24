@@ -888,177 +888,95 @@ function createProgressBar(current,total){
 ========================================================== */
 
 
-function renderDashboard(){
+<div class="dashboard-card">
 
 
-    const openingTotal =
-        ASM_STATE.openingChecklist.length;
+    <strong>
+        🌅 Opening Checklist
+    </strong>
 
 
-    const openingComplete =
-        ASM_STATE.openingChecklist.filter(
-            item => item.complete
-        ).length;
 
+    ${createProgressBar(
+        openingComplete,
+        openingTotal
+    )}
 
 
-    const closingTotal =
-        ASM_STATE.closingChecklist.length;
 
+    <br>
 
-    const closingComplete =
-        ASM_STATE.closingChecklist.filter(
-            item => item.complete
-        ).length;
 
+    ${openingComplete}
 
+    /
 
-    const taskTotal =
-        ASM_STATE.tasks.length;
+    ${openingTotal}
 
+    Complete
 
-    const taskComplete =
-        ASM_STATE.tasks.filter(
-            task => task.complete
-        ).length;
 
+</div>
+        
+<div class="dashboard-card">
 
 
-    const notesTotal =
-        ASM_STATE.notes.length;
+    <strong>
+        🌙 Closing Checklist
+    </strong>
 
 
 
-    const readinessScore = Math.round(
+    ${createProgressBar(
+        closingComplete,
+        closingTotal
+    )}
 
-        (
 
-            (openingComplete / openingTotal) * 40
 
-            +
+    <br>
 
-            (closingComplete / closingTotal) * 20
 
-            +
+    ${closingComplete}
 
-            (taskComplete / taskTotal) * 30
+    /
 
-            +
+    ${closingTotal}
 
-            (notesTotal > 0 ? 10 : 0)
+    Complete
 
-        )
 
-    );
+</div>
+        
+<div class="dashboard-card">
 
 
+    <strong>
+        ✅ Daily Tasks
+    </strong>
 
-    let status = "🟡 Needs Attention";
 
 
-    if(readinessScore >= 80){
+    ${createProgressBar(
+        taskComplete,
+        taskTotal
+    )}
 
-        status =
-        "🟢 Operational";
 
-    }
 
+    <br>
 
-    if(readinessScore >= 95){
 
-        status =
-        "⭐ Excellent";
+    ${taskComplete}
 
-    }
+    /
 
+    ${taskTotal}
 
+    Complete
 
 
-    return `
-
-
-
-        <h2>
-            🌳 Store #${ASM_STATE.store.number}
-            Command Center
-        </h2>
-
-
-
-        <p>
-
-            Assistant Store Manager Dashboard
-
-        </p>
-
-
-
-
-
-        <div class="dashboard-card">
-
-
-            <strong>
-                Opening Checklist
-            </strong>
-
-
-            <br><br>
-
-
-            ${openingComplete}
-            /
-            ${openingTotal}
-            Complete
-
-
-        </div>
-
-
-
-
-
-        <div class="dashboard-card">
-
-
-            <strong>
-                Closing Checklist
-            </strong>
-
-
-            <br><br>
-
-
-            ${closingComplete}
-            /
-            ${closingTotal}
-            Complete
-
-
-        </div>
-
-
-
-
-
-        <div class="dashboard-card">
-
-
-            <strong>
-                Daily Tasks
-            </strong>
-
-
-            <br><br>
-
-
-            ${taskComplete}
-            /
-            ${taskTotal}
-            Complete
-
-
-        </div>
+</div>
 
 
 
