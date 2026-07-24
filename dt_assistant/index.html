@@ -651,6 +651,53 @@ openingChecklist: [
 
 ]
 
+    ,
+
+
+closingChecklist: [
+
+    {
+        id: 1,
+        task: "Complete final sales floor recovery",
+        complete: false
+    },
+
+
+    {
+        id: 2,
+        task: "Verify front end/register area is clean",
+        complete: false
+    },
+
+
+    {
+        id: 3,
+        task: "Check fitting/restroom areas",
+        complete: false
+    },
+
+
+    {
+        id: 4,
+        task: "Complete closing safety walk",
+        complete: false
+    },
+
+
+    {
+        id: 5,
+        task: "Verify cash office procedures completed",
+        complete: false
+    },
+
+
+    {
+        id: 6,
+        task: "Prepare manager handoff notes",
+        complete: false
+    }
+
+]
 
 };
     
@@ -852,7 +899,49 @@ function renderOpening(){
 
 function renderClosing(){
 
+
+    let checklistHTML = "";
+
+
+
+    ASM_STATE.closingChecklist.forEach(item => {
+
+
+        checklistHTML += `
+
+            <div class="dashboard-card">
+
+
+                <input
+                    type="checkbox"
+
+                    ${
+                        item.complete
+                        ? "checked"
+                        : ""
+                    }
+
+
+                    onclick="toggleClosingTask(${item.id})"
+                >
+
+
+                ${item.task}
+
+
+            </div>
+
+
+        `;
+
+
+    });
+
+
+
+
     return `
+
 
         <h2>
             🌙 Closing Checklist
@@ -860,11 +949,31 @@ function renderClosing(){
 
 
         <p>
-            Closing Checklist module coming next.
+            Complete closing procedures.
         </p>
 
 
+        ${checklistHTML}
+
+
+
+        <div class="dashboard-card">
+
+
+            Status:
+
+            ${
+                ASM_STATE.daily.closingComplete
+                ? "✅ Closing Complete"
+                : "⏳ In Progress"
+            }
+
+
+        </div>
+
+
     `;
+
 
 }
 
@@ -1067,7 +1176,45 @@ function toggleOpeningTask(id){
     showScreen("opening");
 
 }
+/* ==========================================================
+   CLOSING CHECKLIST CONTROLLER
+========================================================== */
 
+
+function toggleClosingTask(id){
+
+
+    const task =
+        ASM_STATE.closingChecklist.find(
+            item => item.id === id
+        );
+
+
+
+    if(task){
+
+        task.complete =
+            !task.complete;
+
+    }
+
+
+
+    const allComplete =
+        ASM_STATE.closingChecklist.every(
+            item => item.complete
+        );
+
+
+
+    ASM_STATE.daily.closingComplete =
+        allComplete;
+
+
+
+    showScreen("closing");
+
+}
 
 
 
