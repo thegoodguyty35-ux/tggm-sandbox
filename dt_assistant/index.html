@@ -549,6 +549,62 @@ const STORE_MAP = {
 let activeMode = "MENU";
 
 let currentScreen = "dashboard";
+    /* ==========================================================
+   ASM OPERATING STATE
+========================================================== */
+
+
+const ASM_STATE = {
+
+
+    store: {
+
+        number: "6228",
+
+        location: "6228 E Broadway Blvd",
+
+        city: "Tucson",
+
+        state: "AZ"
+
+    },
+
+
+    shift: {
+
+        role: "Assistant Store Manager",
+
+        currentShift: "Not Set",
+
+        managerOnDuty: "Not Set"
+
+    },
+
+
+    daily: {
+
+        date: new Date().toLocaleDateString(),
+
+        openingComplete: false,
+
+        closingComplete: false,
+
+        truckProcessed: false,
+
+        recoveryComplete: false
+
+    },
+
+
+    tasks: [],
+
+
+    notes: [],
+
+
+    alerts: []
+
+};
     
 /* ==========================================================
    SCREEN TEMPLATES
@@ -561,33 +617,102 @@ let currentScreen = "dashboard";
 
 function renderDashboard(){
 
+
     return `
 
+
         <h2>
-            🏠 Dashboard
+            🏠 ASM Dashboard
         </h2>
 
-
-        <p>
-            Welcome to Dollar Tree ASM OS
-        </p>
 
 
         <div class="dashboard-card">
 
+
             <strong>
-                Store #6228
+                Store #${ASM_STATE.store.number}
             </strong>
+
 
             <br>
 
-            Status:
-            Ready
+
+            ${ASM_STATE.store.location}
+
+
+            <br><br>
+
+
+            Role:
+            ${ASM_STATE.shift.role}
+
+
+        </div>
+
+
+
+
+        <div class="dashboard-card">
+
+
+            📅 Date:
+
+            ${ASM_STATE.daily.date}
+
+
+        </div>
+
+
+
+
+        <div class="dashboard-card">
+
+
+            🚚 Truck Status:
+
+            ${
+                ASM_STATE.daily.truckProcessed
+                ? "✅ Complete"
+                : "⏳ Pending"
+            }
+
+
+            <br>
+
+
+            🧹 Recovery:
+
+            ${
+                ASM_STATE.daily.recoveryComplete
+                ? "✅ Complete"
+                : "⏳ Pending"
+            }
+
+
+        </div>
+
+
+
+
+        <div class="dashboard-card">
+
+
+            🚨 Alerts:
+
+            ${
+                ASM_STATE.alerts.length
+                ? ASM_STATE.alerts.join("<br>")
+                : "No alerts"
+
+            }
+
 
         </div>
 
 
     `;
+
 
 }
 
