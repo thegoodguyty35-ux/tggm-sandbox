@@ -600,25 +600,58 @@ tasks: [
 
     {
         id: 1,
-        name: "Complete daily sales floor walk",
-        priority: "HIGH",
-        complete: false
+
+        name:
+        "Complete daily sales floor walk",
+
+        priority:
+        "HIGH",
+
+        complete:false,
+
+        created:
+        new Date().toLocaleString(),
+
+        completedAt:null
+
     },
 
 
     {
         id: 2,
-        name: "Check recovery conditions",
-        priority: "MEDIUM",
-        complete: false
+
+        name:
+        "Check recovery conditions",
+
+        priority:
+        "MEDIUM",
+
+        complete:false,
+
+        created:
+        new Date().toLocaleString(),
+
+        completedAt:null
+
     },
 
 
     {
         id: 3,
-        name: "Review backstock priorities",
-        priority: "LOW",
-        complete: false
+
+        name:
+        "Review backstock priorities",
+
+        priority:
+        "LOW",
+
+        complete:false,
+
+        created:
+        new Date().toLocaleString(),
+
+        completedAt:null
+
     }
 
 ],
@@ -1012,7 +1045,38 @@ function renderTasks(){
     let taskHTML = "";
 
 
-    ASM_STATE.tasks.forEach(task => {
+
+    const sortedTasks =
+        [...ASM_STATE.tasks].sort(
+            (a,b)=>{
+
+
+                const priorityOrder = {
+
+
+                    HIGH:1,
+
+                    MEDIUM:2,
+
+                    LOW:3
+
+
+                };
+
+
+                return (
+                    priorityOrder[a.priority]
+                    -
+                    priorityOrder[b.priority]
+                );
+
+
+            }
+        );
+
+
+
+    sortedTasks.forEach(task => {
 
 
         taskHTML += `
@@ -1401,6 +1465,27 @@ function toggleTask(id){
             !task.complete;
 
 
+
+        if(task.complete){
+
+
+            task.completedAt =
+            new Date().toLocaleString();
+
+
+        }
+
+
+        else {
+
+
+            task.completedAt =
+            null;
+
+
+        }
+
+
     }
 
 
@@ -1446,22 +1531,29 @@ function addTask(event){
     const newTask = {
 
 
-        id:
-        Date.now(),
+    id:
+    Date.now(),
 
 
-        name:
-        name,
+    name:
+    name,
 
 
-        priority:
-        priority,
+    priority:
+    priority,
 
 
-        complete:false
+    complete:false,
 
 
-    };
+    created:
+    new Date().toLocaleString(),
+
+
+    completedAt:null
+
+
+};
 
 
 
