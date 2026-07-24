@@ -657,7 +657,9 @@ tasks: [
 ],
 
 
-notes: [],
+notes: [
+
+]
 
 
 alerts: [],
@@ -1233,19 +1235,166 @@ function renderTasks(){
 
 function renderNotes(){
 
+
+    let notesHTML = "";
+
+
+
+    ASM_STATE.notes.forEach(note => {
+
+
+
+        notesHTML += `
+
+
+        <div class="dashboard-card">
+
+
+            <strong>
+
+                ${note.category}
+
+            </strong>
+
+
+            <br><br>
+
+
+            ${note.text}
+
+
+            <br><br>
+
+
+            <small>
+
+                Created:
+                ${note.created}
+
+            </small>
+
+
+        </div>
+
+
+        `;
+
+
+
+    });
+
+
+
+
     return `
 
+
+
         <h2>
-            📝 Daily Notes
+            📝 Daily Manager Notes
         </h2>
 
 
+
         <p>
-            Notes system coming next.
+            Document shift events, associate notes, and store issues.
         </p>
 
 
+
+        ${notesHTML}
+
+
+
+        <form onsubmit="addNote(event)">
+
+
+
+            <div class="dashboard-card">
+
+
+                <h3>
+                    ➕ Add Manager Note
+                </h3>
+
+
+
+                <select id="note-category">
+
+
+                    <option value="Store Condition">
+                        Store Condition
+                    </option>
+
+
+                    <option value="Associate">
+                        Associate
+                    </option>
+
+
+                    <option value="Customer">
+                        Customer
+                    </option>
+
+
+                    <option value="Safety">
+                        Safety
+                    </option>
+
+
+                    <option value="Maintenance">
+                        Maintenance
+                    </option>
+
+
+                    <option value="Truck">
+                        Truck
+                    </option>
+
+
+                </select>
+
+
+
+                <br><br>
+
+
+
+                <textarea
+
+                    id="note-text"
+
+                    placeholder="Enter note..."
+
+                    rows="5"
+
+                    style="width:100%;"
+
+                ></textarea>
+
+
+
+                <br><br>
+
+
+
+                <button type="submit">
+
+                    Save Note
+
+                </button>
+
+
+
+            </div>
+
+
+
+        </form>
+
+
     `;
+
 
 }
 
@@ -1531,29 +1680,29 @@ function addTask(event){
     const newTask = {
 
 
-    id:
-    Date.now(),
+        id:
+        Date.now(),
 
 
-    name:
-    name,
+        name:
+        name,
 
 
-    priority:
-    priority,
+        priority:
+        priority,
 
 
-    complete:false,
+        complete:false,
 
 
-    created:
-    new Date().toLocaleString(),
+        created:
+        new Date().toLocaleString(),
 
 
-    completedAt:null
+        completedAt:null
 
 
-};
+    };
 
 
 
@@ -1567,9 +1716,89 @@ function addTask(event){
 }
 
 
+
+
+
+// ==========================================================
+// ADD MANAGER NOTE
+// ==========================================================
+
+
+function addNote(event){
+
+
+    event.preventDefault();
+
+
+
+    const category =
+        document.getElementById(
+            "note-category"
+        ).value;
+
+
+
+    const text =
+        document.getElementById(
+            "note-text"
+        ).value.trim();
+
+
+
+
+    if(!text){
+
+        alert(
+            "Note cannot be empty."
+        );
+
+        return;
+
+    }
+
+
+
+
+    const newNote = {
+
+
+        id:
+        Date.now(),
+
+
+        category:
+        category,
+
+
+        text:
+        text,
+
+
+        created:
+        new Date().toLocaleString()
+
+
+    };
+
+
+
+
+    ASM_STATE.notes.push(newNote);
+
+
+
+    showScreen("notes");
+
+
+}
+
+
+
+
 /* ==========================================================
    APPLICATION STARTUP
 ========================================================== */
+
 
 showScreen("dashboard");
 </script>
