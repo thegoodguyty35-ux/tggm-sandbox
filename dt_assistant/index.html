@@ -153,6 +153,66 @@
             margin-top:10px;
 
         }
+        .progress-container {
+        
+            background:#ddd;
+        
+            border-radius:10px;
+        
+            height:14px;
+        
+            width:100%;
+        
+            overflow:hidden;
+        
+            margin-top:10px;
+        
+        }
+        
+        
+        
+        .progress-bar {
+        
+            height:100%;
+        
+            border-radius:10px;
+        
+            background:#007a48;
+        
+            transition:width 0.3s ease;
+        
+        }
+        
+        
+        
+        .status-good {
+        
+            color:#007a48;
+        
+            font-weight:bold;
+        
+        }
+        
+        
+        
+        .status-warning {
+        
+            color:#d68b00;
+        
+            font-weight:bold;
+        
+        }
+        
+        
+        
+        .status-alert {
+        
+            color:#cc0000;
+        
+            font-weight:bold;
+        
+        }
+        
 
 
 
@@ -757,11 +817,71 @@ closingChecklist: [
 
 ]
 
-};
-    
+};  // <-- ASM_STATE ends here
+
+
+
+/* ==========================================================
+   PROGRESS BAR FUNCTIONS
+========================================================== */
+
+
+function createProgressBar(current,total){
+
+
+    let percent = 0;
+
+
+    if(total > 0){
+
+        percent =
+        Math.round(
+            (current / total) * 100
+        );
+
+    }
+
+
+
+    return `
+
+
+        <div class="progress-container">
+
+
+            <div
+
+                class="progress-bar"
+
+                style="width:${percent}%"
+
+            >
+
+            </div>
+
+
+        </div>
+
+
+
+        <small>
+
+            ${percent}% Complete
+
+        </small>
+
+
+    `;
+
+
+}
+
+
+
 /* ==========================================================
    SCREEN TEMPLATES
 ========================================================== */
+
 
 /* ==========================================================
    SCREEN RENDER FUNCTIONS
