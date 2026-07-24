@@ -771,12 +771,107 @@ closingChecklist: [
 function renderDashboard(){
 
 
+    const openingTotal =
+        ASM_STATE.openingChecklist.length;
+
+
+    const openingComplete =
+        ASM_STATE.openingChecklist.filter(
+            item => item.complete
+        ).length;
+
+
+
+    const closingTotal =
+        ASM_STATE.closingChecklist.length;
+
+
+    const closingComplete =
+        ASM_STATE.closingChecklist.filter(
+            item => item.complete
+        ).length;
+
+
+
+    const taskTotal =
+        ASM_STATE.tasks.length;
+
+
+    const taskComplete =
+        ASM_STATE.tasks.filter(
+            task => task.complete
+        ).length;
+
+
+
+    const notesTotal =
+        ASM_STATE.notes.length;
+
+
+
+    const readinessScore = Math.round(
+
+        (
+
+            (openingComplete / openingTotal) * 40
+
+            +
+
+            (closingComplete / closingTotal) * 20
+
+            +
+
+            (taskComplete / taskTotal) * 30
+
+            +
+
+            (notesTotal > 0 ? 10 : 0)
+
+        )
+
+    );
+
+
+
+    let status = "🟡 Needs Attention";
+
+
+    if(readinessScore >= 80){
+
+        status =
+        "🟢 Operational";
+
+    }
+
+
+    if(readinessScore >= 95){
+
+        status =
+        "⭐ Excellent";
+
+    }
+
+
+
+
     return `
 
 
+
         <h2>
-            🏠 ASM Dashboard
+            🌳 Store #${ASM_STATE.store.number}
+            Command Center
         </h2>
+
+
+
+        <p>
+
+            Assistant Store Manager Dashboard
+
+        </p>
+
+
 
 
 
@@ -784,24 +879,21 @@ function renderDashboard(){
 
 
             <strong>
-                Store #${ASM_STATE.store.number}
+                Opening Checklist
             </strong>
-
-
-            <br>
-
-
-            ${ASM_STATE.store.location}
 
 
             <br><br>
 
 
-            Role:
-            ${ASM_STATE.shift.role}
+            ${openingComplete}
+            /
+            ${openingTotal}
+            Complete
 
 
         </div>
+
 
 
 
@@ -809,12 +901,22 @@ function renderDashboard(){
         <div class="dashboard-card">
 
 
-            📅 Date:
+            <strong>
+                Closing Checklist
+            </strong>
 
-            ${ASM_STATE.daily.date}
+
+            <br><br>
+
+
+            ${closingComplete}
+            /
+            ${closingTotal}
+            Complete
 
 
         </div>
+
 
 
 
@@ -822,28 +924,22 @@ function renderDashboard(){
         <div class="dashboard-card">
 
 
-            🚚 Truck Status:
-
-            ${
-                ASM_STATE.daily.truckProcessed
-                ? "✅ Complete"
-                : "⏳ Pending"
-            }
+            <strong>
+                Daily Tasks
+            </strong>
 
 
-            <br>
+            <br><br>
 
 
-            🧹 Recovery:
-
-            ${
-                ASM_STATE.daily.recoveryComplete
-                ? "✅ Complete"
-                : "⏳ Pending"
-            }
+            ${taskComplete}
+            /
+            ${taskTotal}
+            Complete
 
 
         </div>
+
 
 
 
@@ -851,17 +947,48 @@ function renderDashboard(){
         <div class="dashboard-card">
 
 
-            🚨 Alerts:
+            <strong>
+                Manager Notes
+            </strong>
 
-            ${
-                ASM_STATE.alerts.length
-                ? ASM_STATE.alerts.join("<br>")
-                : "No alerts"
 
-            }
+            <br><br>
+
+
+            ${notesTotal}
+            Logged
 
 
         </div>
+
+
+
+
+
+        <div class="dashboard-card">
+
+
+            <strong>
+                Store Readiness Score
+            </strong>
+
+
+            <br><br>
+
+
+            ${readinessScore}%
+
+
+            <br><br>
+
+
+            Status:
+
+            ${status}
+
+
+        </div>
+
 
 
     `;
