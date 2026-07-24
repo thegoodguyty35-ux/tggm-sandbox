@@ -830,7 +830,71 @@ function renderDashboard(){
 
         </div>
 
+<form onsubmit="addTask(event)">
 
+
+    <div class="dashboard-card">
+
+
+        <h3>
+            ➕ Add New Task
+        </h3>
+
+
+
+        <input
+
+            id="new-task-name"
+
+            type="text"
+
+            placeholder="Enter task..."
+
+        >
+
+
+
+        <br><br>
+
+
+
+        <select id="new-task-priority">
+
+
+            <option value="HIGH">
+                HIGH
+            </option>
+
+
+            <option value="MEDIUM">
+                MEDIUM
+            </option>
+
+
+            <option value="LOW">
+                LOW
+            </option>
+
+
+        </select>
+
+
+
+        <br><br>
+
+
+
+        <button type="submit">
+
+            Add Task
+
+        </button>
+
+
+    </div>
+
+
+</form>
     `;
 
 
@@ -1351,6 +1415,70 @@ function toggleTask(id){
 
 
     }
+
+
+
+    showScreen("tasks");
+
+
+}
+    /* ==========================================================
+   ADD NEW TASK CONTROLLER
+========================================================== */
+
+
+function addTask(event){
+
+
+    event.preventDefault();
+
+
+
+    const name =
+        document.getElementById(
+            "new-task-name"
+        ).value;
+
+
+
+    const priority =
+        document.getElementById(
+            "new-task-priority"
+        ).value;
+
+
+
+    if(!name.trim()){
+
+        return;
+
+    }
+
+
+
+    const newTask = {
+
+
+        id:
+        Date.now(),
+
+
+        name:
+        name,
+
+
+        priority:
+        priority,
+
+
+        complete:false
+
+
+    };
+
+
+
+    ASM_STATE.tasks.push(newTask);
 
 
 
