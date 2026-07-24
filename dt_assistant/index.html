@@ -1823,7 +1823,6 @@ function renderIncidents(){
     let incidentHTML = "";
 
 
-
     ASM_STATE.incidents.forEach(item => {
 
 
@@ -1834,40 +1833,29 @@ function renderIncidents(){
 
 
             <strong>
-
-            ${item.category}
-
+                ${item.category}
             </strong>
-
 
 
             <br>
 
 
-
             Severity:
-
             ${item.severity}
 
 
-
             <br><br>
-
 
 
             ${item.description}
 
 
-
             <br><br>
 
 
-
             <small>
-
-            Created:
-            ${item.created}
-
+                Created:
+                ${item.created}
             </small>
 
 
@@ -1881,7 +1869,6 @@ function renderIncidents(){
 
 
 
-
     return `
 
 
@@ -1890,110 +1877,14 @@ function renderIncidents(){
         </h2>
 
 
-
         <p>
             Record operational incidents and follow-up actions.
         </p>
 
 
-
-
         <form onsubmit="addIncident(event)">
 
-
-
-            <select id="incident-category">
-
-
-                <option>
-                    SAFETY
-                </option>
-
-
-                <option>
-                    CUSTOMER
-                </option>
-
-
-                <option>
-                    STAFFING
-                </option>
-
-
-                <option>
-                    EQUIPMENT
-                </option>
-
-
-                <option>
-                    LOSS PREVENTION
-                </option>
-
-
-            </select>
-
-
-
-            <br><br>
-
-
-
-            <select id="incident-severity">
-
-
-                <option>
-                    LOW
-                </option>
-
-
-                <option>
-                    MEDIUM
-                </option>
-
-
-                <option>
-                    HIGH
-                </option>
-
-
-                <option>
-                    CRITICAL
-                </option>
-
-
-            </select>
-
-
-
-            <br><br>
-
-
-
-            <textarea
-
-                id="incident-description"
-
-                placeholder="Describe incident..."
-
-                style="
-                width:100%;
-                height:80px;
-                "
-
-            ></textarea>
-
-
-
-            <br><br>
-
-
-
-            <button>
-
-                Save Incident
-
-            </button>
-
+            ...
 
 
         </form>
@@ -2001,8 +1892,6 @@ function renderIncidents(){
 
 
         <hr>
-
-
 
 
         <h3>
@@ -2010,121 +1899,19 @@ function renderIncidents(){
         </h3>
 
 
-
         ${incidentHTML}
 
 
-
     `;
 
 
 }
 
 
-
-
-    return `
-
-
-        <h2>
-            🗣️ Manager Handoff
-        </h2>
-
-
-
-        <p>
-            Record information for the next manager.
-        </p>
-
-
-
-        <form onsubmit="addHandoff(event)">
-
-
-
-            <textarea
-
-                id="handoff-message"
-
-                placeholder="Enter handoff notes..."
-
-                style="
-                width:100%;
-                height:80px;
-                "
-
-            ></textarea>
-
-
-
-            <br><br>
-
-
-
-            <select id="handoff-category">
-
-
-                <option>
-                    OPERATIONS
-                </option>
-
-
-                <option>
-                    SAFETY
-                </option>
-
-
-                <option>
-                    INVENTORY
-                </option>
-
-
-                <option>
-                    STAFFING
-                </option>
-
-
-            </select>
-
-
-
-            <br><br>
-
-
-
-            <button>
-
-                Save Handoff
-
-            </button>
-
-
-
-        </form>
-
-
-
-        <hr>
-
-
-
-        <h3>
-            Previous Handoffs
-        </h3>
-
-
-
-        ${handoffHTML}
-
-
-
-    `;
-
-
-}
-    /* ==========================================================
+/* ==========================================================
    SCREEN NAVIGATION
 ========================================================== */
+
 
 /* ==========================================================
    SCREEN CONTROLLER
