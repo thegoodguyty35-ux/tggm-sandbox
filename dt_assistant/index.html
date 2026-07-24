@@ -891,7 +891,89 @@ function createProgressBar(current,total){
 function renderDashboard(){
 
 
-    // Your calculations are above this section
+    const openingTotal =
+        ASM_STATE.openingChecklist.length;
+
+
+    const openingComplete =
+        ASM_STATE.openingChecklist.filter(
+            item => item.complete
+        ).length;
+
+
+
+    const closingTotal =
+        ASM_STATE.closingChecklist.length;
+
+
+    const closingComplete =
+        ASM_STATE.closingChecklist.filter(
+            item => item.complete
+        ).length;
+
+
+
+    const taskTotal =
+        ASM_STATE.tasks.length;
+
+
+    const taskComplete =
+        ASM_STATE.tasks.filter(
+            task => task.complete
+        ).length;
+
+
+
+    const notesTotal =
+        ASM_STATE.notes.length;
+
+
+
+    const readinessScore = Math.round(
+
+        (
+
+            (openingComplete / openingTotal) * 40
+
+            +
+
+            (closingComplete / closingTotal) * 20
+
+            +
+
+            (taskComplete / taskTotal) * 30
+
+            +
+
+            (notesTotal > 0 ? 10 : 0)
+
+        )
+
+    );
+
+
+
+    let status =
+        "🟡 Needs Attention";
+
+
+
+    if(readinessScore >= 80){
+
+        status =
+        "🟢 Operational";
+
+    }
+
+
+
+    if(readinessScore >= 95){
+
+        status =
+        "⭐ Excellent";
+
+    }
+
 
 
     return `
