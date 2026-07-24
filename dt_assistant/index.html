@@ -374,6 +374,11 @@
             🧰 ASM Tools
 
         </button>
+        <button onclick="showScreen('handoff')">
+
+            🗣️ Manager Handoff
+
+        </button>
 
 
     </div>
@@ -1756,6 +1761,157 @@ function renderTools(){
     `;
 
 }
+function renderHandoff(){
+
+
+    let handoffHTML = "";
+
+
+
+    ASM_STATE.handoffs.forEach(item => {
+
+
+        handoffHTML += `
+
+
+        <div class="dashboard-card">
+
+
+            <strong>
+
+                ${item.category}
+
+            </strong>
+
+
+            <br><br>
+
+
+            ${item.message}
+
+
+
+            <br><br>
+
+
+            <small>
+
+            Created:
+            ${item.created}
+
+            </small>
+
+
+        </div>
+
+
+        `;
+
+
+    });
+
+
+
+
+    return `
+
+
+        <h2>
+            🗣️ Manager Handoff
+        </h2>
+
+
+
+        <p>
+            Record information for the next manager.
+        </p>
+
+
+
+        <form onsubmit="addHandoff(event)">
+
+
+
+            <textarea
+
+                id="handoff-message"
+
+                placeholder="Enter handoff notes..."
+
+                style="
+                width:100%;
+                height:80px;
+                "
+
+            ></textarea>
+
+
+
+            <br><br>
+
+
+
+            <select id="handoff-category">
+
+
+                <option>
+                    OPERATIONS
+                </option>
+
+
+                <option>
+                    SAFETY
+                </option>
+
+
+                <option>
+                    INVENTORY
+                </option>
+
+
+                <option>
+                    STAFFING
+                </option>
+
+
+            </select>
+
+
+
+            <br><br>
+
+
+
+            <button>
+
+                Save Handoff
+
+            </button>
+
+
+
+        </form>
+
+
+
+        <hr>
+
+
+
+        <h3>
+            Previous Handoffs
+        </h3>
+
+
+
+        ${handoffHTML}
+
+
+
+    `;
+
+
+}
     /* ==========================================================
    SCREEN NAVIGATION
 ========================================================== */
@@ -1834,6 +1990,13 @@ function showScreen(screen){
                 renderTools();
 
             break;
+            
+        case "handoff":
+
+            screenArea.innerHTML =
+                renderHandoff();
+
+            break;
 
 
 
@@ -1847,6 +2010,66 @@ function showScreen(screen){
             `;
 
     }
+
+}
+function addHandoff(event){
+
+
+    event.preventDefault();
+
+
+
+    const message =
+        document.getElementById(
+            "handoff-message"
+        ).value;
+
+
+
+    const category =
+        document.getElementById(
+            "handoff-category"
+        ).value;
+
+
+
+    if(!message.trim()){
+
+        return;
+
+    }
+
+
+
+    ASM_STATE.handoffs.push({
+
+
+        id:
+        Date.now(),
+
+
+        category:
+        category,
+
+
+        message:
+        message,
+
+
+        created:
+        new Date().toLocaleString()
+
+
+    });
+
+
+
+    saveASMState();
+
+
+
+    showScreen("handoff");
+
 
 }
 
