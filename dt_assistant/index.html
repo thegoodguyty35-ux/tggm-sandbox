@@ -830,71 +830,7 @@ function renderDashboard(){
 
         </div>
 
-<form onsubmit="addTask(event)">
 
-
-    <div class="dashboard-card">
-
-
-        <h3>
-            ➕ Add New Task
-        </h3>
-
-
-
-        <input
-
-            id="new-task-name"
-
-            type="text"
-
-            placeholder="Enter task..."
-
-        >
-
-
-
-        <br><br>
-
-
-
-        <select id="new-task-priority">
-
-
-            <option value="HIGH">
-                HIGH
-            </option>
-
-
-            <option value="MEDIUM">
-                MEDIUM
-            </option>
-
-
-            <option value="LOW">
-                LOW
-            </option>
-
-
-        </select>
-
-
-
-        <br><br>
-
-
-
-        <button type="submit">
-
-            Add Task
-
-        </button>
-
-
-    </div>
-
-
-</form>
     `;
 
 
@@ -1076,57 +1012,43 @@ function renderTasks(){
     let taskHTML = "";
 
 
-
     ASM_STATE.tasks.forEach(task => {
-
 
 
         taskHTML += `
 
+            <div class="dashboard-card">
 
-        <div class="dashboard-card">
+                <input
+                    type="checkbox"
 
+                    ${
+                        task.complete
+                        ? "checked"
+                        : ""
+                    }
 
-            <input
-
-                type="checkbox"
-
-                ${
-                    task.complete
-                    ? "checked"
-                    : ""
-
-                }
-
-
-                onclick="toggleTask(${task.id})"
-
-            >
+                    onclick="toggleTask(${task.id})"
+                >
 
 
-
-            <strong>
-
-            ${task.priority}
-
-            </strong>
+                <strong>
+                    ${task.priority}
+                </strong>
 
 
-            <br>
+                <br>
 
 
-            ${task.name}
+                ${task.name}
 
 
-
-        </div>
-
+            </div>
 
         `;
 
 
     });
-
 
 
 
@@ -1158,7 +1080,6 @@ function renderTasks(){
                 ASM_STATE.tasks.filter(
                     task => task.complete
                 ).length
-
             }
 
 
@@ -1167,8 +1088,74 @@ function renderTasks(){
             ${ASM_STATE.tasks.length}
 
 
-
         </div>
+
+
+
+        <form onsubmit="addTask(event)">
+
+
+            <div class="dashboard-card">
+
+
+                <h3>
+                    ➕ Add New Task
+                </h3>
+
+
+                <input
+
+                    id="new-task-name"
+
+                    type="text"
+
+                    placeholder="Enter task..."
+
+                >
+
+
+
+                <br><br>
+
+
+
+                <select id="new-task-priority">
+
+
+                    <option value="HIGH">
+                        HIGH
+                    </option>
+
+
+                    <option value="MEDIUM">
+                        MEDIUM
+                    </option>
+
+
+                    <option value="LOW">
+                        LOW
+                    </option>
+
+
+                </select>
+
+
+
+                <br><br>
+
+
+
+                <button type="submit">
+
+                    Add Task
+
+                </button>
+
+
+            </div>
+
+
+        </form>
 
 
     `;
