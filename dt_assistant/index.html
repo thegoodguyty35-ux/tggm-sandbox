@@ -882,6 +882,55 @@ function createProgressBar(current,total){
    SCREEN TEMPLATES
 ========================================================== */
 
+/* ==========================================================
+   LOCAL STORAGE SYSTEM
+========================================================== */
+
+
+function saveASMState(){
+
+
+    localStorage.setItem(
+
+        "DT_ASM_STATE",
+
+        JSON.stringify(
+            ASM_STATE
+        )
+
+    );
+
+
+}
+
+function loadASMState(){
+
+
+    const savedState =
+        localStorage.getItem(
+            "DT_ASM_STATE"
+        );
+
+
+
+    if(savedState){
+
+
+        const parsedState =
+            JSON.parse(savedState);
+
+
+
+        Object.assign(
+            ASM_STATE,
+            parsedState
+        );
+
+
+    }
+
+
+}
 
 /* ==========================================================
    SCREEN RENDER FUNCTIONS
@@ -2053,6 +2102,9 @@ function addNote(event){
 /* ==========================================================
    APPLICATION STARTUP
 ========================================================== */
+
+
+loadASMState();
 
 
 showScreen("dashboard");
