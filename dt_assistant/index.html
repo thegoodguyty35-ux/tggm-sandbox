@@ -596,7 +596,32 @@ const ASM_STATE = {
     },
 
 
-tasks: [],
+tasks: [
+
+    {
+        id: 1,
+        name: "Complete daily sales floor walk",
+        priority: "HIGH",
+        complete: false
+    },
+
+
+    {
+        id: 2,
+        name: "Check recovery conditions",
+        priority: "MEDIUM",
+        complete: false
+    },
+
+
+    {
+        id: 3,
+        name: "Review backstock priorities",
+        priority: "LOW",
+        complete: false
+    }
+
+],
 
 
 notes: [],
@@ -983,19 +1008,107 @@ function renderClosing(){
 
 function renderTasks(){
 
+
+    let taskHTML = "";
+
+
+
+    ASM_STATE.tasks.forEach(task => {
+
+
+
+        taskHTML += `
+
+
+        <div class="dashboard-card">
+
+
+            <input
+
+                type="checkbox"
+
+                ${
+                    task.complete
+                    ? "checked"
+                    : ""
+
+                }
+
+
+                onclick="toggleTask(${task.id})"
+
+            >
+
+
+
+            <strong>
+
+            ${task.priority}
+
+            </strong>
+
+
+            <br>
+
+
+            ${task.name}
+
+
+
+        </div>
+
+
+        `;
+
+
+    });
+
+
+
+
     return `
+
 
         <h2>
             ✅ Daily Tasks
         </h2>
 
 
+
         <p>
-            Task management module coming next.
+            Manage today's ASM priorities.
         </p>
 
 
+
+        ${taskHTML}
+
+
+
+        <div class="dashboard-card">
+
+
+            Completed:
+
+            ${
+                ASM_STATE.tasks.filter(
+                    task => task.complete
+                ).length
+
+            }
+
+
+            /
+
+            ${ASM_STATE.tasks.length}
+
+
+
+        </div>
+
+
     `;
+
 
 }
 
@@ -1215,7 +1328,36 @@ function toggleClosingTask(id){
     showScreen("closing");
 
 }
+/* ==========================================================
+   DAILY TASK CONTROLLER
+========================================================== */
 
+
+function toggleTask(id){
+
+
+    const task =
+        ASM_STATE.tasks.find(
+            item => item.id === id
+        );
+
+
+
+    if(task){
+
+
+        task.complete =
+            !task.complete;
+
+
+    }
+
+
+
+    showScreen("tasks");
+
+
+}
 
 
 /* ==========================================================
