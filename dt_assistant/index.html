@@ -1925,26 +1925,23 @@ function toggleTask(id){
 
         if(task.complete){
 
-
             task.completedAt =
-            new Date().toLocaleString();
-
+                new Date().toLocaleString();
 
         }
 
-
-        else {
-
+        else{
 
             task.completedAt =
-            null;
-
+                null;
 
         }
-
 
     }
 
+
+
+    saveASMState();
 
 
     showScreen("tasks");
@@ -2016,7 +2013,7 @@ function addTask(event){
 
     ASM_STATE.tasks.push(newTask);
 
-
+    saveASMState();
 
     showScreen("tasks");
 
