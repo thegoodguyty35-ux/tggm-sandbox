@@ -596,13 +596,61 @@ const ASM_STATE = {
     },
 
 
-    tasks: [],
+tasks: [],
 
 
-    notes: [],
+notes: [],
 
 
-    alerts: []
+alerts: [],
+
+
+openingChecklist: [
+
+    {
+        id: 1,
+        task: "Disable alarm / verify store access",
+        complete: false
+    },
+
+
+    {
+        id: 2,
+        task: "Verify cash office and register readiness",
+        complete: false
+    },
+
+
+    {
+        id: 3,
+        task: "Check sales floor recovery condition",
+        complete: false
+    },
+
+
+    {
+        id: 4,
+        task: "Walk aisles for safety hazards",
+        complete: false
+    },
+
+
+    {
+        id: 5,
+        task: "Check restroom condition",
+        complete: false
+    },
+
+
+    {
+        id: 6,
+        task: "Review truck/freight priorities",
+        complete: false
+    }
+
+
+]
+
 
 };
     
@@ -722,7 +770,47 @@ function renderDashboard(){
 
 function renderOpening(){
 
+
+    let checklistHTML = "";
+
+
+
+    ASM_STATE.openingChecklist.forEach(item => {
+
+
+        checklistHTML += `
+
+            <div class="dashboard-card">
+
+
+                <input
+                    type="checkbox"
+                    ${
+                        item.complete
+                        ? "checked"
+                        : ""
+                    }
+
+                    onclick="toggleOpeningTask(${item.id})"
+                >
+
+
+                ${item.task}
+
+
+            </div>
+
+
+        `;
+
+
+    });
+
+
+
+
     return `
+
 
         <h2>
             🌅 Opening Checklist
@@ -730,11 +818,31 @@ function renderOpening(){
 
 
         <p>
-            Opening Checklist module coming next.
+            Complete opening procedures.
         </p>
 
 
+        ${checklistHTML}
+
+
+
+        <div class="dashboard-card">
+
+
+            Status:
+
+            ${
+                ASM_STATE.daily.openingComplete
+                ? "✅ Opening Complete"
+                : "⏳ In Progress"
+            }
+
+
+        </div>
+
+
     `;
+
 
 }
 
@@ -918,7 +1026,52 @@ function showScreen(screen){
     }
 
 }
-    /* ==========================================================
+
+
+/* ==========================================================
+   OPENING CHECKLIST CONTROLLER
+========================================================== */
+
+
+function toggleOpeningTask(id){
+
+
+    const task =
+        ASM_STATE.openingChecklist.find(
+            item => item.id === id
+        );
+
+
+
+    if(task){
+
+        task.complete =
+            !task.complete;
+
+    }
+
+
+
+    const allComplete =
+        ASM_STATE.openingChecklist.every(
+            item => item.complete
+        );
+
+
+
+    ASM_STATE.daily.openingComplete =
+        allComplete;
+
+
+
+    showScreen("opening");
+
+}
+
+
+
+
+/* ==========================================================
    APPLICATION STARTUP
 ========================================================== */
 
