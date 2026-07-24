@@ -2572,7 +2572,8 @@ function addNote(event){
 
 
     ASM_STATE.notes.push(newNote);
-
+    console.log("NOTE SAVED:", newNote);
+    console.log("ALL NOTES:", ASM_STATE.notes);
     saveASMState();
 
     showScreen("notes");
