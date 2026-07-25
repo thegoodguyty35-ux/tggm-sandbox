@@ -1981,6 +1981,141 @@ function renderCurrentReadinessScore(){
 
 
 }
+
+
+/* ==========================================================
+   SHIFT HISTORY RENDERER
+========================================================== */
+
+
+function renderHistory(){
+
+
+    let historyHTML = "";
+
+
+
+    ASM_STATE.shiftHistory.forEach(item => {
+
+
+        historyHTML += `
+
+
+        <div class="dashboard-card">
+
+
+            <strong>
+                🗓️ ${item.date}
+            </strong>
+
+
+            <br><br>
+
+
+            Opened:
+
+            ${item.openedAt}
+
+
+            <br><br>
+
+
+            Closed:
+
+            ${item.closedAt}
+
+
+            <br><br>
+
+
+            Closed By:
+
+            ${item.closedBy}
+
+
+            <br><br>
+
+
+            Readiness Score:
+
+            ${item.readinessScore}%
+
+
+            <br><br>
+
+
+            Sales:
+
+            ${item.sales}
+
+
+            <br><br>
+
+
+            Truck:
+
+            ${item.truck}
+
+
+            <br><br>
+
+
+            Notes:
+
+            ${item.notes}
+
+
+            <br><br>
+
+
+            Incidents:
+
+            ${item.incidents}
+
+
+            <br><br>
+
+
+            Handoff:
+
+            ${
+                item.handoffAccepted
+                ?
+                "✅ Accepted"
+                :
+                "⏳ Pending"
+            }
+
+
+        </div>
+
+
+        `;
+
+
+    });
+
+
+
+    return `
+
+
+        <h2>
+            📚 Shift History
+        </h2>
+
+
+
+        ${
+            historyHTML ||
+            "No archived shifts."
+        }
+
+
+    `;
+
+
+}
 /* ==========================================================
    SCREEN RENDER FUNCTIONS
 ========================================================== */
@@ -4386,6 +4521,14 @@ function showScreen(screen){
 
             break;
 
+            
+        case "history":
+
+            screenArea.innerHTML =
+                renderHistory();
+        
+            break;
+
 
 
         default:
@@ -5146,6 +5289,76 @@ function acceptHandoff(){
 
 
 /* ==========================================================
+   SHIFT ARCHIVE ENGINE
+========================================================== */
+
+
+function archiveClosedShift(){
+
+
+    const archiveRecord = {
+
+
+        id:
+        Date.now(),
+
+
+        date:
+        new Date().toLocaleDateString(),
+
+
+        openedAt:
+        ASM_STATE.shift.openedAt,
+
+
+        closedAt:
+        ASM_STATE.shift.closedAt,
+
+
+        openedBy:
+        ASM_STATE.shift.openedBy,
+
+
+        closedBy:
+        ASM_STATE.shift.closedBy,
+
+
+        readinessScore:
+        renderCurrentReadinessScore(),
+
+
+        sales:
+        `${ASM_STATE.sales.currentSales} / ${ASM_STATE.sales.dailyGoal}`,
+
+
+        truck:
+        `${ASM_STATE.truck.processed} / ${ASM_STATE.truck.boxes} boxes`,
+
+
+        notes:
+        ASM_STATE.notes.length,
+
+
+        incidents:
+        ASM_STATE.incidents.length,
+
+
+        handoffAccepted:
+        ASM_STATE.shift.handoffAccepted
+
+
+    };
+
+
+
+    ASM_STATE.shiftHistory.push(
+        archiveRecord
+    );
+
+
+}
+
+/* ==========================================================
    SHIFT LIFECYCLE CONTROLLER
 ========================================================== */
 
@@ -5205,6 +5418,8 @@ function closeActiveShift(){
 
     ASM_STATE.shift.closedBy =
         ASM_STATE.currentUser;
+
+    archiveClosedShift();
 
     ASM_STATE.shift.handoffCreatedAt =
     new Date().toLocaleString();
