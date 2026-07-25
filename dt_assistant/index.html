@@ -3240,56 +3240,41 @@ function renderDashboard(){
             <strong>
                 🧠 Shift Intelligence
             </strong>
-        
-        
+
+
             <br><br>
-        
-        
-        
+
+
             ${
                 intelligence.map(
                     item => `
-        
-        
+
+
                     <div>
-        
-        
+
+
                         <strong>
-                            ${item.category}
+                            ${item.type}
                         </strong>
-        
-        
+
+
                         <br><br>
-        
-        
-                        ${item.prediction}
-        
-        
-                        <br><br>
-        
-        
-                        <strong>
-                            Recommended Action:
-                        </strong>
-        
-        
-                        <br>
-        
-        
-                        ${item.action}
-        
-        
+
+
+                        ${item.message}
+
+
                     </div>
-        
-        
+
+
                     <br>
-        
-        
+
+
                     `
                 ).join("")
             }
-        
-        
+
+
         </div>
 
 
