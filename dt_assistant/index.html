@@ -2116,6 +2116,196 @@ function renderHistory(){
 
 
 }
+
+
+/* ==========================================================
+   SHIFT ANALYTICS ENGINE
+========================================================== */
+
+
+function generateShiftAnalytics(){
+
+
+    const history =
+        ASM_STATE.shiftHistory;
+
+
+
+    if(history.length === 0){
+
+        return {
+
+            totalShifts:0,
+
+            averageReadiness:0,
+
+            averageSalesPace:0,
+
+            averageIncidents:0,
+
+            commonIssues:[]
+
+        };
+
+    }
+
+
+
+    const totalShifts =
+        history.length;
+
+
+
+    const averageReadiness = Math.round(
+
+        history.reduce(
+
+            (sum, shift) =>
+            sum + shift.readinessScore,
+
+            0
+
+        )
+
+        /
+
+        totalShifts
+
+    );
+
+
+
+    const averageIncidents = Math.round(
+
+        history.reduce(
+
+            (sum, shift) =>
+            sum + shift.incidents,
+
+            0
+
+        )
+
+        /
+
+        totalShifts
+
+    );
+
+
+
+    const salesPaces = history.map(
+        shift => {
+
+
+            const values =
+                shift.sales.split(" / ");
+
+
+
+            if(
+                Number(values[1]) > 0
+            ){
+
+                return Math.round(
+
+                    (
+
+                    Number(values[0])
+
+                    /
+
+                    Number(values[1])
+
+                    )
+
+                    *
+
+                    100
+
+                );
+
+            }
+
+
+            return 0;
+
+
+        }
+
+    );
+
+
+
+    const averageSalesPace = Math.round(
+
+        salesPaces.reduce(
+
+            (a,b)=>a+b,
+
+            0
+
+        )
+
+        /
+
+        salesPaces.length
+
+    );
+
+
+
+    let commonIssues = [];
+
+
+
+    history.forEach(shift => {
+
+
+        if(
+            shift.incidents > 0
+        ){
+
+            commonIssues.push(
+                "Incidents recorded"
+            );
+
+        }
+
+
+        if(
+            shift.notes > 0
+        ){
+
+            commonIssues.push(
+                "Manager notes created"
+            );
+
+        }
+
+
+    });
+
+
+
+    return {
+
+
+        totalShifts,
+
+        averageReadiness,
+
+        averageSalesPace,
+
+        averageIncidents,
+
+        commonIssues
+
+
+    };
+
+
+}
 /* ==========================================================
    SCREEN RENDER FUNCTIONS
 ========================================================== */
@@ -2125,6 +2315,10 @@ function renderDashboard(){
 
     const shiftStatus =
         ASM_STATE.shift.status;
+
+    
+    const analytics =
+    generateShiftAnalytics();
 
 
     const shiftOpened =
@@ -2855,6 +3049,86 @@ function renderDashboard(){
         
         </div>
 
+
+        <div class="dashboard-card">
+
+
+            <strong>
+                🧠 Operational Trends
+            </strong>
+        
+        
+            <br><br>
+        
+        
+            ${
+                analytics.commonIssues.length > 0
+        
+                ?
+        
+                analytics.commonIssues.map(
+                    issue => `
+        
+                    <div>
+                        ⚠️ ${issue}
+                    </div>
+        
+                    <br>
+        
+                    `
+                ).join("")
+        
+                :
+        
+                "No recurring issues detected."
+        
+            }
+        
+        
+        </div>
+
+
+        <div class="dashboard-card">
+        
+        
+            <strong>
+                📊 Shift Analytics
+            </strong>
+        
+        
+            <br><br>
+        
+        
+            Completed Shifts:
+        
+            ${analytics.totalShifts}
+        
+        
+            <br><br>
+        
+        
+            Average Readiness:
+        
+            ${analytics.averageReadiness}%
+        
+        
+            <br><br>
+        
+        
+            Average Sales Pace:
+        
+            ${analytics.averageSalesPace}%
+        
+        
+            <br><br>
+        
+        
+            Average Incidents:
+        
+            ${analytics.averageIncidents}
+        
+        
+        </div>
 
 
         <div class="dashboard-card">
