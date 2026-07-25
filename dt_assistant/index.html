@@ -2785,6 +2785,78 @@ function addIncident(event){
     }
 
 
+    /* ==========================================================
+   SALES CONTROLLER
+========================================================== */
+
+function updateSales(event){
+
+    event.preventDefault();
+
+    ASM_STATE.sales.currentSales =
+        parseFloat(
+            document.getElementById(
+                "sales-current"
+            ).value
+        ) || 0;
+
+    ASM_STATE.sales.transactions =
+        parseInt(
+            document.getElementById(
+                "sales-transactions"
+            ).value
+        ) || 0;
+
+    if(ASM_STATE.sales.transactions > 0){
+
+        ASM_STATE.sales.averageTicket =
+
+            ASM_STATE.sales.currentSales
+
+            /
+
+            ASM_STATE.sales.transactions;
+
+    }else{
+
+        ASM_STATE.sales.averageTicket = 0;
+
+    }
+
+    if(ASM_STATE.sales.dailyGoal > 0){
+
+        ASM_STATE.sales.salesPace =
+
+            Math.round(
+
+                (
+
+                    ASM_STATE.sales.currentSales
+
+                    /
+
+                    ASM_STATE.sales.dailyGoal
+
+                ) * 100
+
+            );
+
+    }else{
+
+        ASM_STATE.sales.salesPace = 0;
+
+    }
+
+    ASM_STATE.sales.lastUpdated =
+        new Date().toLocaleString();
+
+    saveASMState();
+
+    showScreen("sales");
+
+}
+
+
 
     const newIncident = {
 
