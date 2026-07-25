@@ -1042,6 +1042,21 @@ function renderDashboard(){
     const alertsTotal =
         ASM_STATE.alerts.length;
 
+    const salesGoal =
+    ASM_STATE.sales.dailyGoal;
+
+
+    const currentSales =
+        ASM_STATE.sales.currentSales;
+    
+    
+    const salesPace =
+        ASM_STATE.sales.salesPace;
+    
+    
+    const averageTicket =
+        ASM_STATE.sales.averageTicket;
+
 
 
     const readinessScore = Math.round(
@@ -1262,6 +1277,49 @@ function renderDashboard(){
             Active
 
 
+        </div>
+
+
+        <div class="dashboard-card">
+
+
+            <strong>
+                💰 Sales Performance
+            </strong>
+        
+        
+            <br><br>
+        
+        
+            Daily Goal:
+        
+            $${salesGoal.toLocaleString()}
+        
+        
+            <br>
+        
+        
+            Current Sales:
+        
+            $${currentSales.toLocaleString()}
+        
+        
+            <br>
+        
+        
+            Sales Pace:
+        
+            ${salesPace}%
+        
+        
+            <br>
+        
+        
+            Average Ticket:
+        
+            $${averageTicket.toFixed(2)}
+        
+        
         </div>
 
 
