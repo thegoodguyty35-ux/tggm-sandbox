@@ -1790,6 +1790,141 @@ function generateAutomaticHandoff(){
 
 
 }
+
+
+/* ==========================================================
+   READINESS SCORE ENGINE
+========================================================== */
+
+
+function renderCurrentReadinessScore(){
+
+
+    const openingTotal =
+        ASM_STATE.openingChecklist.length;
+
+
+    const openingComplete =
+        ASM_STATE.openingChecklist.filter(
+            item => item.complete
+        ).length;
+
+
+
+    const closingTotal =
+        ASM_STATE.closingChecklist.length;
+
+
+    const closingComplete =
+        ASM_STATE.closingChecklist.filter(
+            item => item.complete
+        ).length;
+
+
+
+    const taskTotal =
+        ASM_STATE.tasks.length;
+
+
+    const taskComplete =
+        ASM_STATE.tasks.filter(
+            task => task.complete
+        ).length;
+
+
+
+    const notesTotal =
+        ASM_STATE.notes.length;
+
+
+
+    const incidentsTotal =
+        ASM_STATE.incidents.length;
+
+
+
+    const salesPace =
+        ASM_STATE.sales.salesPace;
+
+
+
+    const truckBoxes =
+        ASM_STATE.truck.boxes;
+
+
+
+    const truckProcessed =
+        ASM_STATE.truck.processed;
+
+
+
+    let truckCompletion = 0;
+
+
+
+    if(truckBoxes > 0){
+
+        truckCompletion =
+
+            Math.round(
+
+                (truckProcessed / truckBoxes) * 100
+
+            );
+
+    }
+
+
+
+
+    return Math.round(
+
+        (
+
+        (openingComplete / openingTotal) * 25
+
+
+        +
+
+
+        (closingComplete / closingTotal) * 15
+
+
+        +
+
+
+        (taskComplete / taskTotal) * 20
+
+
+        +
+
+
+        (truckCompletion / 100) * 15
+
+
+        +
+
+
+        (salesPace / 100) * 15
+
+
+        +
+
+
+        (notesTotal > 0 ? 5 : 0)
+
+
+        +
+
+
+        (incidentsTotal === 0 ? 5 : 0)
+
+        )
+
+    );
+
+
+}
 /* ==========================================================
    SCREEN RENDER FUNCTIONS
 ========================================================== */
@@ -1899,51 +2034,8 @@ function renderDashboard(){
 
 
 
-    const readinessScore = Math.round(
-
-        (
-
-        (openingTotal > 0 ? (openingComplete / openingTotal) * 25 : 0)
-
-
-        +
-
-
-        (closingTotal > 0 ? (closingComplete / closingTotal) * 15 : 0)
-
-
-        +
-
-
-        (taskTotal > 0 ? (taskComplete / taskTotal) * 20 : 0)
-
-
-        +
-
-
-        (truckCompletion / 100) * 15
-
-
-        +
-
-
-        (salesPace / 100) * 15
-
-
-        +
-
-
-        (notesTotal > 0 ? 5 : 0)
-
-
-        +
-
-
-        (incidentsTotal === 0 ? 5 : 0)
-
-    )
-
-);
+    const readinessScore =
+        renderCurrentReadinessScore();
 
 
 
