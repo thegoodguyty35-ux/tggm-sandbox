@@ -368,6 +368,14 @@
         </button>
 
 
+        
+        <button onclick="showScreen('truck')">
+
+            🚚 Truck Operations
+
+        </button>
+
+
 
         <button onclick="showScreen('notes')">
 
@@ -1478,6 +1486,154 @@ function renderSales(){
 }
 
 
+/* ==========================================================
+   TRUCK SCREEN
+========================================================== */
+
+
+function renderTruck(){
+
+
+    let completion = 0;
+
+
+    if(
+        ASM_STATE.truck.boxes > 0
+    ){
+
+        completion = Math.round(
+
+            (
+
+                ASM_STATE.truck.processed
+
+                /
+
+                ASM_STATE.truck.boxes
+
+            )
+
+            *
+
+            100
+
+        );
+
+    }
+
+
+
+    return `
+
+
+        <h2>
+            🚚 Truck Operations
+        </h2>
+
+
+
+        <p>
+            Track freight processing progress.
+        </p>
+
+
+
+        <form onsubmit="updateTruck(event)">
+
+
+
+            <div class="dashboard-card">
+
+
+                Status:
+
+                ${ASM_STATE.truck.status}
+
+
+                <br><br>
+
+
+                <label>
+                    Total Boxes
+                </label>
+
+
+                <br>
+
+
+                <input
+
+                    id="truck-boxes"
+
+                    type="number"
+
+                    value="${ASM_STATE.truck.boxes}"
+
+                >
+
+
+
+                <br><br>
+
+
+
+                <label>
+                    Processed Boxes
+                </label>
+
+
+                <br>
+
+
+                <input
+
+                    id="truck-processed"
+
+                    type="number"
+
+                    value="${ASM_STATE.truck.processed}"
+
+                >
+
+
+
+                <br><br>
+
+
+
+                <button type="submit">
+
+                    Update Truck
+
+                </button>
+
+
+
+            </div>
+
+
+
+        </form>
+
+
+
+
+        <div class="dashboard-card">
+
+
+            Completion:
+
+            ${completion}%
+
+
+        </div>
+
+
+    `;
+
+
+}
+
 
 function renderOpening(){
 
@@ -2406,6 +2562,14 @@ function showScreen(screen){
         
             break;
 
+        
+        case "truck":
+
+            screenArea.innerHTML =
+                renderTruck();
+
+            break;
+
 
 
         case "notes":
@@ -3003,6 +3167,84 @@ function updateSales(event){
 }
 
 
+/* ==========================================================
+   TRUCK CONTROLLER
+========================================================== */
+
+
+function updateTruck(event){
+
+
+    event.preventDefault();
+
+
+
+    const boxesInput =
+        document.getElementById(
+            "truck-boxes"
+        ).value;
+
+
+
+    const processedInput =
+        document.getElementById(
+            "truck-processed"
+        ).value;
+
+
+
+    ASM_STATE.truck.boxes =
+
+        parseInt(
+            boxesInput
+        ) || 0;
+
+
+
+    ASM_STATE.truck.processed =
+
+        parseInt(
+            processedInput
+        ) || 0;
+
+
+
+    if(
+        ASM_STATE.truck.boxes > 0
+    ){
+
+        ASM_STATE.truck.completed =
+
+            ASM_STATE.truck.processed >=
+            ASM_STATE.truck.boxes;
+
+
+    }
+
+
+
+    ASM_STATE.truck.status =
+
+        ASM_STATE.truck.completed
+
+        ?
+
+        "Complete"
+
+        :
+
+        "In Progress";
+
+
+
+    saveASMState();
+
+
+
+    showScreen("truck");
+
+
+}
 
 /* ==========================================================
    APPLICATION STARTUP
