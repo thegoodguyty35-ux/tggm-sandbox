@@ -358,6 +358,14 @@
             ✅ Daily Tasks
 
         </button>
+        
+
+        
+        <button onclick="showScreen('sales')">
+            
+            💰 Sales Dashboard
+            
+        </button>
 
 
 
@@ -2329,6 +2337,15 @@ function showScreen(screen){
             screenArea.innerHTML =
                 renderTasks();
 
+            break;
+            
+
+
+        case "sales":
+
+            screenArea.innerHTML =
+                renderSales();
+        
             break;
 
 
