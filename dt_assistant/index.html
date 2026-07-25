@@ -1065,29 +1065,73 @@ function renderDashboard(){
     const averageTicket =
         ASM_STATE.sales.averageTicket;
 
+    const truckBoxes =
+    ASM_STATE.truck.boxes;
 
 
-    const readinessScore = Math.round(
+    const truckProcessed =
+        ASM_STATE.truck.processed;
+    
+    
+    let truckCompletion = 0;
+    
+    
+    if(truckBoxes > 0){
+    
+        truckCompletion =
+            Math.round(
+                (truckProcessed / truckBoxes) * 100
+            );
+    
+    }
 
-        (
 
-            (openingComplete / openingTotal) * 40
 
-            +
+const readinessScore = Math.round(
 
-            (closingComplete / closingTotal) * 20
+    (
 
-            +
+        (openingComplete / openingTotal) * 25
 
-            (taskComplete / taskTotal) * 30
 
-            +
+        +
 
-            (notesTotal > 0 ? 10 : 0)
 
-        )
+        (closingComplete / closingTotal) * 15
 
-    );
+
+        +
+
+
+        (taskComplete / taskTotal) * 20
+
+
+        +
+
+
+        (truckCompletion / 100) * 15
+
+
+        +
+
+
+        (salesPace / 100) * 15
+
+
+        +
+
+
+        (notesTotal > 0 ? 5 : 0)
+
+
+        +
+
+
+        (incidentsTotal === 0 ? 5 : 0)
+
+    )
+
+);
 
 
 
