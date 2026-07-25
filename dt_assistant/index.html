@@ -334,6 +334,13 @@
             🏠 Dashboard
 
         </button>
+        
+
+        <button onclick="showScreen('history')">
+
+            📚 Shift History
+
+        </button>
 
 
 
@@ -3270,6 +3277,191 @@ function renderNotes(){
 
 
 
+/* ==========================================================
+   SHIFT HISTORY SCREEN
+========================================================== */
+
+
+function renderHistory(){
+
+
+    let historyHTML = "";
+
+
+
+    ASM_STATE.closeouts.forEach(record => {
+
+
+
+        let handoffHTML = "";
+
+
+
+        record.handoff.forEach(item => {
+
+
+            handoffHTML += `
+
+
+                <div>
+
+
+                    <strong>
+                        ${item.title}
+                    </strong>
+
+
+                    <br>
+
+
+                    ${item.action}
+
+
+                </div>
+
+
+                <br>
+
+
+            `;
+
+
+        });
+
+
+
+
+        historyHTML += `
+
+
+
+        <div class="dashboard-card">
+
+
+            <strong>
+                🗓️ Shift Closed
+            </strong>
+
+
+            <br><br>
+
+
+            Closed:
+
+            ${record.closedAt}
+
+
+            <br><br>
+
+
+            Closed By:
+
+            ${record.closedBy}
+
+
+            <br><br>
+
+
+            Readiness Score:
+
+            ${record.readinessScore}%
+
+
+            <br><br>
+
+
+            Sales:
+
+            ${record.sales}
+
+
+            <br><br>
+
+
+            Truck:
+
+            ${record.truck}
+
+
+            <br><br>
+
+
+            Notes:
+
+            ${record.notes}
+
+
+            <br>
+
+
+            Incidents:
+
+            ${record.incidents}
+
+
+            <br>
+
+
+            Remaining Tasks:
+
+            ${record.incompleteTasks}
+
+
+            <hr>
+
+
+            <strong>
+                🗣️ Handoff
+            </strong>
+
+
+            <br><br>
+
+
+            ${handoffHTML}
+
+
+
+        </div>
+
+
+
+        `;
+
+
+
+    });
+
+
+
+
+    return `
+
+
+        <h2>
+            📚 Shift History
+        </h2>
+
+
+
+        <p>
+            Review previous ASM shift closeouts.
+        </p>
+
+
+
+        ${
+            historyHTML ||
+            "No completed shifts yet."
+        }
+
+
+
+    `;
+
+
+}
+
 
     return `
 
@@ -3742,31 +3934,40 @@ function showScreen(screen){
 
 
     switch(screen){
-
-
+    
+    
         case "dashboard":
-
+    
             screenArea.innerHTML =
                 renderDashboard();
-
+    
             break;
-
-
-
+    
+    
+    
+        case "history":
+    
+            screenArea.innerHTML =
+                renderHistory();
+    
+            break;
+    
+    
+    
         case "opening":
-
+    
             screenArea.innerHTML =
                 renderOpening();
-
+    
             break;
-
-
-
+    
+    
+    
         case "closing":
-
+    
             screenArea.innerHTML =
                 renderClosing();
-
+    
             break;
 
 
