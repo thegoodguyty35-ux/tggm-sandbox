@@ -1007,16 +1007,14 @@ function renderDashboard(){
         ).length;
 
 
-
     const closingTotal =
         ASM_STATE.closingChecklist.length;
 
-
+    
     const closingComplete =
         ASM_STATE.closingChecklist.filter(
             item => item.complete
         ).length;
-
 
 
     const taskTotal =
@@ -1032,8 +1030,9 @@ function renderDashboard(){
     const notesTotal =
         ASM_STATE.notes.length;
 
+    
     const handoffsTotal =
-    ASM_STATE.handoffs.length;
+        ASM_STATE.handoffs.length;
     
     
     const incidentsTotal =
