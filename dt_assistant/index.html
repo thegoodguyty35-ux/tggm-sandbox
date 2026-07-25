@@ -790,6 +790,12 @@ sales: {
 alerts: [],
 
 
+shiftHistory: [],
+
+
+memory: []
+
+
 openingChecklist: [
 
     {
@@ -1514,6 +1520,132 @@ function generateShiftIntelligence(){
 
 
 }
+
+
+/* ==========================================================
+   SHIFT PHASE ENGINE
+========================================================== */
+
+
+function getCurrentShiftPhase(){
+
+
+    const hour =
+        new Date().getHours();
+
+
+
+    if(hour < 12){
+
+        return "🌅 Opening";
+
+    }
+
+
+    if(hour < 17){
+
+        return "☀️ Mid Shift";
+
+    }
+
+
+    return "🌙 Closing";
+
+
+}
+
+
+/* ==========================================================
+   SHIFT MEMORY ENGINE
+========================================================== */
+
+
+function generateShiftMemory(){
+
+
+    let memory = [];
+
+
+
+    const phase =
+        getCurrentShiftPhase();
+
+
+
+    memory.push({
+
+        type:
+        "SHIFT",
+
+        message:
+        `Current phase: ${phase}`
+
+    });
+
+
+
+
+    if(
+        ASM_STATE.notes.length > 0
+    ){
+
+        memory.push({
+
+            type:
+            "NOTES",
+
+            message:
+            `${ASM_STATE.notes.length} manager note(s) recorded`
+
+        });
+
+    }
+
+
+
+
+    if(
+        ASM_STATE.incidents.length > 0
+    ){
+
+        memory.push({
+
+            type:
+            "INCIDENTS",
+
+            message:
+            `${ASM_STATE.incidents.length} incident(s) require awareness`
+
+        });
+
+    }
+
+
+
+
+    if(
+        ASM_STATE.handoffs.length > 0
+    ){
+
+        memory.push({
+
+            type:
+            "HANDOFF",
+
+            message:
+            `${ASM_STATE.handoffs.length} manager handoff item(s) saved`
+
+        });
+
+    }
+
+
+
+
+    return memory;
+
+
+}
 /* ==========================================================
    SCREEN RENDER FUNCTIONS
 ========================================================== */
@@ -1575,6 +1707,9 @@ function renderDashboard(){
 
     const intelligence =
         generateShiftIntelligence();
+
+    const memory =
+        generateShiftMemory();
 
     const salesGoal =
         ASM_STATE.sales.dailyGoal;
@@ -1954,6 +2089,51 @@ function renderDashboard(){
         
             ${
                 intelligence.map(
+                    item => `
+        
+        
+                    <div>
+        
+        
+                        <strong>
+                            ${item.type}
+                        </strong>
+        
+        
+                        <br>
+        
+        
+                        ${item.message}
+        
+        
+                    </div>
+        
+        
+                    <br>
+        
+        
+                    `
+                ).join("")
+            }
+        
+        
+        </div>
+
+
+        <div class="dashboard-card">
+
+
+            <strong>
+                🗓️ Shift Memory
+            </strong>
+        
+        
+            <br><br>
+        
+        
+        
+            ${
+                memory.map(
                     item => `
         
         
