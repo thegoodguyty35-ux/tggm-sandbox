@@ -689,7 +689,23 @@ const ASM_STATE = {
     
     
         closedAt:
-        null
+        null,
+    
+    
+        openedBy:
+        null,
+    
+    
+        closedBy:
+        null,
+    
+    
+        receivingManager:
+        null,
+    
+    
+        handoffAccepted:
+        false
     
     
     },
@@ -824,8 +840,14 @@ memory: [],
 
 closeouts: [],
 
-currentUser:
-"ASM",
+const ASM_STATE = {
+
+
+    currentUser:
+    "ASM",
+
+
+    store:{
 
 
 openingChecklist: [
@@ -2607,6 +2629,54 @@ function renderDashboard(){
         
                     `
                 ).join("")
+            }
+        
+        
+        </div>
+
+
+        <div class="dashboard-card">
+
+
+            <strong>
+                🤝 Handoff Status
+            </strong>
+        
+        
+            <br><br>
+        
+        
+            ${
+                ASM_STATE.shift.handoffAccepted
+        
+                ?
+        
+                `
+                ✅ Accepted
+        
+                <br><br>
+        
+                Received By:
+                ${ASM_STATE.shift.receivingManager}
+                `
+        
+        
+                :
+        
+                `
+                ⏳ Awaiting Acceptance
+        
+        
+                <br><br>
+        
+        
+                <button onclick="acceptHandoff()">
+        
+                    Accept Handoff
+        
+                </button>
+                `
+        
             }
         
         
@@ -5013,6 +5083,33 @@ function closeShift(){
 
 
 /* ==========================================================
+   HANDOFF ACCEPTANCE CONTROLLER
+========================================================== */
+
+
+function acceptHandoff(){
+
+
+    ASM_STATE.shift.handoffAccepted =
+        true;
+
+
+    ASM_STATE.shift.receivingManager =
+        ASM_STATE.currentUser;
+
+
+
+    saveASMState();
+
+
+
+    showScreen("dashboard");
+
+
+}
+
+
+/* ==========================================================
    SHIFT LIFECYCLE CONTROLLER
 ========================================================== */
 
@@ -5026,6 +5123,10 @@ function openShift(){
 
     ASM_STATE.shift.openedAt =
         new Date().toLocaleString();
+
+
+    ASM_STATE.shift.openedBy =
+        ASM_STATE.currentUser;
 
 
     ASM_STATE.shift.closedAt =
@@ -5058,6 +5159,9 @@ function closeActiveShift(){
 
     ASM_STATE.shift.closedAt =
         new Date().toLocaleString();
+
+    ASM_STATE.shift.closedBy =
+        ASM_STATE.currentUser;
 
 
 
