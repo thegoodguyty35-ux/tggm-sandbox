@@ -3788,6 +3788,84 @@ function renderDashboard(){
 
 
         </div>
+
+
+        <div class="dashboard-card">
+
+
+            <strong>
+                📈 Decision Effectiveness Learning
+            </strong>
+        
+        
+            <br><br>
+        
+        
+            ${
+                ASM_STATE.decisionResults.length > 0
+        
+        
+                ?
+        
+        
+                ASM_STATE.decisionResults.map(
+                    item => `
+        
+        
+                    <div>
+        
+        
+                        <strong>
+                            ${item.effectiveness}
+                        </strong>
+        
+        
+                        <br><br>
+        
+        
+                        Action:
+        
+                        <br>
+        
+                        ${item.action}
+        
+        
+                        <br><br>
+        
+        
+                        Readiness Change:
+        
+                        ${item.readinessChange}
+        
+        
+                        <br>
+        
+        
+                        Sales Change:
+        
+                        ${item.salesChange}
+        
+        
+                    </div>
+        
+        
+                    <hr>
+        
+        
+                    `
+                ).join("")
+        
+        
+                :
+        
+        
+                "No decision outcomes analyzed."
+        
+        
+            }
+        
+        
+        </div>
         
 
         <div class="dashboard-card">
