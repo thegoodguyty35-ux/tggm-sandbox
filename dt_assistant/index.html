@@ -2118,11 +2118,26 @@ function renderDashboard(){
         
         
             ${
-                shiftOpened
+                ASM_STATE.shift.status === "ACTIVE"
+            
                 ?
-                "Opened: " + shiftOpened
+            
+                "Opened: " + ASM_STATE.shift.openedAt
+            
+            
                 :
+            
+                ASM_STATE.shift.closedAt
+            
+                ?
+            
+                "Closed: " + ASM_STATE.shift.closedAt
+            
+            
+                :
+            
                 "No active shift"
+            
             }
         
         
@@ -2148,7 +2163,7 @@ function renderDashboard(){
                 `
                 <button onclick="closeActiveShift()">
         
-                    Close Active Shift
+                    Close Shift
         
                 </button>
                 `
@@ -2555,26 +2570,6 @@ function renderDashboard(){
         
         </div>
 
-
-        <div class="dashboard-card">
-
-
-            <strong>
-                🌙 Shift Actions
-            </strong>
-        
-        
-            <br><br>
-        
-        
-            <button onclick="closeShift()">
-        
-                Close Shift
-        
-            </button>
-        
-        
-        </div>
 
 
         <div class="dashboard-card">
@@ -5033,14 +5028,14 @@ function openShift(){
         new Date().toLocaleString();
 
 
-
     ASM_STATE.shift.closedAt =
         null;
 
 
-
     saveASMState();
 
+
+    renderDashboard();
 
 
     showScreen("dashboard");
