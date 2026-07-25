@@ -2785,29 +2785,50 @@ function addIncident(event){
     }
 
 
-    /* ==========================================================
+/* ==========================================================
    SALES CONTROLLER
 ========================================================== */
 
+
 function updateSales(event){
+
 
     event.preventDefault();
 
+
+
+    const salesInput =
+        document.getElementById(
+            "sales-current"
+        ).value;
+
+
+
+    const transactionInput =
+        document.getElementById(
+            "sales-transactions"
+        ).value;
+
+
+
     ASM_STATE.sales.currentSales =
         parseFloat(
-            document.getElementById(
-                "sales-current"
-            ).value
+            salesInput
         ) || 0;
+
+
 
     ASM_STATE.sales.transactions =
         parseInt(
-            document.getElementById(
-                "sales-transactions"
-            ).value
+            transactionInput
         ) || 0;
 
-    if(ASM_STATE.sales.transactions > 0){
+
+
+
+    if(
+        ASM_STATE.sales.transactions > 0
+    ){
 
         ASM_STATE.sales.averageTicket =
 
@@ -2817,13 +2838,21 @@ function updateSales(event){
 
             ASM_STATE.sales.transactions;
 
-    }else{
+
+    } else {
+
 
         ASM_STATE.sales.averageTicket = 0;
 
+
     }
 
-    if(ASM_STATE.sales.dailyGoal > 0){
+
+
+
+    if(
+        ASM_STATE.sales.dailyGoal > 0
+    ){
 
         ASM_STATE.sales.salesPace =
 
@@ -2837,22 +2866,39 @@ function updateSales(event){
 
                     ASM_STATE.sales.dailyGoal
 
-                ) * 100
+                )
+
+                *
+
+                100
 
             );
 
-    }else{
+
+    } else {
+
 
         ASM_STATE.sales.salesPace = 0;
 
+
     }
 
+
+
+
     ASM_STATE.sales.lastUpdated =
+
         new Date().toLocaleString();
+
+
+
 
     saveASMState();
 
+
+
     showScreen("sales");
+
 
 }
 
