@@ -796,6 +796,9 @@ shiftHistory: [],
 memory: [],
 
 
+closeouts: [],
+
+
 openingChecklist: [
 
     {
@@ -1646,6 +1649,142 @@ function generateShiftMemory(){
 
 
 }
+
+
+/* ==========================================================
+   SHIFT CLOSEOUT ENGINE
+========================================================== */
+
+
+function generateShiftCloseout(){
+
+
+    const incompleteTasks =
+
+        ASM_STATE.tasks.filter(
+
+            task => !task.complete
+
+        ).length;
+
+
+
+    const truckBoxes =
+        ASM_STATE.truck.boxes;
+
+
+    const truckProcessed =
+        ASM_STATE.truck.processed;
+
+
+
+    let truckStatus =
+        "No truck data";
+
+
+
+    if(truckBoxes > 0){
+
+        truckStatus =
+
+            `${truckProcessed} / ${truckBoxes} boxes processed`;
+
+    }
+
+
+
+
+
+    let summary = {
+
+
+        date:
+        new Date().toLocaleDateString(),
+
+
+        phase:
+        getCurrentShiftPhase(),
+
+
+        sales:
+
+        `${ASM_STATE.sales.currentSales} / ${ASM_STATE.sales.dailyGoal}`,
+
+
+
+        truck:
+
+        truckStatus,
+
+
+
+        notes:
+
+        ASM_STATE.notes.length,
+
+
+
+        incidents:
+
+        ASM_STATE.incidents.length,
+
+
+
+        incompleteTasks:
+
+        incompleteTasks
+
+
+
+    };
+
+
+
+    return summary;
+
+
+}
+
+
+/* ==========================================================
+   AUTOMATIC HANDOFF ENGINE
+========================================================== */
+
+
+function generateAutomaticHandoff(){
+
+
+    let handoff = [];
+
+
+
+    const actions =
+        generateManagerActions();
+
+
+
+    actions.forEach(item => {
+
+
+        handoff.push(
+
+            item.title
+            +
+            " - "
+            +
+            item.action
+
+        );
+
+
+    });
+
+
+
+    return handoff;
+
+
+}
 /* ==========================================================
    SCREEN RENDER FUNCTIONS
 ========================================================== */
@@ -1710,6 +1849,13 @@ function renderDashboard(){
 
     const memory =
         generateShiftMemory();
+
+    const closeout =
+    generateShiftCloseout();
+
+
+    const handoff =
+    generateAutomaticHandoff();
 
     const salesGoal =
         ASM_STATE.sales.dailyGoal;
@@ -2156,6 +2302,80 @@ function renderDashboard(){
         
                     <br>
         
+        
+                    `
+                ).join("")
+            }
+        
+        
+        </div>
+
+
+        <div class="dashboard-card">
+
+
+            <strong>
+                🌙 Shift Closeout Preview
+            </strong>
+        
+        
+            <br><br>
+        
+        
+            Sales:
+        
+            ${closeout.sales}
+        
+        
+            <br><br>
+        
+        
+            Truck:
+        
+            ${closeout.truck}
+        
+        
+            <br><br>
+        
+        
+            Notes:
+        
+            ${closeout.notes}
+        
+        
+            <br><br>
+        
+        
+            Incidents:
+        
+            ${closeout.incidents}
+        
+        
+        </div>
+
+
+        <div class="dashboard-card">
+
+
+            <strong>
+                🗣️ Generated Handoff
+            </strong>
+        
+        
+            <br><br>
+        
+        
+            ${
+                handoff.map(
+                    item => `
+        
+                    <div>
+        
+                        ${item}
+        
+                    </div>
+        
+                    <br>
         
                     `
                 ).join("")
