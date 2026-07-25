@@ -1292,6 +1292,125 @@ function renderDashboard(){
 
 
 
+/* ==========================================================
+   SALES DASHBOARD
+========================================================== */
+
+function renderSales(){
+
+    return `
+
+        <h2>
+            💰 Sales Dashboard
+        </h2>
+
+        <p>
+            Enter current sales performance.
+        </p>
+
+
+        <form onsubmit="updateSales(event)">
+
+
+            <div class="dashboard-card">
+
+
+                <strong>
+                    Daily Goal
+                </strong>
+
+                <br><br>
+
+                $${ASM_STATE.sales.dailyGoal.toLocaleString()}
+
+
+                <hr>
+
+
+                <label>
+                    Current Sales
+                </label>
+
+                <br>
+
+                <input
+
+                    id="sales-current"
+
+                    type="number"
+
+                    step="0.01"
+
+                    value="${ASM_STATE.sales.currentSales}"
+
+                >
+
+
+                <br><br>
+
+
+                <label>
+                    Transactions
+                </label>
+
+                <br>
+
+                <input
+
+                    id="sales-transactions"
+
+                    type="number"
+
+                    value="${ASM_STATE.sales.transactions}"
+
+                >
+
+
+                <br><br>
+
+
+                <button type="submit">
+
+                    Update Sales
+
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+        <div class="dashboard-card">
+
+            <strong>
+                Average Ticket
+            </strong>
+
+            <br><br>
+
+            $${ASM_STATE.sales.averageTicket.toFixed(2)}
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <strong>
+                Sales Pace
+            </strong>
+
+            <br><br>
+
+            ${ASM_STATE.sales.salesPace}%
+
+        </div>
+
+    `;
+
+}
+
 
 
 function renderOpening(){
