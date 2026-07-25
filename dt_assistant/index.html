@@ -3024,6 +3024,66 @@ function buildExperienceLibrary(){
 
 
 /* ==========================================================
+   EXPERIENCE CONFIDENCE ENGINE
+========================================================== */
+
+
+function calculateExperienceConfidence(
+    experience
+){
+
+
+    let confidence = 0;
+
+
+
+    if(
+        experience.timesUsed >= 1
+    ){
+
+        confidence += 25;
+
+    }
+
+
+
+    if(
+        experience.timesUsed >= 3
+    ){
+
+        confidence += 25;
+
+    }
+
+
+
+    if(
+        experience.timesUsed >= 5
+    ){
+
+        confidence += 25;
+
+    }
+
+
+
+    if(
+        experience.timesUsed >= 10
+    ){
+
+        confidence += 25;
+
+    }
+
+
+
+    return confidence;
+
+
+}
+
+
+/* ==========================================================
    PREDICTIVE SHIFT PLANNING ENGINE
 ========================================================== */
 
