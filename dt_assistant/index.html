@@ -1148,6 +1148,167 @@ function generateOperationalPriorities(){
 
 
 }
+
+
+/* ==========================================================
+   MANAGER ACTION QUEUE ENGINE
+========================================================== */
+
+
+function generateManagerActions(){
+
+
+    let actions = [];
+
+
+
+    const truckBoxes =
+        ASM_STATE.truck.boxes;
+
+
+    const truckProcessed =
+        ASM_STATE.truck.processed;
+
+
+
+    let truckCompletion = 0;
+
+
+
+    if(truckBoxes > 0){
+
+        truckCompletion =
+            Math.round(
+                (truckProcessed / truckBoxes) * 100
+            );
+
+    }
+
+
+
+
+    if(
+        truckBoxes > 0
+        &&
+        truckCompletion < 100
+    ){
+
+        actions.push({
+
+            order:1,
+
+            title:
+            "🚚 Continue freight processing",
+
+            action:
+            `Process remaining ${truckBoxes - truckProcessed} boxes`
+
+        });
+
+    }
+
+
+
+
+    if(
+        ASM_STATE.sales.salesPace < 80
+        &&
+        ASM_STATE.sales.dailyGoal > 0
+    ){
+
+        actions.push({
+
+            order:2,
+
+            title:
+            "💰 Improve sales pace",
+
+            action:
+            "Review sales floor conditions and customer engagement"
+
+        });
+
+    }
+
+
+
+
+    const incompleteTasks =
+
+        ASM_STATE.tasks.filter(
+
+            task => !task.complete
+
+        );
+
+
+
+    if(
+        incompleteTasks.length > 0
+    ){
+
+        actions.push({
+
+            order:3,
+
+            title:
+            "✅ Complete daily ASM tasks",
+
+            action:
+            `${incompleteTasks.length} task(s) remaining`
+
+        });
+
+    }
+
+
+
+
+    if(
+        ASM_STATE.incidents.length > 0
+    ){
+
+        actions.push({
+
+            order:4,
+
+            title:
+            "🚨 Review incidents",
+
+            action:
+            "Follow up on logged operational issues"
+
+        });
+
+    }
+
+
+
+
+    if(
+        actions.length === 0
+    ){
+
+        actions.push({
+
+            order:1,
+
+            title:
+            "🟢 Operations stable",
+
+            action:
+            "No immediate manager actions required"
+
+        });
+
+    }
+
+
+
+    return actions;
+
+
+}
 /* ==========================================================
    SCREEN RENDER FUNCTIONS
 ========================================================== */
@@ -1203,6 +1364,9 @@ function renderDashboard(){
 
     const priorities =
         generateOperationalPriorities();
+
+    const actions =
+        generateManagerActions();
 
     const salesGoal =
         ASM_STATE.sales.dailyGoal;
@@ -1514,6 +1678,51 @@ function renderDashboard(){
                     </div>
         
                     <br>
+        
+                    `
+                ).join("")
+            }
+        
+        
+        </div>
+
+
+        <div class="dashboard-card">
+
+
+            <strong>
+                📋 Manager Action Queue
+            </strong>
+        
+        
+            <br><br>
+        
+        
+        
+            ${
+                actions.map(
+                    item => `
+        
+        
+                    <div>
+        
+        
+                        <strong>
+                            ${item.title}
+                        </strong>
+        
+        
+                        <br>
+        
+        
+                        ${item.action}
+        
+        
+                    </div>
+        
+        
+                    <br>
+        
         
                     `
                 ).join("")
