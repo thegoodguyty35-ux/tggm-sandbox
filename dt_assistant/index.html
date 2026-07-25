@@ -3090,6 +3090,62 @@ function renderDashboard(){
 
         <div class="dashboard-card">
 
+        
+            <strong>
+                🤖 Manager Assistant
+            </strong>
+        
+        
+            <br><br>
+        
+        
+            ${
+                assistant.length > 0
+        
+                ?
+        
+                assistant.map(
+                    item => `
+        
+        
+                    <div>
+        
+        
+                        <strong>
+                            ${item.priority}
+                            -
+                            ${item.type}
+                        </strong>
+        
+        
+                        <br>
+        
+        
+                        ${item.message}
+        
+        
+                    </div>
+        
+        
+                    <br>
+        
+        
+                    `
+                ).join("")
+        
+        
+                :
+        
+                "No recommendations at this time."
+        
+            }
+        
+        
+        </div>
+
+
+        <div class="dashboard-card">
+
 
             <strong>
                 🗓️ Shift Memory
