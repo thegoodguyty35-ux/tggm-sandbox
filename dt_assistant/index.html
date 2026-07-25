@@ -1502,6 +1502,135 @@ function generateOperationalPatterns(){
 
 }
 
+
+/* ==========================================================
+   ADAPTIVE RECOMMENDATION ENGINE
+========================================================== */
+
+
+function generateAdaptiveRecommendations(){
+
+
+    let recommendations = [];
+
+
+
+    const decisions =
+        ASM_STATE.decisions;
+
+
+
+    const patterns =
+        generateOperationalPatterns();
+
+
+
+    /*
+        SALES MEMORY
+    */
+
+
+    const salesDecisions =
+
+        decisions.filter(
+
+            decision =>
+
+            decision.recommendation
+
+            .toLowerCase()
+
+            .includes("sales")
+
+        );
+
+
+
+    if(
+        salesDecisions.length > 0
+    ){
+
+
+        const latestSalesDecision =
+
+            salesDecisions[
+                salesDecisions.length - 1
+            ];
+
+
+
+        recommendations.push({
+
+            priority:
+            "HIGH",
+
+
+            category:
+            "SALES MEMORY",
+
+
+            message:
+
+            "Previous sales issue detected.",
+
+
+            recommendation:
+
+            "Review previous successful action: "
+
+            +
+
+            latestSalesDecision.action
+
+        });
+
+
+    }
+
+
+
+    /*
+        PATTERN MEMORY
+    */
+
+
+    patterns.forEach(
+
+        pattern => {
+
+
+            recommendations.push({
+
+                priority:
+                pattern.priority,
+
+
+                category:
+                pattern.category,
+
+
+                message:
+                pattern.pattern,
+
+
+                recommendation:
+                pattern.recommendation
+
+
+            });
+
+
+        }
+
+    );
+
+
+
+    return recommendations;
+
+
+}
+
 /* ==========================================================
    SHIFT INTELLIGENCE ENGINE
 ========================================================== */
@@ -2860,6 +2989,9 @@ function renderDashboard(){
     const predictions =
     generateShiftPredictions();
 
+    const adaptiveRecommendations =
+    generateAdaptiveRecommendations();
+
     const patterns =
     generateOperationalPatterns();
 
@@ -3455,6 +3587,81 @@ function renderDashboard(){
         
         
         </div>
+
+
+                <div class="dashboard-card">
+
+
+            <strong>
+                🧬 Adaptive Recommendations
+            </strong>
+
+
+            <br><br>
+
+
+            ${
+                adaptiveRecommendations.length > 0
+
+
+                ?
+
+
+                adaptiveRecommendations.map(
+                    item => `
+
+
+                    <div>
+
+
+                        <strong>
+                            ${item.priority}
+                            -
+                            ${item.category}
+                        </strong>
+
+
+                        <br><br>
+
+
+                        ${item.message}
+
+
+                        <br><br>
+
+
+                        <strong>
+                            Recommended:
+                        </strong>
+
+
+                        <br>
+
+
+                        ${item.recommendation}
+
+
+                    </div>
+
+
+                    <br>
+
+
+                    `
+                ).join("")
+
+
+                :
+
+
+                "No adaptive recommendations available."
+
+
+            }
+
+
+        </div>
+        
 
         <div class="dashboard-card">
 
