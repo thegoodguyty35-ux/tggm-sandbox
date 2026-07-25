@@ -4284,6 +4284,108 @@ function renderDashboard(){
 
 
         <div class="dashboard-card">
+
+
+            <strong>
+                🧬 Store Experience Memory
+            </strong>
+        
+        
+            <br><br>
+        
+        
+            ${
+                ASM_STATE.experienceLibrary.length > 0
+        
+        
+                ?
+        
+        
+                ASM_STATE.experienceLibrary.map(
+                    item => `
+        
+        
+                    <div>
+        
+        
+                        <strong>
+                            ${item.category}
+                        </strong>
+        
+        
+                        <br><br>
+        
+        
+                        Problem:
+        
+                        <br>
+        
+                        ${item.problem}
+        
+        
+                        <br><br>
+        
+        
+                        Successful Action:
+        
+                        <br>
+        
+                        ${item.successfulAction}
+        
+        
+                        <br><br>
+        
+        
+                        Effectiveness:
+        
+                        <br>
+        
+                        ${item.effectiveness}
+        
+        
+                        <br><br>
+        
+        
+                        Confidence:
+        
+                        <br>
+        
+                        ${item.confidence}%
+        
+        
+                        <br>
+        
+        
+                        Used:
+        
+                        ${item.timesUsed}
+        
+                        time(s)
+        
+        
+                    </div>
+        
+        
+                    <hr>
+        
+        
+                    `
+                ).join("")
+        
+        
+                :
+        
+        
+                "No experience memory recorded."
+        
+        
+            }
+        
+        
+        </div>
+
+
+        <div class="dashboard-card">
             
             
             <strong>
