@@ -2535,6 +2535,187 @@ function generateManagerAssistant(){
 
 
 }
+
+
+/* ==========================================================
+   PREDICTIVE SHIFT PLANNING ENGINE
+========================================================== */
+
+
+function generateShiftPredictions(){
+
+
+    let predictions = [];
+
+
+
+    const analytics =
+        generateShiftAnalytics();
+
+
+
+    const incompleteTasks =
+
+        ASM_STATE.tasks.filter(
+
+            task => !task.complete
+
+        ).length;
+
+
+
+    const truckRemaining =
+
+        ASM_STATE.truck.boxes -
+
+        ASM_STATE.truck.processed;
+
+
+
+    /*
+        FREIGHT RISK
+    */
+
+
+    if(truckRemaining > 0){
+
+
+        predictions.push({
+
+
+            category:
+            "FREIGHT RISK",
+
+
+            priority:
+            "MEDIUM",
+
+
+            prediction:
+
+            `${truckRemaining} boxes remain. Freight completion may impact closing readiness.`
+
+
+        });
+
+
+    }
+
+
+
+
+
+    /*
+        SALES RISK
+    */
+
+
+    if(
+        ASM_STATE.sales.salesPace < 80
+    ){
+
+
+        predictions.push({
+
+
+            category:
+            "SALES RISK",
+
+
+            priority:
+            "HIGH",
+
+
+            prediction:
+
+            "Current sales pace suggests additional floor engagement may be needed."
+
+
+        });
+
+
+    }
+
+
+
+
+
+    /*
+        TASK COMPLETION RISK
+    */
+
+
+    if(
+        incompleteTasks > 0
+    ){
+
+
+        predictions.push({
+
+
+            category:
+            "TASK RISK",
+
+
+            priority:
+            "LOW",
+
+
+            prediction:
+
+            `${incompleteTasks} unfinished task(s) may carry into shift handoff.`
+
+
+        });
+
+
+    }
+
+
+
+
+
+    /*
+        HISTORICAL PATTERN
+    */
+
+
+    if(
+        analytics.totalShifts >= 3
+        &&
+        analytics.averageReadiness < 70
+    ){
+
+
+        predictions.push({
+
+
+            category:
+            "TREND WARNING",
+
+
+            priority:
+            "MEDIUM",
+
+
+            prediction:
+
+            "Multiple recent shifts show readiness challenges."
+
+
+        });
+
+
+    }
+
+
+
+
+
+    return predictions;
+
+
+}
 /* ==========================================================
    SCREEN RENDER FUNCTIONS
 ========================================================== */
@@ -2547,8 +2728,10 @@ function renderDashboard(){
 
     const assistant =
     generateManagerAssistant();
-    
-    
+
+    const predictions =
+    generateShiftPredictions();
+
     const analytics =
     generateShiftAnalytics();
 
