@@ -2306,6 +2306,235 @@ function generateShiftAnalytics(){
 
 
 }
+
+
+/* ==========================================================
+   AI MANAGER ASSISTANT ENGINE
+========================================================== */
+
+
+function generateManagerAssistant(){
+
+
+    let recommendations = [];
+
+
+
+    const salesPace =
+        ASM_STATE.sales.salesPace;
+
+
+
+    const truck =
+        ASM_STATE.truck;
+
+
+
+    const incompleteTasks =
+
+        ASM_STATE.tasks.filter(
+
+            task => !task.complete
+
+        ).length;
+
+
+
+    const incidents =
+        ASM_STATE.incidents.length;
+
+
+
+    const analytics =
+        generateShiftAnalytics();
+
+
+
+
+    /*
+        SALES INTELLIGENCE
+    */
+
+
+    if(salesPace < 80){
+
+
+        recommendations.push({
+
+
+            type:
+            "SALES",
+
+
+            priority:
+            "HIGH",
+
+
+            message:
+
+            "Sales pace is below target. Increase floor engagement, recovery, and customer interaction."
+
+
+        });
+
+
+    }
+
+
+
+
+    /*
+        FREIGHT INTELLIGENCE
+    */
+
+
+    if(
+        truck.boxes > 0
+        &&
+        truck.processed < truck.boxes
+    ){
+
+
+        const remaining =
+
+            truck.boxes -
+            truck.processed;
+
+
+
+        recommendations.push({
+
+
+            type:
+            "FREIGHT",
+
+
+            priority:
+            "MEDIUM",
+
+
+            message:
+
+            `Freight remaining: ${remaining} boxes. Prioritize processing before shift transition.`
+
+
+        });
+
+
+    }
+
+
+
+
+
+    /*
+        TASK INTELLIGENCE
+    */
+
+
+    if(
+        incompleteTasks > 0
+    ){
+
+
+        recommendations.push({
+
+
+            type:
+            "TASKS",
+
+
+            priority:
+            "LOW",
+
+
+            message:
+
+            `${incompleteTasks} ASM task(s) remain incomplete. Complete before handoff.`
+
+
+        });
+
+
+    }
+
+
+
+
+    /*
+        INCIDENT INTELLIGENCE
+    */
+
+
+    if(
+        incidents > 0
+    ){
+
+
+        recommendations.push({
+
+
+            type:
+            "SAFETY",
+
+
+            priority:
+            "HIGH",
+
+
+            message:
+
+            `${incidents} incident(s) recorded. Review corrective actions before closeout.`
+
+
+        });
+
+
+    }
+
+
+
+
+
+    /*
+        HISTORICAL MEMORY
+    */
+
+
+    if(
+        analytics.totalShifts > 0
+        &&
+        analytics.averageReadiness < 50
+    ){
+
+
+        recommendations.push({
+
+
+            type:
+            "HISTORY",
+
+
+            priority:
+            "MEDIUM",
+
+
+            message:
+
+            "Recent shift history shows below-target readiness. Focus on consistent checklist completion."
+
+
+        });
+
+
+    }
+
+
+
+    return recommendations;
+
+
+}
 /* ==========================================================
    SCREEN RENDER FUNCTIONS
 ========================================================== */
