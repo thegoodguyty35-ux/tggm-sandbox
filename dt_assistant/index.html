@@ -1651,6 +1651,7 @@ function generateShiftMemory(){
 }
 
 
+
 /* ==========================================================
    SHIFT CLOSEOUT ENGINE
 ========================================================== */
@@ -1766,15 +1767,16 @@ function generateAutomaticHandoff(){
     actions.forEach(item => {
 
 
-        handoff.push(
+        handoff.push({
 
-            item.title
-            +
-            " - "
-            +
+            title:
+            item.title,
+
+
+            action:
             item.action
 
-        );
+        });
 
 
     });
