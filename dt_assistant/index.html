@@ -1309,6 +1309,211 @@ function generateManagerActions(){
 
 
 }
+
+
+/* ==========================================================
+   SHIFT INTELLIGENCE ENGINE
+========================================================== */
+
+
+function generateShiftIntelligence(){
+
+
+    let insights = [];
+
+
+
+    const hour =
+        new Date().getHours();
+
+
+
+    const salesPace =
+        ASM_STATE.sales.salesPace;
+
+
+
+    const truckBoxes =
+        ASM_STATE.truck.boxes;
+
+
+    const truckProcessed =
+        ASM_STATE.truck.processed;
+
+
+
+    let truckCompletion = 0;
+
+
+
+    if(truckBoxes > 0){
+
+        truckCompletion =
+            Math.round(
+                (truckProcessed / truckBoxes) * 100
+            );
+
+    }
+
+
+
+
+
+    /*
+       SALES ANALYSIS
+    */
+
+
+    if(
+        salesPace < 80
+        &&
+        ASM_STATE.sales.dailyGoal > 0
+    ){
+
+        insights.push({
+
+            type:
+            "SALES",
+
+            message:
+            "Sales pace is below target. Focus on floor conditions, customer engagement, and recovery."
+
+        });
+
+    }
+
+
+
+
+
+    /*
+       TRUCK ANALYSIS
+    */
+
+
+    if(
+        truckBoxes > 0
+        &&
+        truckCompletion < 100
+    ){
+
+        insights.push({
+
+            type:
+            "FREIGHT",
+
+            message:
+            `Freight completion is ${truckCompletion}%. Continue processing priorities.`
+
+        });
+
+    }
+
+
+
+
+
+    /*
+       TASK ANALYSIS
+    */
+
+
+    const remainingTasks =
+
+        ASM_STATE.tasks.filter(
+
+            task => !task.complete
+
+        ).length;
+
+
+
+
+    if(
+        remainingTasks > 0
+    ){
+
+        insights.push({
+
+            type:
+            "TASKS",
+
+            message:
+            `${remainingTasks} ASM task(s) remain incomplete.`
+
+        });
+
+    }
+
+
+
+
+
+    /*
+       TIME AWARENESS
+    */
+
+
+    if(
+        hour >= 17
+    ){
+
+        insights.push({
+
+            type:
+            "SHIFT",
+
+            message:
+            "Evening shift detected. Begin preparing closing priorities."
+
+        });
+
+    }
+
+
+
+    if(
+        hour < 10
+    ){
+
+        insights.push({
+
+            type:
+            "SHIFT",
+
+            message:
+            "Opening period detected. Prioritize readiness and customer experience."
+
+        });
+
+    }
+
+
+
+
+
+    if(
+        insights.length === 0
+    ){
+
+        insights.push({
+
+            type:
+            "STATUS",
+
+            message:
+            "Operations appear balanced."
+
+        });
+
+    }
+
+
+
+    return insights;
+
+
+}
 /* ==========================================================
    SCREEN RENDER FUNCTIONS
 ========================================================== */
@@ -1367,6 +1572,9 @@ function renderDashboard(){
 
     const actions =
         generateManagerActions();
+
+    const intelligence =
+        generateShiftIntelligence();
 
     const salesGoal =
         ASM_STATE.sales.dailyGoal;
@@ -1716,6 +1924,51 @@ function renderDashboard(){
         
         
                         ${item.action}
+        
+        
+                    </div>
+        
+        
+                    <br>
+        
+        
+                    `
+                ).join("")
+            }
+        
+        
+        </div>
+
+
+        <div class="dashboard-card">
+
+
+            <strong>
+                🧠 Shift Intelligence
+            </strong>
+        
+        
+            <br><br>
+        
+        
+        
+            ${
+                intelligence.map(
+                    item => `
+        
+        
+                    <div>
+        
+        
+                        <strong>
+                            ${item.type}
+                        </strong>
+        
+        
+                        <br>
+        
+        
+                        ${item.message}
         
         
                     </div>
