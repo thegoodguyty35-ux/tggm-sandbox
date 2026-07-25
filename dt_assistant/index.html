@@ -1631,6 +1631,133 @@ function generateAdaptiveRecommendations(){
 
 }
 
+
+
+/* ==========================================================
+   DECISION OUTCOME LEARNING ENGINE
+========================================================== */
+
+
+function evaluateDecisionOutcomes(){
+
+
+    let results = [];
+
+
+
+    ASM_STATE.decisions.forEach(
+
+        decision => {
+
+
+
+            let readinessBefore =
+                decision.readinessBefore || 0;
+
+
+
+            let readinessAfter =
+                decision.readinessAfter || 0;
+
+
+
+            let salesBefore =
+                decision.salesBefore || 0;
+
+
+
+            let salesAfter =
+                decision.salesAfter || 0;
+
+
+
+            let readinessChange =
+                readinessAfter - readinessBefore;
+
+
+
+            let salesChange =
+                salesAfter - salesBefore;
+
+
+
+            let effectiveness =
+                "NEUTRAL";
+
+
+
+            if(
+                readinessChange > 0
+                ||
+                salesChange > 0
+            ){
+
+                effectiveness =
+                "POSITIVE";
+
+            }
+
+
+
+            if(
+                readinessChange < 0
+                &&
+                salesChange < 0
+            ){
+
+                effectiveness =
+                "NEGATIVE";
+
+            }
+
+
+
+            results.push({
+
+                id:
+                decision.id,
+
+
+                action:
+                decision.action,
+
+
+                effectiveness:
+                effectiveness,
+
+
+                readinessChange:
+                readinessChange,
+
+
+                salesChange:
+                salesChange
+
+
+
+            });
+
+
+
+        }
+
+    );
+
+
+
+    ASM_STATE.decisionResults =
+        results;
+
+
+
+    saveASMState();
+
+
+
+    return results;
+
+
+}
 /* ==========================================================
    SHIFT INTELLIGENCE ENGINE
 ========================================================== */
