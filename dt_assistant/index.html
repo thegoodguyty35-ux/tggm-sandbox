@@ -665,6 +665,9 @@ const ASM_STATE = {
     closeouts: [],
 
 
+    decisions: [],
+
+
 
     store: {
 
@@ -3402,6 +3405,93 @@ function renderDashboard(){
 
 
         <div class="dashboard-card">
+            
+            
+            <strong>
+                🧠 Manager Decision Memory
+            </strong>
+            
+            
+            <br><br>
+            
+            
+            <label>
+                System Recommendation
+            </label>
+            
+            
+            <br>
+            
+            
+            <textarea
+            
+                id="decision-recommendation"
+            
+                rows="3"
+            
+                style="width:100%;"
+            
+            ></textarea>
+            
+            
+            <br><br>
+            
+            
+            <label>
+                Action Taken
+            </label>
+            
+            
+            <br>
+            
+            
+            <textarea
+            
+                id="decision-action"
+            
+                rows="3"
+            
+                style="width:100%;"
+            
+            ></textarea>
+            
+            
+            <br><br>
+            
+            
+            <label>
+                Outcome
+            </label>
+            
+            
+            <br>
+            
+            
+            <textarea
+            
+                id="decision-outcome"
+            
+                rows="3"
+            
+                style="width:100%;"
+            
+            ></textarea>
+            
+            
+            <br><br>
+            
+            
+            <button onclick="saveManagerDecision()">
+            
+                Save Decision
+            
+            </button>
+
+
+        </div>
+
+
+        <div class="dashboard-card">
 
 
             <strong>
@@ -5906,6 +5996,94 @@ function updateSales(event){
 
 
     showScreen("sales");
+
+
+}
+
+
+/* ==========================================================
+   MANAGER DECISION MEMORY CONTROLLER
+========================================================== */
+
+
+function saveManagerDecision(){
+
+
+    const recommendation =
+        document.getElementById(
+            "decision-recommendation"
+        ).value.trim();
+
+
+
+    const action =
+        document.getElementById(
+            "decision-action"
+        ).value.trim();
+
+
+
+    const outcome =
+        document.getElementById(
+            "decision-outcome"
+        ).value.trim();
+
+
+
+    if(!action){
+
+        alert(
+            "Please enter the action taken."
+        );
+
+        return;
+
+    }
+
+
+
+    const decision = {
+
+
+        id:
+        Date.now(),
+
+
+        date:
+        new Date().toLocaleString(),
+
+
+        recommendation:
+        recommendation,
+
+
+        action:
+        action,
+
+
+        outcome:
+        outcome || "No outcome recorded",
+
+
+        manager:
+        ASM_STATE.currentUser
+
+
+    };
+
+
+
+    ASM_STATE.decisions.push(
+        decision
+    );
+
+
+
+    saveASMState();
+
+
+
+    showScreen("dashboard");
 
 
 }
