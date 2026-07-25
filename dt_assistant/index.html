@@ -798,6 +798,9 @@ memory: [],
 
 closeouts: [],
 
+currentUser:
+"ASM",
+
 
 openingChecklist: [
 
@@ -2351,6 +2354,27 @@ function renderDashboard(){
             Incidents:
         
             ${closeout.incidents}
+        
+        
+        </div>
+
+
+        <div class="dashboard-card">
+
+
+            <strong>
+                🌙 Shift Actions
+            </strong>
+        
+        
+            <br><br>
+        
+        
+            <button onclick="closeShift()">
+        
+                Close Shift
+        
+            </button>
         
         
         </div>
@@ -4355,6 +4379,96 @@ function updateTruck(event){
 
 }
 
+
+/* ==========================================================
+   CLOSE SHIFT CONTROLLER
+========================================================== */
+
+
+function closeShift(){
+
+
+    const closeout =
+        generateShiftCloseout();
+
+
+
+    const handoff =
+        generateAutomaticHandoff();
+
+
+
+    const record = {
+
+
+        id:
+        Date.now(),
+
+
+
+        closedBy:
+        ASM_STATE.currentUser,
+
+
+
+        closedAt:
+        new Date().toLocaleString(),
+
+
+
+        readinessScore:
+        renderCurrentReadinessScore(),
+
+
+
+        sales:
+        closeout.sales,
+
+
+
+        truck:
+        closeout.truck,
+
+
+
+        notes:
+        closeout.notes,
+
+
+
+        incidents:
+        closeout.incidents,
+
+
+
+        incompleteTasks:
+        closeout.incompleteTasks,
+
+
+
+        handoff:
+        handoff
+
+
+
+    };
+
+
+
+    ASM_STATE.closeouts.push(record);
+
+
+
+    saveASMState();
+
+
+
+    alert(
+        "Shift Closed Successfully"
+    );
+
+
+}
 /* ==========================================================
    APPLICATION STARTUP
 ========================================================== */
