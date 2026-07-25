@@ -2785,6 +2785,47 @@ function addIncident(event){
     }
 
 
+    const newIncident = {
+
+
+        id:
+        Date.now(),
+
+
+        category:
+        category,
+
+
+        severity:
+        severity,
+
+
+        description:
+        description,
+
+
+        created:
+        new Date().toLocaleString()
+
+
+    };
+
+
+
+    ASM_STATE.incidents.push(newIncident);
+
+
+
+    saveASMState();
+
+
+
+    showScreen("incidents");
+
+
+}
+
+
 /* ==========================================================
    SALES CONTROLLER
 ========================================================== */
@@ -2901,51 +2942,6 @@ function updateSales(event){
 
 
 }
-
-
-
-    const newIncident = {
-
-
-        id:
-        Date.now(),
-
-
-        category:
-        category,
-
-
-        severity:
-        severity,
-
-
-        description:
-        description,
-
-
-        created:
-        new Date().toLocaleString()
-
-
-    };
-
-
-
-    ASM_STATE.incidents.push(newIncident);
-
-
-
-    saveASMState();
-
-
-
-    showScreen("incidents");
-
-
-}
-
-
-
 
 
 
