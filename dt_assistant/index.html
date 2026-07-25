@@ -667,6 +667,7 @@ const ASM_STATE = {
 
     decisions: [],
 
+    patterns: [],
 
 
     store: {
@@ -1381,6 +1382,125 @@ function generateManagerActions(){
 
 }
 
+/* ==========================================================
+   PATTERN RECOGNITION ENGINE
+========================================================== */
+
+
+function generateOperationalPatterns(){
+
+
+    let patterns = [];
+
+
+
+    const history =
+        ASM_STATE.shiftHistory;
+
+
+
+    const decisions =
+        ASM_STATE.decisions;
+
+
+
+    if(history.length === 0){
+
+        return patterns;
+
+    }
+
+
+
+    const lowReadinessShifts =
+
+        history.filter(
+
+            shift =>
+            shift.readinessScore < 50
+
+        ).length;
+
+
+
+    if(
+        lowReadinessShifts >= 3
+    ){
+
+        patterns.push({
+
+            category:
+            "READINESS TREND",
+
+
+            priority:
+            "MEDIUM",
+
+
+            pattern:
+
+            "Multiple shifts have recorded below-target readiness.",
+
+
+            recommendation:
+
+            "Review checklist completion consistency."
+
+        });
+
+    }
+
+
+
+
+    const salesRiskCount =
+
+        decisions.filter(
+
+            decision =>
+
+            decision.recommendation
+            .toLowerCase()
+            .includes("sales")
+
+        ).length;
+
+
+
+    if(
+        salesRiskCount >= 2
+    ){
+
+        patterns.push({
+
+            category:
+            "SALES TREND",
+
+
+            priority:
+            "HIGH",
+
+
+            pattern:
+
+            "Sales improvement actions have been required repeatedly.",
+
+
+            recommendation:
+
+            "Analyze floor coverage and customer engagement patterns."
+
+        });
+
+    }
+
+
+
+
+    return patterns;
+
+
+}
 
 /* ==========================================================
    SHIFT INTELLIGENCE ENGINE
@@ -2740,6 +2860,9 @@ function renderDashboard(){
     const predictions =
     generateShiftPredictions();
 
+    const patterns =
+    generateOperationalPatterns();
+
     const analytics =
     generateShiftAnalytics();
 
@@ -3770,35 +3893,71 @@ function renderDashboard(){
             <strong>
                 🧠 Operational Trends
             </strong>
-        
-        
+
+
             <br><br>
-        
-        
+
+
             ${
-                analytics.commonIssues.length > 0
-        
+                patterns.length > 0
+
+
                 ?
-        
-                analytics.commonIssues.map(
-                    issue => `
-        
+
+
+                patterns.map(
+                    item => `
+
+
                     <div>
-                        ⚠️ ${issue}
+
+
+                        <strong>
+                            ${item.priority}
+                            -
+                            ${item.category}
+                        </strong>
+
+
+                        <br><br>
+
+
+                        ${item.pattern}
+
+
+                        <br><br>
+
+
+                        <strong>
+                            Recommendation:
+                        </strong>
+
+
+                        <br>
+
+
+                        ${item.recommendation}
+
+
                     </div>
-        
+
+
                     <br>
-        
+
+
                     `
                 ).join("")
-        
+
+
                 :
-        
+
+
                 "No recurring issues detected."
-        
+
+
             }
-        
-        
+
+
         </div>
 
 
