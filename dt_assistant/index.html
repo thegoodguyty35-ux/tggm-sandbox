@@ -1019,6 +1019,9 @@ function renderDashboard(){
 
     const notesTotal =
         ASM_STATE.notes.length;
+
+    const handoffsTotal =
+    ASM_STATE.handoffs.length;
     
     
     const incidentsTotal =
@@ -1180,7 +1183,7 @@ function renderDashboard(){
         
         
             <strong>
-                📝 Manager Notes
+                📝 Daily Notes
             </strong>
         
         
@@ -1191,6 +1194,22 @@ function renderDashboard(){
         
             Logged
         
+        
+        </div>
+
+
+
+        <div class="dashboard-card">
+
+            <strong>
+                🗣️ Manager Handoff
+            </strong>
+        
+            <br><br>
+        
+            ${handoffsTotal}
+        
+            Logged
         
         </div>
 
