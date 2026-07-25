@@ -728,7 +728,13 @@ const ASM_STATE = {
     
     
         handoffAccepted:
-        false
+        false,
+
+        handoffCreatedAt:
+        null,
+
+        handoffFrom:
+        null
     
     
     },
@@ -2118,6 +2124,20 @@ function renderDashboard(){
     }
 
 
+    let handoffStatus =
+    "⏳ Awaiting Acceptance";
+
+
+    if(
+        ASM_STATE.shift.handoffAccepted
+    ){
+    
+        handoffStatus =
+            "✅ Accepted";
+    
+    }
+
+
 
     return `
 
@@ -2638,8 +2658,8 @@ function renderDashboard(){
 
 
         <div class="dashboard-card">
-
-
+        
+        
             <strong>
                 🤝 Handoff Status
             </strong>
@@ -2648,29 +2668,45 @@ function renderDashboard(){
             <br><br>
         
         
+            ${handoffStatus}
+        
+        
+            <br><br>
+        
+        
+            From:
+        
+            ${
+                ASM_STATE.shift.handoffFrom
+                ||
+                "Pending"
+            }
+        
+        
+            <br><br>
+        
+        
+            Received By:
+        
+            ${
+                ASM_STATE.shift.receivingManager
+                ||
+                "Pending"
+            }
+        
+        
+        
             ${
                 ASM_STATE.shift.handoffAccepted
         
                 ?
         
-                `
-                ✅ Accepted
-        
-                <br><br>
-        
-                Received By:
-                ${ASM_STATE.shift.receivingManager}
-                `
-        
+                ""
         
                 :
         
                 `
-                ⏳ Awaiting Acceptance
-        
-        
                 <br><br>
-        
         
                 <button onclick="acceptHandoff()">
         
@@ -5100,9 +5136,7 @@ function acceptHandoff(){
         ASM_STATE.currentUser;
 
 
-
     saveASMState();
-
 
 
     showScreen("dashboard");
@@ -5171,6 +5205,13 @@ function closeActiveShift(){
 
     ASM_STATE.shift.closedBy =
         ASM_STATE.currentUser;
+
+    ASM_STATE.shift.handoffCreatedAt =
+    new Date().toLocaleString();
+
+
+    ASM_STATE.shift.handoffFrom =
+    ASM_STATE.currentUser;
 
 
 
