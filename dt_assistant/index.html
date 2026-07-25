@@ -2921,6 +2921,109 @@ function generateManagerAssistant(){
 
 
 /* ==========================================================
+   EXPERIENCE MEMORY BUILDER
+========================================================== */
+
+
+function buildExperienceLibrary(){
+
+
+    if(
+        !ASM_STATE.decisionResults ||
+        ASM_STATE.decisionResults.length === 0
+    ){
+
+        return [];
+
+    }
+
+
+
+    ASM_STATE.decisionResults.forEach(result => {
+
+
+
+        if(
+            result.effectiveness === "POSITIVE"
+        ){
+
+
+            const exists =
+
+            ASM_STATE.experienceLibrary.some(
+
+                item =>
+                item.id === result.id
+
+            );
+
+
+
+            if(!exists){
+
+
+                ASM_STATE.experienceLibrary.push(
+
+                    {
+
+                        id:
+                        result.id,
+
+
+                        category:
+                        "OPERATIONAL",
+
+
+                        problem:
+                        "Previous shift issue",
+
+
+                        successfulAction:
+                        result.action,
+
+
+                        effectiveness:
+                        result.effectiveness,
+
+
+                        confidence:
+                        1,
+
+
+                        timesUsed:
+                        1,
+
+
+                        createdAt:
+                        new Date().toLocaleString()
+
+
+                    }
+
+                );
+
+
+            }
+
+
+        }
+
+
+    });
+
+
+
+    saveASMState();
+
+
+
+    return ASM_STATE.experienceLibrary;
+
+
+}
+
+
+/* ==========================================================
    PREDICTIVE SHIFT PLANNING ENGINE
 ========================================================== */
 
