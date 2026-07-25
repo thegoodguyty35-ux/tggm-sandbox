@@ -1091,19 +1091,19 @@ function renderDashboard(){
 
         (
 
-        (openingComplete / openingTotal) * 25
+        (openingTotal > 0 ? (openingComplete / openingTotal) * 25 : 0)
 
 
         +
 
 
-        (closingComplete / closingTotal) * 15
+        (closingTotal > 0 ? (closingComplete / closingTotal) * 15 : 0)
 
 
         +
 
 
-        (taskComplete / taskTotal) * 20
+        (taskTotal > 0 ? (taskComplete / taskTotal) * 20 : 0)
 
 
         +
