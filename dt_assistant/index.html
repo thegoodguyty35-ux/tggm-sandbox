@@ -1707,6 +1707,125 @@ function evaluateDecisionOutcomes(){
 
 
 }
+
+/* ==========================================================
+   EXPERIENCE LEARNING ENGINE
+========================================================== */
+
+
+function learnFromDecisionOutcomes(){
+
+
+    const results =
+        ASM_STATE.decisionResults || [];
+
+
+
+    results.forEach(result => {
+
+
+
+        const decision =
+            ASM_STATE.decisions.find(
+                d => d.id === result.id
+            );
+
+
+
+        if(!decision){
+            return;
+        }
+
+
+
+        let effectiveness =
+            result.effectiveness;
+
+
+
+        if(effectiveness === "POSITIVE"){
+
+
+
+            const existing =
+                ASM_STATE.experienceLibrary.find(
+                    item =>
+                    item.problem === decision.recommendation
+                );
+
+
+
+            if(existing){
+
+
+                existing.timesUsed += 1;
+
+
+                existing.confidence =
+                    Math.min(
+                        95,
+                        existing.confidence + 5
+                    );
+
+
+            }
+
+
+            else{
+
+
+                ASM_STATE.experienceLibrary.push(
+                {
+
+                    id:
+                    Date.now(),
+
+
+                    category:
+                    "OPERATIONS",
+
+
+                    problem:
+                    decision.recommendation,
+
+
+                    successfulAction:
+                    decision.action,
+
+
+                    effectiveness:
+                    "POSITIVE",
+
+
+                    timesUsed:
+                    1,
+
+
+                    confidence:
+                    60
+
+
+                });
+
+
+            }
+
+
+        }
+
+
+    });
+
+
+
+    saveASMState();
+
+
+
+    return ASM_STATE.experienceLibrary;
+
+
+}
 /* ==========================================================
    SHIFT INTELLIGENCE ENGINE
 ========================================================== */
