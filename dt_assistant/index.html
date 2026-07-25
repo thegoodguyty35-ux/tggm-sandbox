@@ -1580,7 +1580,90 @@ function generateAdaptiveRecommendationsV2(){
 
 }
 
+/* ==========================================================
+   EXPERIENCE BASED RECOMMENDATIONS
+========================================================== */
 
+
+function generateExperienceRecommendations(){
+
+
+    let recommendations = [];
+
+
+    if(
+        !ASM_STATE.experienceLibrary ||
+        ASM_STATE.experienceLibrary.length === 0
+    ){
+
+        return recommendations;
+
+    }
+
+
+
+    ASM_STATE.experienceLibrary.forEach(
+        item => {
+
+
+            if(item.confidence >= 60){
+
+
+                recommendations.push({
+
+                    category:
+                    item.category,
+
+
+                    problem:
+                    item.problem,
+
+
+                    recommendation:
+                    item.successfulAction,
+
+
+                    confidence:
+                    item.confidence,
+
+
+                    timesUsed:
+                    item.timesUsed,
+
+
+                    reason:
+                    "Previously successful action used "
+                    +
+                    item.timesUsed
+                    +
+                    " time(s) with "
+                    +
+                    item.confidence
+                    +
+                    "% confidence."
+
+                });
+
+
+            }
+
+
+        }
+    );
+
+
+
+    recommendations.sort(
+        (a,b)=>
+        b.confidence - a.confidence
+    );
+
+
+
+    return recommendations;
+
+
+}
 
 /* ==========================================================
    DECISION OUTCOME LEARNING ENGINE
