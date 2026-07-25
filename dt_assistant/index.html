@@ -2987,7 +2987,7 @@ function buildExperienceLibrary(){
 
 
                         confidence:
-                        1,
+                        25,
 
 
                         timesUsed:
@@ -3015,6 +3015,40 @@ function buildExperienceLibrary(){
 
     saveASMState();
 
+
+
+    return ASM_STATE.experienceLibrary;
+
+
+}
+
+
+/* ==========================================================
+   EXPERIENCE USAGE TRACKER
+========================================================== */
+
+
+function updateExperienceConfidence(){
+
+
+    ASM_STATE.experienceLibrary.forEach(
+        
+        item => {
+
+
+            item.confidence =
+
+            calculateExperienceConfidence(
+                item
+            );
+
+
+        }
+
+    );
+
+
+    saveASMState();
 
 
     return ASM_STATE.experienceLibrary;
