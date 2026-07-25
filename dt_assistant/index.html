@@ -5135,10 +5135,20 @@ function openShift(){
         null;
 
 
+    ASM_STATE.shift.closedBy =
+        null;
+
+
+    ASM_STATE.shift.receivingManager =
+        null;
+
+
+    ASM_STATE.shift.handoffAccepted =
+        false;
+
+
+
     saveASMState();
-
-
-    renderDashboard();
 
 
     showScreen("dashboard");
@@ -5151,10 +5161,6 @@ function openShift(){
 function closeActiveShift(){
 
 
-    closeShift();
-
-
-
     ASM_STATE.shift.status =
         "CLOSED";
 
@@ -5162,13 +5168,19 @@ function closeActiveShift(){
     ASM_STATE.shift.closedAt =
         new Date().toLocaleString();
 
+
     ASM_STATE.shift.closedBy =
         ASM_STATE.currentUser;
 
 
 
+    closeShift();
+
+
     saveASMState();
 
+
+    showScreen("dashboard");
 
 
 }
