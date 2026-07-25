@@ -997,6 +997,157 @@ function loadASMState(){
 
 }
 
+
+/* ==========================================================
+   OPERATIONAL PRIORITY ENGINE
+========================================================== */
+
+
+function generateOperationalPriorities(){
+
+
+    let priorities = [];
+
+
+
+    const truckBoxes =
+        ASM_STATE.truck.boxes;
+
+
+    const truckProcessed =
+        ASM_STATE.truck.processed;
+
+
+
+    let truckCompletion = 0;
+
+
+
+    if(truckBoxes > 0){
+
+        truckCompletion =
+            Math.round(
+                (truckProcessed / truckBoxes) * 100
+            );
+
+    }
+
+
+
+
+
+    if(
+        ASM_STATE.incidents.length > 0
+    ){
+
+        priorities.push({
+
+            level:"HIGH",
+
+            message:
+            `🚨 ${ASM_STATE.incidents.length} incident(s) require review`
+
+        });
+
+    }
+
+
+
+
+
+    if(
+        truckBoxes > 0
+        &&
+        truckCompletion < 100
+    ){
+
+        priorities.push({
+
+            level:"MEDIUM",
+
+            message:
+            `🚚 Truck processing ${truckCompletion}% complete`
+
+        });
+
+    }
+
+
+
+
+
+    if(
+        ASM_STATE.sales.salesPace < 80
+        &&
+        ASM_STATE.sales.dailyGoal > 0
+    ){
+
+        priorities.push({
+
+            level:"MEDIUM",
+
+            message:
+            `💰 Sales pace below target (${ASM_STATE.sales.salesPace}%)`
+
+        });
+
+    }
+
+
+
+
+
+    const incompleteTasks =
+
+        ASM_STATE.tasks.filter(
+
+            task => !task.complete
+
+        ).length;
+
+
+
+
+    if(
+        incompleteTasks > 0
+    ){
+
+        priorities.push({
+
+            level:"LOW",
+
+            message:
+            `✅ ${incompleteTasks} daily task(s) remaining`
+
+        });
+
+    }
+
+
+
+
+
+    if(
+        priorities.length === 0
+    ){
+
+        priorities.push({
+
+            level:"GOOD",
+
+            message:
+            "🟢 Operations running normally"
+
+        });
+
+    }
+
+
+
+    return priorities;
+
+
+}
 /* ==========================================================
    SCREEN RENDER FUNCTIONS
 ========================================================== */
@@ -1049,6 +1200,9 @@ function renderDashboard(){
     
     const alertsTotal =
         ASM_STATE.alerts.length;
+
+    const priorities =
+        generateOperationalPriorities();
 
     const salesGoal =
         ASM_STATE.sales.dailyGoal;
@@ -1329,6 +1483,43 @@ function renderDashboard(){
             Active
 
 
+        </div>
+
+
+        <div class="dashboard-card">
+
+
+            <strong>
+                🎯 Operational Priorities
+            </strong>
+        
+        
+            <br><br>
+        
+        
+            ${
+                priorities.map(
+                    item => `
+        
+                    <div>
+        
+                        <strong>
+                            ${item.level}
+                        </strong>
+        
+                        <br>
+        
+                        ${item.message}
+        
+                    </div>
+        
+                    <br>
+        
+                    `
+                ).join("")
+            }
+        
+        
         </div>
 
 
