@@ -3326,6 +3326,61 @@ function renderDashboard(){
         
         </div>
 
+        <div class="dashboard-card">
+
+
+            <strong>
+                🔮 Predictive Shift Planning
+            </strong>
+        
+        
+            <br><br>
+        
+        
+            ${
+                predictions.length > 0
+        
+                ?
+        
+                predictions.map(
+                    item => `
+        
+        
+                    <div>
+        
+        
+                        <strong>
+                            ${item.priority}
+                            -
+                            ${item.category}
+                        </strong>
+        
+        
+                        <br>
+        
+        
+                        ${item.prediction}
+        
+        
+                    </div>
+        
+        
+                    <br>
+        
+        
+                    `
+                ).join("")
+        
+        
+                :
+        
+                "No operational risks detected."
+        
+            }
+        
+        
+        </div>
+
 
         <div class="dashboard-card">
 
