@@ -1508,124 +1508,69 @@ function generateOperationalPatterns(){
 
 
 /* ==========================================================
-   ADAPTIVE RECOMMENDATION ENGINE
+   ADAPTIVE RECOMMENDATION ENGINE v2
 ========================================================== */
 
 
-function generateAdaptiveRecommendations(){
+function generateAdaptiveRecommendationsV2(){
 
 
     let recommendations = [];
 
 
-
-    const decisions =
-        ASM_STATE.decisions;
-
-
-
-    const patterns =
-        generateOperationalPatterns();
+    const experiences =
+        ASM_STATE.experienceLibrary || [];
 
 
 
-    /*
-        SALES MEMORY
-    */
-
-
-    const salesDecisions =
-
-        decisions.filter(
-
-            decision =>
-
-            decision.recommendation
-
-            .toLowerCase()
-
-            .includes("sales")
-
-        );
+    experiences.forEach(
+        experience => {
 
 
 
-    if(
-        salesDecisions.length > 0
-    ){
-
-
-        const latestSalesDecision =
-
-            salesDecisions[
-                salesDecisions.length - 1
-            ];
+            if(
+                experience.category === "SALES"
+                &&
+                ASM_STATE.sales.salesPace < 80
+            ){
 
 
 
-        recommendations.push({
+                recommendations.push({
 
-            priority:
-            "HIGH",
-
-
-            category:
-            "SALES MEMORY",
+                    priority:
+                    "HIGH",
 
 
-            message:
-
-            "Previous sales issue detected.",
-
-
-            recommendation:
-
-            "Review previous successful action: "
-
-            +
-
-            latestSalesDecision.action
-
-        });
+                    category:
+                    "SALES MEMORY",
 
 
-    }
+                    problem:
+                    experience.problem,
 
 
-
-    /*
-        PATTERN MEMORY
-    */
+                    recommendation:
+                    experience.successfulAction,
 
 
-    patterns.forEach(
-
-        pattern => {
-
-
-            recommendations.push({
-
-                priority:
-                pattern.priority,
+                    confidence:
+                    experience.confidence || 0,
 
 
-                category:
-                pattern.category,
+                    reason:
+
+                    `Previously used ${experience.timesUsed} time(s) with ${experience.confidence}% confidence.`
 
 
-                message:
-                pattern.pattern,
+                });
 
 
-                recommendation:
-                pattern.recommendation
+            }
 
-
-            });
 
 
         }
-
     );
 
 
