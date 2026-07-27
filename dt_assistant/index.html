@@ -4433,6 +4433,199 @@ function generateCashDecisionRecommendations(){
 
 
 /* ==========================================================
+   CASH OUTCOME LEARNING ENGINE
+========================================================== */
+
+
+function learnFromCashOutcomes(){
+
+
+    if(
+        !ASM_STATE.decisions ||
+        ASM_STATE.decisions.length === 0
+    ){
+
+        return [];
+
+    }
+
+
+
+    ASM_STATE.decisions.forEach(
+
+        decision => {
+
+
+
+            if(
+                decision.category === "CASH OFFICE"
+                &&
+                decision.outcome === "SUCCESS"
+            ){
+
+
+
+                const exists =
+
+                ASM_STATE.experienceLibrary.some(
+
+                    item =>
+                    item.id === decision.id
+
+                );
+
+
+
+                if(!exists){
+
+
+
+                    ASM_STATE.experienceLibrary.push(
+
+                        {
+
+
+                            id:
+                            decision.id,
+
+
+                            category:
+                            "CASH OFFICE",
+
+
+                            problem:
+                            decision.recommendation,
+
+
+                            successfulAction:
+                            decision.action,
+
+
+                            effectiveness:
+                            "POSITIVE",
+
+
+                            confidence:
+                            25,
+
+
+                            timesUsed:
+                            1,
+
+
+                            createdAt:
+                            new Date().toLocaleString()
+
+
+
+                        }
+
+                    );
+
+
+
+                }
+
+
+
+            }
+
+
+
+        }
+
+    );
+
+
+
+    saveASMState();
+
+
+
+    return ASM_STATE.experienceLibrary;
+
+
+}
+
+
+/* ==========================================================
+   CASH EXPERIENCE PREDICTION ENGINE
+========================================================== */
+
+
+function generateCashExperienceRecommendations(){
+
+
+    let recommendations = [];
+
+
+
+    ASM_STATE.experienceLibrary.forEach(
+
+        item => {
+
+
+            if(
+
+                item.category === "CASH OFFICE"
+
+                &&
+
+                item.confidence >= 60
+
+            ){
+
+
+
+                recommendations.push({
+
+
+                    problem:
+                    item.problem,
+
+
+                    recommendation:
+                    item.successfulAction,
+
+
+                    confidence:
+                    item.confidence,
+
+
+                    timesUsed:
+                    item.timesUsed,
+
+
+                    reason:
+                    "Previously successful cash resolution used "
+                    +
+                    item.timesUsed
+                    +
+                    " time(s)."
+
+
+
+                });
+
+
+
+            }
+
+
+
+        }
+
+    );
+
+
+
+    return recommendations;
+
+
+}
+
+
+/* ==========================================================
    PREDICTIVE SHIFT PLANNING ENGINE
 ========================================================== */
 
