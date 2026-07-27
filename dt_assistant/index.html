@@ -907,11 +907,41 @@ truck: {
 
     status: "Not Received",
 
+    truckID: null,
+
+    arrivalTime: null,
+
     boxes: 0,
 
     processed: 0,
 
-    completed: false
+    remaining: 0,
+
+    completed: false,
+
+    assignedEmployees: [],
+
+    categories: [],
+
+    backstock: 0,
+
+    floorStocked: 0,
+
+    lastUpdated: null,
+
+
+    intelligence: {
+
+        completionPercent: 0,
+
+        riskLevel: "LOW",
+
+        alerts: [],
+
+        recommendations: []
+
+    }
+
 
 },
 
@@ -3544,6 +3574,107 @@ function addRegister(){
 
 
     return ASM_STATE.cashOffice.registers;
+
+
+}
+
+
+
+/* ==========================================================
+   FREIGHT ENGINE
+========================================================== */
+
+
+function initializeFreight(){
+
+
+    if(
+        !ASM_STATE.truck
+    ){
+
+        ASM_STATE.truck = {
+
+
+            status:
+            "Not Received",
+
+
+            truckID:
+            null,
+
+
+            arrivalTime:
+            null,
+
+
+            boxes:
+            0,
+
+
+            processed:
+            0,
+
+
+            remaining:
+            0,
+
+
+            completed:
+            false,
+
+
+            assignedEmployees:
+            [],
+
+
+            categories:
+            [],
+
+
+            backstock:
+            0,
+
+
+            floorStocked:
+            0,
+
+
+            lastUpdated:
+            null,
+
+
+            intelligence:{
+
+
+                completionPercent:
+                0,
+
+
+                riskLevel:
+                "LOW",
+
+
+                alerts:
+                [],
+
+
+                recommendations:
+                []
+
+
+            }
+
+
+        };
+
+
+    }
+
+
+    saveASMState();
+
+
+    return ASM_STATE.truck;
 
 
 }
