@@ -671,6 +671,8 @@ const ASM_STATE = {
 
     experienceLibrary: [],
 
+    cashDecisions: [],
+
     patterns: [],
 
 /* ==========================================================
@@ -3771,6 +3773,98 @@ function recordCashDrop(){
 
 
     return drop;
+
+
+}
+
+
+/* ==========================================================
+   CASH OFFICE DECISION MEMORY INTEGRATION
+========================================================== */
+
+
+function createCashDecisionMemory(){
+
+
+    let recommendations =
+        generateCashDecisionRecommendations();
+
+
+
+    if(
+        recommendations.length === 0
+    ){
+
+        return [];
+
+    }
+
+
+
+    let decisions = [];
+
+
+
+    recommendations.forEach(
+        item => {
+
+
+            let decision = {
+
+
+                id:
+                Date.now(),
+
+
+                category:
+                item.category,
+
+
+                recommendation:
+                item.message,
+
+
+                action:
+                item.recommendedAction,
+
+
+                outcome:
+                "PENDING",
+
+
+                source:
+                "CASH OFFICE INTELLIGENCE",
+
+
+                createdAt:
+                new Date().toLocaleString()
+
+
+            };
+
+
+
+            decisions.push(
+                decision
+            );
+
+
+
+            ASM_STATE.decisions.push(
+                decision
+            );
+
+
+        }
+    );
+
+
+
+    saveASMState();
+
+
+
+    return decisions;
 
 
 }
