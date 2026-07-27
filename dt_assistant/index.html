@@ -1675,6 +1675,104 @@ function generateExperienceRecommendations(){
 
 }
 
+
+/* ==========================================================
+   EXPERIENCE FEEDBACK CONTROLLER
+========================================================== */
+
+
+function submitExperienceFeedback(
+    experienceID,
+    result
+){
+
+
+    let experience =
+        ASM_STATE.experienceLibrary.find(
+            item =>
+            item.id === experienceID
+        );
+
+
+
+    if(!experience){
+
+        return;
+
+    }
+
+
+
+    experience.feedbackCount =
+        (experience.feedbackCount || 0) + 1;
+
+
+
+    experience.lastFeedback =
+        new Date().toLocaleString();
+
+
+
+    if(result === "SUCCESS"){
+
+
+        experience.timesUsed += 1;
+
+
+        experience.confidence += 5;
+
+
+
+        if(
+            experience.confidence > 100
+        ){
+
+            experience.confidence = 100;
+
+        }
+
+
+        experience.effectiveness =
+            "POSITIVE";
+
+
+    }
+
+
+
+    if(result === "FAILED"){
+
+
+        experience.confidence -= 10;
+
+
+
+        if(
+            experience.confidence < 0
+        ){
+
+            experience.confidence = 0;
+
+        }
+
+
+
+        experience.effectiveness =
+            "NEGATIVE";
+
+
+    }
+
+
+
+    saveASMState();
+
+
+    showScreen("dashboard");
+
+
+}
+
 /* ==========================================================
    DECISION OUTCOME LEARNING ENGINE
 ========================================================== */
