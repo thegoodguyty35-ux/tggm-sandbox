@@ -673,40 +673,69 @@ const ASM_STATE = {
 
     patterns: [],
 
+/* ==========================================================
+   CASH OFFICE ENGINE
+========================================================== */
+
+
     cashOffice: {
-
-
-    registers: [],
-
-
-    safe: {
-
-        openingAmount: 0,
-
-        currentAmount: 0
-
+    
+    
+        registers: [],
+    
+    
+        safe: {
+    
+    
+            openingAmount: 0,
+    
+    
+            currentAmount: 0
+    
+    
+        },
+    
+    
+        drops: [],
+    
+    
+        pickups: [],
+    
+    
+        loans: [],
+    
+    
+        deposits: [],
+    
+    
+        overShort: 0,
+    
+    
+        safeHistory: [],
+    
+    
+        intelligence: {
+    
+    
+            alerts: [],
+    
+    
+            dailySummary: {},
+    
+    
+            riskLevel: "LOW",
+    
+    
+            lastAnalysis: null
+    
+    
+        },
+    
+    
+        lastUpdated: null
+    
+    
     },
-
-
-    drops: [],
-
-
-    pickups: [],
-
-
-    loans: [],
-
-
-    deposits: [],
-
-
-    overShort: 0,
-
-
-    lastUpdated: null
-
-
-},
 
 
     store: {
@@ -3519,6 +3548,101 @@ function addRegister(){
 
 
 /* ==========================================================
+   CASH DAILY SUMMARY ENGINE
+========================================================== */
+
+
+function generateCashDailySummary(){
+
+
+    let drops =
+        ASM_STATE.cashOffice.drops.reduce(
+
+            (sum,item)=>
+            sum + item.amount,
+
+            0
+
+        );
+
+
+
+    let deposits =
+        ASM_STATE.cashOffice.deposits.reduce(
+
+            (sum,item)=>
+            sum + item.amount,
+
+            0
+
+        );
+
+
+
+    let pickups =
+        ASM_STATE.cashOffice.pickups.reduce(
+
+            (sum,item)=>
+            sum + item.amount,
+
+            0
+
+        );
+
+
+
+    let summary = {
+
+
+        drops:
+        drops,
+
+
+        deposits:
+        deposits,
+
+
+        pickups:
+        pickups,
+
+
+        safeBalance:
+        ASM_STATE.cashOffice.safe.currentAmount,
+
+
+        overShort:
+        ASM_STATE.cashOffice.overShort,
+
+
+        updated:
+        new Date().toLocaleString()
+
+
+    };
+
+
+
+    ASM_STATE.cashOffice.intelligence.dailySummary =
+        summary;
+
+
+
+    ASM_STATE.cashOffice.intelligence.lastAnalysis =
+        new Date().toLocaleString();
+
+
+
+    saveASMState();
+
+
+
+    return summary;
+
+
+}
+
+
+/* ==========================================================
    CASH DROP TRACKER
 ========================================================== */
 
@@ -3978,6 +4102,161 @@ function calculateCashVariance(
 
 
     };
+
+
+}
+
+
+/* ==========================================================
+   CASH RISK ANALYSIS
+========================================================== */
+
+
+function analyzeCashRisk(){
+
+
+    let alerts = [];
+
+
+    let variance =
+        ASM_STATE.cashOffice.overShort;
+
+
+
+    if(
+        variance < 0
+    ){
+
+        alerts.push({
+
+            type:
+            "OVER_SHORT",
+
+
+            priority:
+            "HIGH",
+
+
+            message:
+            "Cash shortage detected: $" +
+            Math.abs(variance)
+
+        });
+
+
+    }
+
+
+
+    if(
+        ASM_STATE.cashOffice.safe.currentAmount > 5000
+    ){
+
+        alerts.push({
+
+            type:
+            "SAFE_BALANCE",
+
+
+            priority:
+            "MEDIUM",
+
+
+            message:
+            "Safe balance is high. Review cash movement."
+
+        });
+
+
+    }
+
+
+
+    ASM_STATE.cashOffice.intelligence.alerts =
+        alerts;
+
+
+
+    ASM_STATE.cashOffice.intelligence.riskLevel =
+
+
+        alerts.length > 0
+
+        ?
+
+        "HIGH"
+
+        :
+
+        "LOW";
+
+
+
+    saveASMState();
+
+
+
+    return alerts;
+
+
+}
+
+
+/* ==========================================================
+   CASH DECISION MEMORY
+========================================================== */
+
+
+function generateCashDecisionRecommendations(){
+
+
+    let recommendations = [];
+
+
+
+    let alerts =
+        ASM_STATE.cashOffice.intelligence.alerts;
+
+
+
+    alerts.forEach(alert=>{
+
+
+        recommendations.push({
+
+            category:
+            "CASH OFFICE",
+
+
+            priority:
+            alert.priority,
+
+
+            message:
+            alert.message,
+
+
+            recommendedAction:
+
+            alert.type === "OVER_SHORT"
+
+            ?
+
+            "Verify registers, drops, and deposit records."
+
+            :
+
+            "Review safe management procedures."
+
+
+        });
+
+
+    });
+
+
+
+    return recommendations;
 
 
 }
