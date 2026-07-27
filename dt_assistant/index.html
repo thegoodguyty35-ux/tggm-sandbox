@@ -4520,6 +4520,8 @@ function renderDashboard(){
     const adaptiveRecommendations =
     generateAdaptiveRecommendationsV2();
 
+    const cashIntelligence =
+    generateCashOfficeDashboard();
 
     const patterns =
     generateOperationalPatterns();
@@ -6324,6 +6326,184 @@ function renderDashboard(){
             }
         
         
+        </div>
+
+
+                <div class="dashboard-card">
+
+
+            <strong>
+                🧠 Cash Office Intelligence
+            </strong>
+
+
+            <br><br>
+
+
+            <strong>
+                Today's Cash Movement
+            </strong>
+
+
+            <br><br>
+
+
+            ⬇️ Drops:
+
+            <br>
+
+            $${cashOffice.drops.toFixed(2)}
+
+
+            <br><br>
+
+
+            🏦 Deposits:
+
+            <br>
+
+            $${cashOffice.deposits.toFixed(2)}
+
+
+            <br><br>
+
+
+            🏧 Pickups:
+
+            <br>
+
+            $${cashOffice.pickups.toFixed(2)}
+
+
+            <br><br>
+
+
+            <strong>
+                Safe Balance
+            </strong>
+
+
+            <br>
+
+            $${cashOffice.safeBalance.toFixed(2)}
+
+
+            <br><br>
+
+
+            <strong>
+                ⚠️ Cash Risk Level
+            </strong>
+
+
+            <br>
+
+            ${ASM_STATE.cashOffice.intelligence.riskLevel}
+
+
+            <br><br>
+
+
+            <strong>
+                📊 Variance History
+            </strong>
+
+
+            <br>
+
+            ${
+                ASM_STATE.cashOffice.intelligence.alerts.length > 0
+
+                ?
+
+                ASM_STATE.cashOffice.intelligence.alerts.map(
+                    alert => `
+
+
+                    <div>
+
+
+                    ${alert.priority}
+
+                    -
+
+                    ${alert.message}
+
+
+                    </div>
+
+
+                    <br>
+
+
+                    `
+                ).join("")
+
+
+                :
+
+                "No cash risks detected."
+
+            }
+
+
+            <br>
+
+
+            <strong>
+                🧠 Recommended Actions
+            </strong>
+
+
+            <br><br>
+
+
+            ${
+                generateCashDecisionRecommendations()
+                .map(
+                    item => `
+
+
+                    <div>
+
+
+                    <strong>
+                    ${item.priority}
+                    -
+                    ${item.category}
+                    </strong>
+
+
+                    <br>
+
+
+                    ${item.message}
+
+
+                    <br>
+
+
+                    Recommended:
+
+                    <br>
+
+
+                    ${item.recommendedAction}
+
+
+                    </div>
+
+
+                    <br>
+
+
+                    `
+                )
+                .join("")
+
+            }
+
+
         </div>
 
 
