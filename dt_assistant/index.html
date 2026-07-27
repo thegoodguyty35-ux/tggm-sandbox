@@ -4087,93 +4087,65 @@ function generateFreightDecisionRecommendations(){
 
 
 /* ==========================================================
-   FREIGHT DECISION MEMORY ENGINE
+   CREATE FREIGHT DECISION MEMORY
 ========================================================== */
 
 
-function generateFreightDecisionRecommendations(){
+function createFreightDecisionMemory(){
 
 
-    let recommendations = [];
-
-
-    if(
-        !ASM_STATE.truck ||
-        !ASM_STATE.truck.intelligence
-    ){
-
-        return recommendations;
-
-    }
+    let recommendations =
+        generateFreightDecisionRecommendations();
 
 
 
-    if(
-        ASM_STATE.truck.remaining > 0 &&
-        ASM_STATE.truck.intelligence.riskLevel === "HIGH"
-    ){
-
-        recommendations.push({
-
-            category:
-            "FREIGHT",
+    recommendations.forEach(
+        item => {
 
 
-            priority:
-            "HIGH",
+            ASM_STATE.decisions.push({
 
 
-            message:
-            `Freight delay detected: ${ASM_STATE.truck.remaining} boxes remaining.`,
+                id:
+                Date.now(),
 
 
-            recommendedAction:
-            "Assign additional labor to freight processing.",
+                category:
+                item.category,
 
 
-            source:
-            "FREIGHT INTELLIGENCE"
+                recommendation:
+                item.message,
 
 
-        });
-
-    }
-
+                action:
+                item.recommendedAction,
 
 
-    else if(
-        ASM_STATE.truck.remaining > 0
-    ){
-
-        recommendations.push({
-
-            category:
-            "FREIGHT",
+                source:
+                item.source,
 
 
-            priority:
-            "MEDIUM",
+                outcome:
+                "PENDING",
 
 
-            message:
-            `${ASM_STATE.truck.remaining} boxes remain to process.`,
+                createdAt:
+                new Date().toLocaleString()
 
 
-            recommendedAction:
-            "Continue freight processing priorities.",
+            });
 
 
-            source:
-            "FREIGHT INTELLIGENCE"
-
-
-        });
-
-    }
+        }
+    );
 
 
 
-    return recommendations;
+    saveASMState();
+
+
+    return ASM_STATE.decisions;
 
 
 }
