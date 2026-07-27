@@ -6752,102 +6752,131 @@ function renderDashboard(){
 
 
         <div class="dashboard-card">
-
-
-            <strong>
-                📈 Cash Office Learning
-            </strong>
         
         
-            <br><br>
+        <strong>
+        🧠 Cash Office Learning
+        </strong>
         
         
-            <strong>
-                Previous Cash Issues
-            </strong>
+        <br><br>
         
         
-            <br><br>
+        ${
+            ASM_STATE.experienceLibrary.filter(
+                item =>
+                item.category === "CASH OFFICE"
+            ).length > 0
         
         
-            ${
-                generateCashExperienceRecommendations().length > 0
+            ?
         
         
-                ?
+            ASM_STATE.experienceLibrary
+            .filter(
+                item =>
+                item.category === "CASH OFFICE"
+            )
+            .map(
+                item => `
         
         
-                generateCashExperienceRecommendations()
-                .map(
-                    item => `
+                <div>
         
         
-                    <div>
+                <strong>
+                CASH ISSUE
+                </strong>
         
         
-                        <strong>
-                            ${item.category}
-                        </strong>
+                <br><br>
         
         
-                        <br><br>
+                Problem:
+        
+                <br>
+        
+                ${item.problem}
         
         
-                        Problem:
-        
-                        <br>
-        
-                        ${item.problem}
+                <br><br>
         
         
-                        <br><br>
+                Successful Resolution:
+        
+                <br>
+        
+                ${item.successfulAction}
         
         
-                        Recommended Action:
-        
-                        <br>
-        
-                        ${item.recommendation}
+                <br><br>
         
         
-                        <br><br>
+                Confidence:
+        
+                <br>
+        
+                ${item.confidence}%
         
         
-                        Confidence:
-        
-                        <br>
-        
-                        ${item.confidence}%
+                <br><br>
         
         
-                        <br><br>
+                Times Used:
+        
+                <br>
+        
+                ${item.timesUsed}
         
         
-                        Times Used:
-        
-                        <br>
-        
-                        ${item.timesUsed}
+                <br><br>
         
         
-                    </div>
+                Status:
+        
+                <br>
         
         
-                    <hr>
+                ${
+                    item.confidence >= 75
+        
+                    ?
+        
+                    "🟢 Trusted Memory"
+        
+                    :
+        
+                    item.confidence >= 50
+        
+                    ?
+        
+                    "🟡 Developing Memory"
+        
+                    :
+        
+                    "🔵 Learning Phase"
+        
+                }
         
         
-                    `
-                )
-                .join("")
+                </div>
         
         
-                :
+                <hr>
         
         
-                "No previous cash learning recorded."
+                `
+            )
+            .join("")
         
         
-            }
+            :
+        
+        
+            "No cash office learning records yet."
+        
+        
+        }
         
         
         </div>
