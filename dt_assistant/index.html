@@ -5138,6 +5138,87 @@ function learnFromFreightOutcomes(){
 }
 
 
+
+/* ==========================================================
+   FREIGHT EXPERIENCE RECOMMENDATION ENGINE
+========================================================== */
+
+
+function generateFreightExperienceRecommendations(){
+
+
+    let recommendations = [];
+
+
+
+    let freightMemory =
+
+        ASM_STATE.experienceLibrary.filter(
+
+            item =>
+
+            item.category === "FREIGHT"
+
+        );
+
+
+
+    freightMemory.forEach(
+
+        item => {
+
+
+            if(
+                item.effectiveness === "POSITIVE"
+            ){
+
+
+                recommendations.push({
+
+
+                    category:
+                    "FREIGHT",
+
+
+                    problem:
+                    item.problem,
+
+
+                    recommendedAction:
+                    item.successfulAction,
+
+
+                    confidence:
+                    item.confidence,
+
+
+                    timesUsed:
+                    item.timesUsed,
+
+
+                    reason:
+
+                    `Previously successful action used ${item.timesUsed} time(s) with ${item.confidence}% confidence.`
+
+
+                });
+
+
+            }
+
+
+        }
+
+    );
+
+
+
+    return recommendations;
+
+
+}
+
+
 /* ==========================================================
    CASH OUTCOME LEARNING ENGINE
 ========================================================== */
