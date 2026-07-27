@@ -3658,6 +3658,85 @@ function generateCashOfficeSummary(){
 
 
 /* ==========================================================
+   CASH OFFICE DASHBOARD SUMMARY
+========================================================== */
+
+
+function generateCashOfficeDashboard(){
+
+
+    if(
+        !ASM_STATE.cashOffice
+    ){
+
+        return {
+
+            registers:0,
+
+            drops:0,
+
+            deposits:0,
+
+            overShort:0
+
+        };
+
+    }
+
+
+
+    let dropsTotal =
+        ASM_STATE.cashOffice.drops.reduce(
+
+            (sum,item)=>
+
+            sum + item.amount,
+
+            0
+
+        );
+
+
+
+    let depositsTotal =
+        ASM_STATE.cashOffice.deposits.reduce(
+
+            (sum,item)=>
+
+            sum + item.amount,
+
+            0
+
+        );
+
+
+
+    return {
+
+
+        registers:
+        ASM_STATE.cashOffice.registers.length,
+
+
+        drops:
+        dropsTotal,
+
+
+        deposits:
+        depositsTotal,
+
+
+        overShort:
+        ASM_STATE.cashOffice.overShort
+
+
+    };
+
+
+}
+
+
+/* ==========================================================
    PREDICTIVE SHIFT PLANNING ENGINE
 ========================================================== */
 
@@ -3978,6 +4057,9 @@ function renderDashboard(){
 
     const readinessScore =
         renderCurrentReadinessScore();
+
+    const cashOffice =
+    generateCashOfficeDashboard();
 
 
 
