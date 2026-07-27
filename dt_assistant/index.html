@@ -7323,6 +7323,140 @@ function renderDashboard(){
         </div>
 
 
+                <div class="dashboard-card">
+
+
+            <strong>
+                🚚 Freight Intelligence
+            </strong>
+
+
+            <br><br>
+
+
+            🚛 Truck Status:
+
+
+            <br>
+
+
+            ${ASM_STATE.truck.status}
+
+
+            <br><br>
+
+
+            📦 Boxes Received:
+
+
+            <br>
+
+
+            ${ASM_STATE.truck.boxes}
+
+
+            <br><br>
+
+
+            ✅ Boxes Processed:
+
+
+            <br>
+
+
+            ${ASM_STATE.truck.processed}
+
+
+            <br><br>
+
+
+            📦 Remaining:
+
+
+            <br>
+
+
+            ${ASM_STATE.truck.remaining}
+
+
+            <br><br>
+
+
+            📊 Completion:
+
+
+            <br>
+
+
+            ${ASM_STATE.truck.intelligence.completionPercent}%
+
+
+            <br><br>
+
+
+            ⚠️ Risk Level:
+
+
+            <br>
+
+
+            <strong>
+
+                ${ASM_STATE.truck.intelligence.riskLevel}
+
+            </strong>
+
+
+            <br><br>
+
+
+            🧠 Recommendations:
+
+
+            <br><br>
+
+
+            ${
+                ASM_STATE.truck.intelligence.recommendations.length > 0
+
+
+                ?
+
+
+                ASM_STATE.truck.intelligence.recommendations.map(
+
+                    item => `
+
+
+                    <div>
+
+
+                        ${item}
+
+
+                    </div>
+
+
+                    <br>
+
+
+                    `
+
+                ).join("")
+
+
+                :
+
+
+                "No freight recommendations."
+
+
+            }
+
+
+        </div>
+
+
 
         <div class="dashboard-card">
 
