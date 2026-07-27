@@ -3518,6 +3518,11 @@ function addRegister(){
 }
 
 
+/* ==========================================================
+   CASH DROP TRACKER
+========================================================== */
+
+
 function recordCashDrop(){
 
 
@@ -3529,10 +3534,23 @@ function recordCashDrop(){
         );
 
 
-    ASM_STATE.cashOffice.drops.push({
+
+    let register =
+        prompt(
+            "Register number?"
+        );
+
+
+
+    let drop = {
+
 
         id:
         Date.now(),
+
+
+        register:
+        register,
 
 
         amount:
@@ -3547,7 +3565,20 @@ function recordCashDrop(){
         ASM_STATE.currentUser
 
 
-    });
+    };
+
+
+
+    ASM_STATE.cashOffice.drops.push(
+        drop
+    );
+
+
+
+    updateSafeBalance(
+        amount,
+        "Cash Drop"
+    );
 
 
 
@@ -3560,10 +3591,14 @@ function recordCashDrop(){
 
 
 
-    return ASM_STATE.cashOffice.drops;
+    return drop;
 
 
 }
+
+/* ==========================================================
+   DEPOSIT TRACKER
+========================================================== */
 
 
 function recordDeposit(){
@@ -3578,7 +3613,8 @@ function recordDeposit(){
 
 
 
-    ASM_STATE.cashOffice.deposits.push({
+    let deposit = {
+
 
         id:
         Date.now(),
@@ -3589,10 +3625,27 @@ function recordDeposit(){
 
 
         date:
-        new Date().toLocaleString()
+        new Date().toLocaleString(),
 
 
-    });
+        employee:
+        ASM_STATE.currentUser
+
+
+    };
+
+
+
+    ASM_STATE.cashOffice.deposits.push(
+        deposit
+    );
+
+
+
+    updateSafeBalance(
+        -amount,
+        "Deposit Removed"
+    );
 
 
 
@@ -3605,7 +3658,7 @@ function recordDeposit(){
 
 
 
-    return ASM_STATE.cashOffice.deposits;
+    return deposit;
 
 
 }
@@ -3652,6 +3705,62 @@ function generateCashOfficeSummary(){
 
 
     };
+
+
+}
+
+
+/* ==========================================================
+   CASH PICKUP TRACKER
+========================================================== */
+
+
+function recordCashPickup(){
+
+
+    let amount =
+        Number(
+            prompt(
+                "Pickup amount?"
+            )
+        );
+
+
+
+    ASM_STATE.cashOffice.pickups.push({
+
+        id:
+        Date.now(),
+
+
+        amount:
+        amount,
+
+
+        time:
+        new Date().toLocaleString(),
+
+
+        employee:
+        ASM_STATE.currentUser
+
+
+    });
+
+
+
+    updateSafeBalance(
+        amount,
+        "Cash Pickup Added"
+    );
+
+
+
+    saveASMState();
+
+
+
+    return ASM_STATE.cashOffice.pickups;
 
 
 }
@@ -3728,6 +3837,144 @@ function generateCashOfficeDashboard(){
 
         overShort:
         ASM_STATE.cashOffice.overShort
+
+
+    };
+
+
+}
+
+
+/* ==========================================================
+   SAFE BALANCE CONTROLLER
+========================================================== */
+
+
+function updateSafeBalance(
+    amount,
+    reason
+){
+
+
+    if(
+        !ASM_STATE.cashOffice
+    ){
+
+        initializeCashOffice();
+
+    }
+
+
+
+    ASM_STATE.cashOffice.safe.currentAmount += amount;
+
+
+
+    ASM_STATE.cashOffice.safeHistory =
+    ASM_STATE.cashOffice.safeHistory || [];
+
+
+
+    ASM_STATE.cashOffice.safeHistory.push({
+
+        id:
+        Date.now(),
+
+
+        amount:
+        amount,
+
+
+        reason:
+        reason,
+
+
+        timestamp:
+        new Date().toLocaleString(),
+
+
+        user:
+        ASM_STATE.currentUser
+
+
+    });
+
+
+
+    ASM_STATE.cashOffice.lastUpdated =
+        new Date().toLocaleString();
+
+
+
+    saveASMState();
+
+
+
+    return ASM_STATE.cashOffice.safe;
+
+}
+
+
+/* ==========================================================
+   CASH VARIANCE ENGINE
+========================================================== */
+
+
+function calculateCashVariance(
+    expected,
+    actual
+){
+
+
+    let variance =
+        actual - expected;
+
+
+
+    ASM_STATE.cashOffice.overShort =
+        variance;
+
+
+
+    saveASMState();
+
+
+
+    return {
+
+
+        expected:
+        expected,
+
+
+        actual:
+        actual,
+
+
+        variance:
+        variance,
+
+
+        status:
+
+        variance === 0
+
+        ?
+
+        "BALANCED"
+
+
+        :
+
+        variance > 0
+
+        ?
+
+        "OVER"
+
+        :
+
+        "SHORT"
 
 
     };
