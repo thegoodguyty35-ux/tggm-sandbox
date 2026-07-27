@@ -5681,6 +5681,71 @@ function renderDashboard(){
         </div>
 
 
+        <div class="dashboard-card">
+
+
+            <strong>
+                💵 Cash Office Status
+            </strong>
+        
+        
+            <br><br>
+        
+        
+            🏧 Registers Open:
+        
+            <br>
+        
+            ${cashOffice.registers}
+        
+        
+            <br><br>
+        
+        
+            ⬇️ Cash Drops:
+        
+            <br>
+        
+            $${cashOffice.drops.toFixed(2)}
+        
+        
+            <br><br>
+        
+        
+            🏦 Deposits:
+        
+            <br>
+        
+            $${cashOffice.deposits.toFixed(2)}
+        
+        
+            <br><br>
+        
+        
+            ⚠️ Over / Short:
+        
+            <br>
+        
+        
+            ${
+                cashOffice.overShort >= 0
+        
+                ?
+        
+                "$" + cashOffice.overShort.toFixed(2)
+        
+                :
+        
+                "-$" + Math.abs(
+                    cashOffice.overShort
+                ).toFixed(2)
+        
+            }
+        
+        
+        </div>
+
+
 
         <div class="dashboard-card">
 
