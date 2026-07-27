@@ -3837,7 +3837,7 @@ function updateFreightIntelligence(){
     }
 
 
-    else{
+        else{
 
 
         ASM_STATE.truck.intelligence.riskLevel =
@@ -3848,7 +3848,144 @@ function updateFreightIntelligence(){
 
 
 
+    /* ======================================================
+       FREIGHT RECOMMENDATION ENGINE
+    ====================================================== */
+
+
+    ASM_STATE.truck.intelligence.recommendations = [];
+
+
+
+    if(
+        completion < 50 &&
+        ASM_STATE.truck.boxes > 0
+    ){
+
+        ASM_STATE.truck.intelligence.recommendations.push(
+
+            "Assign additional labor to freight processing."
+
+        );
+
+    }
+
+
+
+    if(
+        completion >= 50 &&
+        completion < 90
+    ){
+
+        ASM_STATE.truck.intelligence.recommendations.push(
+
+            "Continue freight processing and prioritize sales floor recovery."
+
+        );
+
+    }
+
+
+
+    if(
+        completion >= 90
+    ){
+
+        ASM_STATE.truck.intelligence.recommendations.push(
+
+            "Complete remaining freight and prepare recovery."
+
+        );
+
+    }
+
+
+
     return ASM_STATE.truck.intelligence;
+
+
+}
+
+
+/* ==========================================================
+   FREIGHT PROCESSING ENGINE
+========================================================== */
+
+
+function processFreight(){
+
+
+    let amount =
+        Number(
+            prompt(
+                "How many boxes processed?"
+            )
+        );
+
+
+
+    if(
+        amount <= 0
+    ){
+
+        return ASM_STATE.truck;
+
+    }
+
+
+
+    ASM_STATE.truck.processed += amount;
+
+
+
+    if(
+        ASM_STATE.truck.processed >
+        ASM_STATE.truck.boxes
+    ){
+
+        ASM_STATE.truck.processed =
+        ASM_STATE.truck.boxes;
+
+    }
+
+
+
+    ASM_STATE.truck.remaining =
+
+        ASM_STATE.truck.boxes
+        -
+        ASM_STATE.truck.processed;
+
+
+
+    if(
+        ASM_STATE.truck.remaining <= 0
+    ){
+
+        ASM_STATE.truck.completed =
+            true;
+
+
+        ASM_STATE.truck.status =
+            "COMPLETE";
+
+    }
+
+
+
+    ASM_STATE.truck.lastUpdated =
+        new Date().toLocaleString();
+
+
+
+    updateFreightIntelligence();
+
+
+    saveASMState();
+
+
+
+    return ASM_STATE.truck;
 
 
 }
