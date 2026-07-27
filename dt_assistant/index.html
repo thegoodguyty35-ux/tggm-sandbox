@@ -3991,6 +3991,99 @@ function processFreight(){
 }
 
 
+
+/* ==========================================================
+   FREIGHT DECISION MEMORY ENGINE
+========================================================== */
+
+
+function generateFreightDecisionRecommendations(){
+
+
+    let recommendations = [];
+
+
+    if(
+        !ASM_STATE.truck ||
+        !ASM_STATE.truck.intelligence
+    ){
+
+        return recommendations;
+
+    }
+
+
+
+    if(
+        ASM_STATE.truck.remaining > 0 &&
+        ASM_STATE.truck.intelligence.riskLevel === "HIGH"
+    ){
+
+        recommendations.push({
+
+            category:
+            "FREIGHT",
+
+
+            priority:
+            "HIGH",
+
+
+            message:
+            `Freight delay detected: ${ASM_STATE.truck.remaining} boxes remaining.`,
+
+
+            recommendedAction:
+            "Assign additional labor to freight processing.",
+
+
+            source:
+            "FREIGHT INTELLIGENCE"
+
+
+        });
+
+    }
+
+
+
+    else if(
+        ASM_STATE.truck.remaining > 0
+    ){
+
+        recommendations.push({
+
+            category:
+            "FREIGHT",
+
+
+            priority:
+            "MEDIUM",
+
+
+            message:
+            `${ASM_STATE.truck.remaining} boxes remain to process.`,
+
+
+            recommendedAction:
+            "Continue freight processing priorities.",
+
+
+            source:
+            "FREIGHT INTELLIGENCE"
+
+
+        });
+
+    }
+
+
+
+    return recommendations;
+
+
+}    
+
 /* ==========================================================
    CASH INTELLIGENCE INITIALIZER
 ========================================================== */
