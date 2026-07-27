@@ -3547,13 +3547,68 @@ function addRegister(){
 }
 
 
+
+/* ==========================================================
+   CASH INTELLIGENCE INITIALIZER
+========================================================== */
+
+
+function initializeCashIntelligence(){
+
+
+    if(
+        !ASM_STATE.cashOffice
+    ){
+
+        initializeCashOffice();
+
+    }
+
+
+
+    if(
+        !ASM_STATE.cashOffice.intelligence
+    ){
+
+        ASM_STATE.cashOffice.intelligence = {
+
+
+            alerts: [],
+
+
+            dailySummary: {},
+
+
+            riskLevel:
+            "LOW",
+
+
+            lastAnalysis:
+            null
+
+
+        };
+
+    }
+
+
+
+    saveASMState();
+
+
+    return ASM_STATE.cashOffice.intelligence;
+
+
+}
+
 /* ==========================================================
    CASH DAILY SUMMARY ENGINE
 ========================================================== */
 
 
 function generateCashDailySummary(){
-
+    
+    initializeCashIntelligence();
 
     let drops =
         ASM_STATE.cashOffice.drops.reduce(
