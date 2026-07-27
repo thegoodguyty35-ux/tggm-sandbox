@@ -7803,6 +7803,146 @@ function renderDashboard(){
         </div>
 
 
+        <div class="dashboard-card">
+
+
+            <strong>
+                🚚 Freight Learning
+            </strong>
+        
+        
+            <br><br>
+        
+        
+            ${
+                ASM_STATE.experienceLibrary.filter(
+        
+                    item =>
+                    item.category === "FREIGHT"
+        
+                ).length > 0
+        
+        
+                ?
+        
+        
+                ASM_STATE.experienceLibrary
+        
+                .filter(
+        
+                    item =>
+                    item.category === "FREIGHT"
+        
+                )
+        
+                .map(
+        
+                    item => `
+        
+        
+                    <div>
+        
+        
+                    <strong>
+                    FREIGHT ISSUE
+                    </strong>
+        
+        
+                    <br><br>
+        
+        
+                    Previous Issue:
+        
+                    <br>
+        
+                    ${item.problem}
+        
+        
+                    <br><br>
+        
+        
+                    Successful Resolution:
+        
+                    <br>
+        
+                    ${item.successfulAction}
+        
+        
+                    <br><br>
+        
+        
+                    Confidence:
+        
+                    <br>
+        
+                    ${item.confidence}%
+        
+        
+                    <br><br>
+        
+        
+                    Times Used:
+        
+                    <br>
+        
+                    ${item.timesUsed}
+        
+        
+                    <br><br>
+        
+        
+                    Status:
+        
+                    <br>
+        
+        
+                    ${
+                        item.confidence >= 75
+        
+                        ?
+        
+                        "🟢 Trusted Memory"
+        
+                        :
+        
+                        item.confidence >= 50
+        
+                        ?
+        
+                        "🟡 Developing Memory"
+        
+                        :
+        
+                        "🔵 Learning Phase"
+        
+                    }
+        
+        
+                    </div>
+        
+        
+                    <hr>
+        
+        
+                    `
+        
+                )
+        
+                .join("")
+        
+        
+                :
+        
+        
+                "No freight learning records yet."
+        
+        
+            }
+        
+        
+        </div>
+
+
 
         <div class="dashboard-card">
 
