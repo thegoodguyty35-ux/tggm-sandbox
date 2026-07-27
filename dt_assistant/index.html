@@ -3180,6 +3180,7 @@ function buildExperienceLibrary(){
 }
 
 
+
 /* ==========================================================
    EXPERIENCE USAGE TRACKER
 ========================================================== */
@@ -3476,6 +3477,7 @@ function renderDashboard(){
 
     const adaptiveRecommendations =
     generateAdaptiveRecommendationsV2();
+
 
     const patterns =
     generateOperationalPatterns();
@@ -4077,7 +4079,7 @@ function renderDashboard(){
         </div>
 
 
-                <div class="dashboard-card">
+        <div class="dashboard-card">
 
 
             <strong>
@@ -4115,7 +4117,7 @@ function renderDashboard(){
                         ${item.message}
 
 
-                        <br><br>
+                        <br><br}
 
 
                         <strong>
@@ -4143,6 +4145,103 @@ function renderDashboard(){
 
 
                 "No adaptive recommendations available."
+
+
+            }
+
+
+        </div>
+
+
+
+
+
+        <div class="dashboard-card">
+
+
+            <strong>
+                🧠 Experience Based Recommendations
+            </strong>
+
+
+            <br><br>
+
+
+            ${
+                experienceRecommendations.length > 0
+
+
+                ?
+
+
+                experienceRecommendations.map(
+                    item => `
+
+
+                    <div>
+
+
+                        <strong>
+                            ${item.category}
+                        </strong>
+
+
+                        <br><br>
+
+
+                        Problem:
+
+                        <br>
+
+                        ${item.problem}
+
+
+                        <br><br>
+
+
+                        Recommended Action:
+
+                        <br>
+
+                        ${item.recommendation}
+
+
+                        <br><br>
+
+
+                        Confidence:
+
+                        ${item.confidence}%
+
+
+                        <br>
+
+
+                        Times Used:
+
+                        ${item.timesUsed}
+
+
+                        <br><br>
+
+
+                        ${item.reason}
+
+
+                    </div>
+
+
+                    <hr>
+
+
+                    `
+                ).join("")
+
+
+                :
+
+
+                "No experience memory available."
 
 
             }
@@ -7743,6 +7842,53 @@ function closeActiveShift(){
 
 
     showScreen("dashboard");
+
+
+}
+
+
+/* ==========================================================
+   STEP 6f-2z-8-2
+   EXPERIENCE FEEDBACK CONTROLLER
+========================================================== */
+
+
+function updateExperienceFeedback(){
+
+
+    if(
+        !ASM_STATE.experienceLibrary ||
+        ASM_STATE.experienceLibrary.length === 0
+    ){
+
+        return [];
+
+    }
+
+
+
+    ASM_STATE.experienceLibrary.forEach(item => {
+
+
+        if(
+            item.feedbackStatus === undefined
+        ){
+
+            item.feedbackStatus =
+            "PENDING";
+
+        }
+
+
+    });
+
+
+
+    saveASMState();
+
+
+
+    return ASM_STATE.experienceLibrary;
 
 
 }
