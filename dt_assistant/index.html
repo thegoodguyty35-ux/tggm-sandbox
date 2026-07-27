@@ -6751,6 +6751,108 @@ function renderDashboard(){
         </div>
 
 
+        <div class="dashboard-card">
+
+
+            <strong>
+                📈 Cash Office Learning
+            </strong>
+        
+        
+            <br><br>
+        
+        
+            <strong>
+                Previous Cash Issues
+            </strong>
+        
+        
+            <br><br>
+        
+        
+            ${
+                generateCashExperienceRecommendations().length > 0
+        
+        
+                ?
+        
+        
+                generateCashExperienceRecommendations()
+                .map(
+                    item => `
+        
+        
+                    <div>
+        
+        
+                        <strong>
+                            ${item.category}
+                        </strong>
+        
+        
+                        <br><br>
+        
+        
+                        Problem:
+        
+                        <br>
+        
+                        ${item.problem}
+        
+        
+                        <br><br>
+        
+        
+                        Recommended Action:
+        
+                        <br>
+        
+                        ${item.recommendation}
+        
+        
+                        <br><br>
+        
+        
+                        Confidence:
+        
+                        <br>
+        
+                        ${item.confidence}%
+        
+        
+                        <br><br>
+        
+        
+                        Times Used:
+        
+                        <br>
+        
+                        ${item.timesUsed}
+        
+        
+                    </div>
+        
+        
+                    <hr>
+        
+        
+                    `
+                )
+                .join("")
+        
+        
+                :
+        
+        
+                "No previous cash learning recorded."
+        
+        
+            }
+        
+        
+        </div>
+
+
 
         <div class="dashboard-card">
 
