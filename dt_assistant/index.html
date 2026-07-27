@@ -3592,83 +3592,84 @@ function initializeFreight(){
         !ASM_STATE.truck
     ){
 
-        ASM_STATE.truck = {
+        ASM_STATE.truck = {};
+
+    }
 
 
-            status:
-            "Not Received",
+
+    ASM_STATE.truck.status =
+        ASM_STATE.truck.status || "Not Received";
 
 
-            truckID:
-            null,
+    ASM_STATE.truck.truckID =
+        ASM_STATE.truck.truckID || null;
 
 
-            arrivalTime:
-            null,
+    ASM_STATE.truck.arrivalTime =
+        ASM_STATE.truck.arrivalTime || null;
 
 
-            boxes:
-            0,
+    ASM_STATE.truck.boxes =
+        ASM_STATE.truck.boxes || 0;
 
 
-            processed:
-            0,
+    ASM_STATE.truck.processed =
+        ASM_STATE.truck.processed || 0;
 
 
-            remaining:
-            0,
+    ASM_STATE.truck.remaining =
+        ASM_STATE.truck.remaining || 0;
 
 
-            completed:
-            false,
+    ASM_STATE.truck.completed =
+        ASM_STATE.truck.completed || false;
 
 
-            assignedEmployees:
-            [],
+    ASM_STATE.truck.assignedEmployees =
+        ASM_STATE.truck.assignedEmployees || [];
 
 
-            categories:
-            [],
+    ASM_STATE.truck.categories =
+        ASM_STATE.truck.categories || [];
 
 
-            backstock:
-            0,
+    ASM_STATE.truck.backstock =
+        ASM_STATE.truck.backstock || 0;
 
 
-            floorStocked:
-            0,
+    ASM_STATE.truck.floorStocked =
+        ASM_STATE.truck.floorStocked || 0;
 
 
-            lastUpdated:
-            null,
+    ASM_STATE.truck.lastUpdated =
+        ASM_STATE.truck.lastUpdated || null;
 
 
-            intelligence:{
+
+    if(
+        !ASM_STATE.truck.intelligence
+    ){
+
+        ASM_STATE.truck.intelligence = {
 
 
-                completionPercent:
-                0,
+            completionPercent:0,
 
 
-                riskLevel:
-                "LOW",
+            riskLevel:"LOW",
 
 
-                alerts:
-                [],
+            alerts:[],
 
 
-                recommendations:
-                []
-
-
-            }
+            recommendations:[]
 
 
         };
 
-
     }
+
 
 
     saveASMState();
