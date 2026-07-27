@@ -5033,6 +5033,112 @@ function generateCashDecisionRecommendations(){
 
 
 /* ==========================================================
+   FREIGHT OUTCOME LEARNING ENGINE
+========================================================== */
+
+
+function learnFromFreightOutcomes(){
+
+
+    if(
+        !ASM_STATE.experienceLibrary
+    ){
+
+        ASM_STATE.experienceLibrary = [];
+
+    }
+
+
+
+    ASM_STATE.decisions.forEach(
+
+        decision => {
+
+
+            if(
+                decision.category === "FREIGHT"
+                &&
+                decision.outcome === "SUCCESS"
+            ){
+
+
+                let existing =
+                    ASM_STATE.experienceLibrary.find(
+
+                        item =>
+
+                        item.id === decision.id
+
+                    );
+
+
+
+                if(
+                    !existing
+                ){
+
+
+                    ASM_STATE.experienceLibrary.push({
+
+
+                        id:
+                        decision.id,
+
+
+                        category:
+                        "FREIGHT",
+
+
+                        problem:
+                        decision.recommendation,
+
+
+                        successfulAction:
+                        decision.action,
+
+
+                        effectiveness:
+                        "POSITIVE",
+
+
+                        timesUsed:
+                        1,
+
+
+                        confidence:
+                        25,
+
+
+                        createdAt:
+                        new Date().toLocaleString()
+
+
+                    });
+
+
+                }
+
+
+            }
+
+
+        }
+
+    );
+
+
+
+    saveASMState();
+
+
+
+    return ASM_STATE.experienceLibrary;
+
+
+}
+
+
+/* ==========================================================
    CASH OUTCOME LEARNING ENGINE
 ========================================================== */
 
