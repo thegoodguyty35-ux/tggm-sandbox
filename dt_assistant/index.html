@@ -3682,6 +3682,178 @@ function initializeFreight(){
 
 
 /* ==========================================================
+   TRUCK RECEIVING SYSTEM
+========================================================== */
+
+
+function receiveTruck(){
+
+
+    let truckID =
+        prompt(
+            "Truck ID / Delivery Number?"
+        );
+
+
+
+    let boxes =
+        Number(
+            prompt(
+                "Number of boxes received?"
+            )
+        );
+
+
+
+    ASM_STATE.truck.truckID =
+        truckID;
+
+
+
+    ASM_STATE.truck.arrivalTime =
+        new Date().toLocaleString();
+
+
+
+    ASM_STATE.truck.status =
+        "RECEIVED";
+
+
+
+    ASM_STATE.truck.boxes =
+        boxes;
+
+
+
+    ASM_STATE.truck.processed =
+        0;
+
+
+
+    ASM_STATE.truck.remaining =
+        boxes;
+
+
+
+    ASM_STATE.truck.completed =
+        false;
+
+
+
+    ASM_STATE.truck.lastUpdated =
+        new Date().toLocaleString();
+
+
+
+    updateFreightIntelligence();
+
+
+
+    saveASMState();
+
+
+
+    return ASM_STATE.truck;
+
+
+}
+
+
+
+/* ==========================================================
+   FREIGHT INTELLIGENCE CALCULATOR
+========================================================== */
+
+
+function updateFreightIntelligence(){
+
+
+    let completion = 0;
+
+
+    if(
+        ASM_STATE.truck.boxes > 0
+    ){
+
+        completion =
+        Math.round(
+
+            (
+                ASM_STATE.truck.processed /
+                ASM_STATE.truck.boxes
+
+            )
+            *
+            100
+
+        );
+
+    }
+
+
+
+    ASM_STATE.truck.intelligence.completionPercent =
+        completion;
+
+
+
+    if(
+        completion < 50 &&
+        ASM_STATE.truck.boxes > 0
+    ){
+
+        ASM_STATE.truck.intelligence.riskLevel =
+        "HIGH";
+
+
+        ASM_STATE.truck.intelligence.alerts = [
+
+            {
+
+                type:
+                "FREIGHT_DELAY",
+
+
+                message:
+                "Freight processing below expected completion."
+
+            }
+
+        ];
+
+    }
+
+
+
+    else if(
+        completion < 90
+    ){
+
+        ASM_STATE.truck.intelligence.riskLevel =
+        "MEDIUM";
+
+
+    }
+
+
+    else{
+
+
+        ASM_STATE.truck.intelligence.riskLevel =
+        "LOW";
+
+
+    }
+
+
+
+    return ASM_STATE.truck.intelligence;
+
+
+}
+
+
+/* ==========================================================
    CASH INTELLIGENCE INITIALIZER
 ========================================================== */
 
