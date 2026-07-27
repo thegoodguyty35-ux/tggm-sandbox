@@ -3946,57 +3946,96 @@ function recordCashPickup(){
 
 
 /* ==========================================================
-   CASH OFFICE DASHBOARD SUMMARY
+   CASH OFFICE DASHBOARD ENGINE
 ========================================================== */
 
 
 function generateCashOfficeDashboard(){
 
 
+    let drops =
+
+        ASM_STATE.cashOffice.drops.reduce(
+
+            (sum,item)=>
+            sum + item.amount,
+
+            0
+
+        );
+
+
+
+    let deposits =
+
+        ASM_STATE.cashOffice.deposits.reduce(
+
+            (sum,item)=>
+            sum + item.amount,
+
+            0
+
+        );
+
+
+
     return {
 
 
         registers:
+
         ASM_STATE.cashOffice.registers.length,
 
 
+
         drops:
-        ASM_STATE.cashOffice.drops.reduce(
-            (sum,item)=>
-            sum + item.amount,
-            0
-        ),
+
+        drops || 0,
+
 
 
         deposits:
-        ASM_STATE.cashOffice.deposits.reduce(
-            (sum,item)=>
-            sum + item.amount,
-            0
-        ),
+
+        deposits || 0,
+
 
 
         overShort:
-        ASM_STATE.cashOffice.overShort,
+
+        ASM_STATE.cashOffice.overShort || 0,
+
 
 
         safeBalance:
-        ASM_STATE.cashOffice.safe.currentAmount,
+
+        ASM_STATE.cashOffice.safe.currentAmount || 0,
+
 
 
         riskLevel:
+
         ASM_STATE.cashOffice.intelligence
+
         ?
+
         ASM_STATE.cashOffice.intelligence.riskLevel
+
         :
+
         "LOW",
 
 
+
         alerts:
+
         ASM_STATE.cashOffice.intelligence
+
         ?
+
         ASM_STATE.cashOffice.intelligence.alerts
+
         :
+
         []
 
 
@@ -6267,7 +6306,7 @@ function renderDashboard(){
         
             <br>
         
-            $${cashOffice.drops.toFixed(2)}
+            $${(cashOffice.drops || 0).toFixed(2)}
         
         
             <br><br>
@@ -6277,7 +6316,7 @@ function renderDashboard(){
         
             <br>
         
-            $${cashOffice.deposits.toFixed(2)}
+            $${(cashOffice.deposits || 0).toFixed(2)}
         
         
             <br><br>
@@ -6289,7 +6328,7 @@ function renderDashboard(){
             <br>
         
         
-            $${cashOffice.safeBalance.toFixed(2)}
+            $${(cashOffice.safeBalance || 0).toFixed(2)}
         
         
             <br><br>
@@ -6362,7 +6401,7 @@ function renderDashboard(){
 
             <br>
 
-            $${cashOffice.drops.toFixed(2)}
+            $${(cashOffice.drops || 0).toFixed(2)}
 
 
             <br><br>
@@ -6372,7 +6411,7 @@ function renderDashboard(){
 
             <br>
 
-            $${cashOffice.deposits.toFixed(2)}
+            $${(cashOffice.deposits || 0).toFixed(2)}
 
 
             <br><br>
@@ -6395,7 +6434,7 @@ function renderDashboard(){
 
             <br>
 
-            $${cashOffice.safeBalance.toFixed(2)}
+            $${(cashOffice.safeBalance || 0).toFixed(2)}
 
 
             <br><br>
