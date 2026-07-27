@@ -673,6 +673,41 @@ const ASM_STATE = {
 
     patterns: [],
 
+    cashOffice: {
+
+
+    registers: [],
+
+
+    safe: {
+
+        openingAmount: 0,
+
+        currentAmount: 0
+
+    },
+
+
+    drops: [],
+
+
+    pickups: [],
+
+
+    loans: [],
+
+
+    deposits: [],
+
+
+    overShort: 0,
+
+
+    lastUpdated: null
+
+
+},
+
 
     store: {
 
@@ -3368,6 +3403,255 @@ function calculateExperienceConfidence(
 
 
     return confidence;
+
+
+}
+
+
+/* ==========================================================
+   CASH OFFICE ENGINE
+========================================================== */
+
+
+function initializeCashOffice(){
+
+
+    if(
+        !ASM_STATE.cashOffice
+    ){
+
+        ASM_STATE.cashOffice = {
+
+
+            registers: [],
+
+
+            safe:{
+                openingAmount:0,
+                currentAmount:0
+            },
+
+
+            drops:[],
+
+
+            pickups:[],
+
+
+            loans:[],
+
+
+            deposits:[],
+
+
+            overShort:0,
+
+
+            lastUpdated:null
+
+
+        };
+
+
+    }
+
+
+    saveASMState();
+
+
+    return ASM_STATE.cashOffice;
+
+
+}
+
+function addRegister(){
+
+    let registerNumber =
+        prompt(
+            "Register number?"
+        );
+
+
+    let amount =
+        Number(
+            prompt(
+                "Starting cash amount?"
+            )
+        );
+
+
+    ASM_STATE.cashOffice.registers.push({
+
+        id:
+        Date.now(),
+
+
+        register:
+        registerNumber,
+
+
+        startingCash:
+        amount,
+
+
+        currentCash:
+        amount,
+
+
+        status:
+        "OPEN"
+
+
+    });
+
+
+    ASM_STATE.cashOffice.lastUpdated =
+        new Date().toLocaleString();
+
+
+    saveASMState();
+
+
+    return ASM_STATE.cashOffice.registers;
+
+
+}
+
+
+function recordCashDrop(){
+
+
+    let amount =
+        Number(
+            prompt(
+                "Drop amount?"
+            )
+        );
+
+
+    ASM_STATE.cashOffice.drops.push({
+
+        id:
+        Date.now(),
+
+
+        amount:
+        amount,
+
+
+        time:
+        new Date().toLocaleString(),
+
+
+        employee:
+        ASM_STATE.currentUser
+
+
+    });
+
+
+
+    ASM_STATE.cashOffice.lastUpdated =
+        new Date().toLocaleString();
+
+
+
+    saveASMState();
+
+
+
+    return ASM_STATE.cashOffice.drops;
+
+
+}
+
+
+function recordDeposit(){
+
+
+    let amount =
+        Number(
+            prompt(
+                "Deposit amount?"
+            )
+        );
+
+
+
+    ASM_STATE.cashOffice.deposits.push({
+
+        id:
+        Date.now(),
+
+
+        amount:
+        amount,
+
+
+        date:
+        new Date().toLocaleString()
+
+
+    });
+
+
+
+    ASM_STATE.cashOffice.lastUpdated =
+        new Date().toLocaleString();
+
+
+
+    saveASMState();
+
+
+
+    return ASM_STATE.cashOffice.deposits;
+
+
+}
+
+
+function generateCashOfficeSummary(){
+
+
+    let totalDrops =
+        ASM_STATE.cashOffice.drops.reduce(
+            (sum,item)=>
+            sum + item.amount,
+            0
+        );
+
+
+
+    let totalDeposits =
+        ASM_STATE.cashOffice.deposits.reduce(
+            (sum,item)=>
+            sum + item.amount,
+            0
+        );
+
+
+
+    return {
+
+
+        registers:
+        ASM_STATE.cashOffice.registers.length,
+
+
+        drops:
+        totalDrops,
+
+
+        deposits:
+        totalDeposits,
+
+
+        overShort:
+        ASM_STATE.cashOffice.overShort
+
+
+    };
 
 
 }
